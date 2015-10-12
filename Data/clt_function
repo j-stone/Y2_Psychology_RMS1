@@ -1,0 +1,22 @@
+clt <- function(x, FUN) {
+  if (all(class(x) != c("numeric", "integer"))) stop("We need a vector of numbers.")
+  if (class(FUN) != "character") stop("Don't forget the quotes.")
+  if (all(FUN != c("mean", "sd", "var")))
+    stop("Choose one function: \"mean\", \"sd\", \"var\".")
+  if (any(is.na(x))) x <- x[!is.na(x)]
+  if (length(x) < 1000)
+    stop("Please provide a numeric vector with at least 1000 non-NA values.")
+  y <- NULL
+  for(n in c(5, 30, 100, 500)) {
+    expr <- paste0(FUN, "(sample(x, ", n,"))")
+    y <- cbind(y, eval(parse(text=paste0("replicate(10000, ", expr ,")"))))
+  }
+  names(y) <- c(5, 30, 100, 500)
+  means <- colMeans(y)
+  par(mfrow = c(2, 2))
+  for (i in 1:4) {
+    hist(y[,i], main = paste0("Sample size = ",names(y)[i], ", mean = ", round(means[i],3)),
+         breaks = 50, xlab = NULL)
+  }
+  par(mfrow = c(1, 1))
+}

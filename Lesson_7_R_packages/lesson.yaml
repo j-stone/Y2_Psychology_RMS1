@@ -1,0 +1,250 @@
+- Class: meta
+  Course: Y2 Psychology RMS1	
+  Lesson: Lesson 7 R packages
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Welcome to Lesson 7 of our stats & methods swirl course. Today, I'll tell you about
+    packages in R. Let's begin!
+    
+- Class: text
+  Output: You have already used quite a few functions in the course of our journey through R.
+    I have told you that functions are basically chunks of R code stored in an object.
+
+- Class: cmd_question
+  Output: "For instance, look at what's hiding under the hood of the sample() function by
+    simply typing \"sample\" into R."
+  CorrectAnswer: sample
+  AnswerTests: omnitest(correctExpr='sample')
+  Hint:
+  
+- Class: text
+  Output: Don't worry if you don't quite understand what the code does. What I wanted to show
+    you is that every time you use the sample() function, somewhere out of sight, R executes
+    this chunk of code, replacing the argument names with the values you provide to those
+    arguments.
+  
+- Class: text
+  Output: Obviously, the source code for each function you use has to be stored somewhere,
+    where R can access it and use it when you ask it to. This is where packages come into play.
+    They are, in essence, catalogues of functions, data sets, and other objects, written by
+    very clever folk all around the world.
+    
+- Class: text
+  Output: "R comes with a default package (and a few others) which includes all the functions
+    you've used thus far. This is the \"base\" package. You can see the name of the package in
+    the very first line of the documentation for every function. That's what the \"{base}\" I
+    told you to ignore a few lessons ago means."
+    
+- Class: cmd_question
+  Output: "See for yourself by pulling up the documentation for the mean() function."
+  CorrectAnswer: ?mean
+  AnswerTests: omnitest(correctExpr='?mean')
+  Hint:
+  
+- Class: text
+  Output: "There are literally thousands of packages out there containing almost any function
+    you will ever need for your data processing and analysis. For example, the function
+    describe() returns useful descriptive statistics for a data frame."
+    
+- Class: cmd_question
+  Output: "Use the describe() function to get the descriptive stats for the mtcars data
+    frame. (if you can't get through, type skip())"
+  CorrectAnswer: NULL
+  AnswerTests: omnitest()
+  Hint:
+  
+- Class: text
+  Output: "Aaaaand nothing happened! The reason is that in order to use any function that does
+    not come bundled with R, you first need to install its parent package."
+
+- Class: text
+  Output: "Since packages are written by thousands of people in an unregulated manner,
+    sometimes, there can be several functions with the same name in different packages. That's
+    also the case with the describe() function, which exists in the \"psych\", \"Hmisc\", and
+    \"pastecs\" and possibly other packages. The one we're after is from the \"psych\"
+    package. Let's install it!"
+  
+- Class: text
+  Output: "Packages are installed in the R's \"library\" folder so that R can access them and
+    read the code for any give function."
+  
+- Class: cmd_question
+  Output: "The function \".libPaths()\" returns the path to your library folder. Try it now."
+  CorrectAnswer: .libPaths()
+  AnswerTests: omnitest(correctExpr='.libPaths()')
+  Hint:
+  
+- Class: text
+  Output: "OK, so now that you know *where* the packages are installed, let's look at *how* it
+    is done."
+    
+- Class: cmd_question
+  Output: "Pull up the documentation for the install.packages() function and take a minute to
+    read through it."
+  CorrectAnswer: ?install.packages
+  AnswerTests: omnitest(correctExpr='?install.packages')
+  Hint:
+  
+- Class: text
+  Output: "At this stage, you don't need to worry about most of the arguments (however, by all
+    means, feel free - and encouraged - to explore and try to understand them). Basically,
+    all you need to give the function is a character string with the name of the package to be
+    installed and, unless you change the defaults values of the \"lib\" and \"repos\" arguments,
+    R will go to the Comprehensive R Archive Network (or CRAN) which is an online repository
+    of thousands of R packages, finds the package you're looking for and installs it into the
+    library directory."
+  
+- Class: text
+  Output: "Since many packages contain functions that themselves require other functions from
+    different packages to work, it is generally a good idea to include the \"dependencies =
+    TRUE\" argument. Specifying this argument will tell R that you want to install all the
+    packages required by the one you're installing."
+    
+- Class: cmd_question
+  Output: "Go ahead now and install the \"psych\" package including the \"dependencies = TRUE\"
+    argument in the command."
+  CorrectAnswer: install.packages("psych", dependencies = TRUE)
+  AnswerTests: match_call('install.packages("psych", dependencies = TRUE)')
+  Hint: Don't forget, the name of the package needs to be provided as a character string.
+  
+- Class: cmd_question
+  Output: "And now use the describe() function again to get the decriptive stats for the
+    \"mtcars\" data frame. (again, skip() might be required to proceed)"
+  CorrectAnswer: NULL
+  AnswerTests: omnitest()
+  Hint: Just type describe(mtcars).
+  
+- Class: text
+  Output: "Yet again, nothing happened! Frustrating, isn't it? :P The reason nothing happened
+    is that there is a difference between having a package installed on your computer and
+    having it loaded in your R session. Only 7 or 8 of the default packages are loaded upon
+    startup."
+    
+- Class: cmd_question
+  Output: "To load the psych package, type library(psych). Notice that this time, you
+    don't need the double quotes."
+  CorrectAnswer: library(psych)
+  AnswerTests: omnitest(correctExpr='library(psych)')
+  Hint:
+
+- Class: text
+  Output: "Every package hosted on CRAN comes with documentation for every function as well
+    as for the entire package."
+    
+- Class: cmd_question
+  Output: Pull up the documentation for the psych package just like you would for a function
+    and scroll through it. You will find, among other things, a full list of psych functions
+    there.
+  CorrectAnswer: ?psych
+  AnswerTests: omnitest(correctExpr='?psych')
+  Hint: Just type ?psych.
+  
+- Class: cmd_question
+  Output: "And now you can finally use the describe() function to get the bloody decriptive
+    stats for the \"mtcars\" data frame. Go right ahead!"
+  CorrectAnswer: describe(mtcars)
+  AnswerTests: omnitest(correctExpr='describe(mtcars)')
+  Hint: Just type describe(mtcars).
+  
+- Class: text
+  Output: "The describe() functions is obviously a handy tool but what's more relevant now,
+    you have learnt how to install and load R packages from CRAN."
+    
+- Class: cmd_question
+  Output: "Now install the \"Hmisc\" package along with all of its dependencies."
+  CorrectAnswer: install.packages("Hmisc", dependencies = TRUE)
+  AnswerTests: match_call('install.packages("Hmisc", dependencies = TRUE)')
+  Hint: Don't forget, the name of the package needs to be provided as a character string.
+  
+- Class: cmd_question
+  Output: "Groovy! Now load it."
+  CorrectAnswer: library(Hmisc)
+  AnswerTests: omnitest(correctExpr='library(Hmisc)')
+  Hint: Type library(Hmisc).
+  
+- Class: cmd_question
+  Output: "Look at describe(mtcars) again."
+  CorrectAnswer: describe(mtcars)
+  AnswerTests: omnitest(correctExpr='describe(mtcars)')
+  Hint: Just type describe(mtcars).
+  
+- Class: text
+  Output: "As you can see, the output is now different. If you scroll up a bit and look at the
+    messages R spat out when loading Hmisc, you'll find the reason for this. It says: \"The
+    following object is masked from 'package:psych': describe\". That means that there is
+    a describe() function in both of the recently installed packages and R now uses the one
+    from the most recently installed package - in our case Hmisc."
+    
+- Class: cmd_question
+  Output: "If you want to work with several packages that contain functions with the same name
+    you can disambiguate the source package using a double colon. Type psych::describe(mtcars)
+    to see how this works."
+  CorrectAnswer: psych::describe(mtcars)
+  AnswerTests: omnitest(correctExpr='psych::describe(mtcars)')
+  Hint: Just type psych::describe(mtcars).
+  
+- Class: cmd_question
+  Output: "But say you decide you don't need the Hmisc package loaded after all. Then, you
+    can simply unload it by typing detach(\"package:Hmisc\"). Try it now."
+  CorrectAnswer: "detach(\"package:Hmisc\")"
+  AnswerTests: "omnitest(correctExpr='detach(\"package:Hmisc\")')"
+  Hint: "Just type detach(\"package:Hmisc\")."
+  
+- Class: cmd_question
+  Output: "Since there now remains only one package with the describe() function in it, you
+    don't need to disambiguate the command any longer. Ask for the descriptives for the mtcars
+    data set one more time to see this is true."
+  CorrectAnswer: describe(mtcars)
+  AnswerTests: omnitest(correctExpr='describe(mtcars)')
+  Hint: Just type describe(mtcars).
+
+- Class: text
+  Output: "It's really useful to be familiar with the commands we've just covered. However,
+    there's another way of installing, loading, and unloading packages available in RStudio."
+
+- Class: text
+  Output: "Look at the bottom right window, where the documentation and plots usually appear.
+    There's a \"Packages\" tab there."
+    
+- Class: text
+  Output: "If you click on it, you will see a list of packages currently installed on your
+    computer. Look at the psych package. As you can see, the box next to it is ticked.
+    This means that the package is loaded."
+    
+- Class: text
+  Output: "Okay, let's install a package using this graphical environment. \"car\" (Companion
+    to Applied Regression) is another very useful package."
+    
+- Class: cmd_question
+  Output: "Click on the \"Install\" button in the upper left corner of the tab, type \"car\"
+    in the middle field of the box that pops out, and click on \"install\"."
+  CorrectAnswer: "install.packages(\"car\")"
+  AnswerTests: "omnitest(correctExpr='install.packages(\"car\")')"
+  Hint:
+
+- Class: text
+  Output: "As you can see above, the install.packages() command was executed."
+  
+- Class: cmd_question
+  Output: "The package should now appear in the list (library). Tick the box next to it to
+    load it."
+  CorrectAnswer: "library(\"car\")"
+  AnswerTests: "omnitest(correctExpr='library(\"car\")')"
+  Hint:
+
+- Class: cmd_question
+  Output: "Okay, now untick the box to unload the car package."
+  CorrectAnswer: "detach(\"package:car\", unload=TRUE)"
+  AnswerTests: "omnitest(correctExpr='detach(\"package:car\", unload=TRUE)')"
+  Hint:
+  
+- Class: text
+  Output: "That was easy, wasn't it? Now you know two ways to manage your R package library."
+  
+- Class: text
+  Output: "That's all I have in store for you for this lesson. You've done well! Go and rock
+    the discotheque or whatever it is you young folks do nowadays. I'll see you again soon."

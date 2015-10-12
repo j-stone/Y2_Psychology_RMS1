@@ -1,0 +1,1 @@
+lines(rep(df[31,10], 171),mean(df$rt):df[31,5], lt=2)

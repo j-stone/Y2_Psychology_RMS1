@@ -1,0 +1,481 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 18 Linear regression
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Welcome back. After last lesson's brief detour into even more advanced plotting,
+    I would like to go back to data analysis and tell you about linear regression. Let's
+    get going...
+    
+- Class: text
+  Output: We've previously talked about how a correlation coefficient is a measure of the
+    strength and direction of a relationship between two variables.
+    
+- Class: cmd_question
+  Output: Here, I've loaded df for you. Go ahead and find the Pearson's correlation
+    between df$anx_score_1 and df$rt.
+  CorrectAnswer: cor(df$anx_score_1, df$rt, use = "complete.obs")
+  AnswerTests: match_call('cor(df$anx_score_1, df$rt, use = "complete.obs")')
+  Hint: "Did you perhaps forget to include the use = \"complete.obs\" argument in
+    the cor() function?"
+    
+- Class: cmd_question
+  Output: So, there's a modest negative relationship between the two variables. If you
+    take the square of this number, you will get the coefficient of determination. It
+    tells you what proportion of the overall variance is shared by these variables.
+    Reuse the above command to find the coefficient (R^2) and store its value in an
+    objectcalled rsq.
+  CorrectAnswer: rsq <- cor(df$anx_score_1, df$rt, use = "complete.obs") ^ 2
+  AnswerTests: match_call('rsq <- cor(df$anx_score_1, df$rt, use = "complete.obs") ^ 2')
+  Hint:
+  
+- Class: cmd_question
+  Output: Look at the value in rsq now.
+  CorrectAnswer: rsq
+  AnswerTests: match_call('rsq')
+  Hint:
+  
+- Class: text
+  Output: This number tells you that about 4.2% of the variance in one of the two
+    variables is accounted for by the variance in the other one. We will come back to
+    this.
+    
+- Class: cmd_question
+  Output: Now, use plot() to look at the scatter plot of the two variables.
+  CorrectAnswer: plot(df$anx_score_1, df$rt)
+  AnswerTests: match_call('plot(df$anx_score_1, df$rt)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now, use abline() to draw the line of best fit that describes the relationship
+    between these two variables. You've done this previously. You need the lm () formula
+    notation and you want to predict rt by (~) anxiety. Give the line a weight of 2 points
+    and make it blue.
+  CorrectAnswer: abline(lm(df$rt ~ df$anx_score_1), lw = 2, col = "Blue")
+  AnswerTests: match_call('abline(lm(df$rt ~ df$anx_score_1), lw = 2, col = "Blue")')
+  Hint: "That's abline(lm(df$rt ~ df$anx_score_1), lw = 2, col = \"Blue\")."
+  
+- Class: text
+  Output: "As the correlation and this line show, there is a negative relationship between
+    the variables: as anxiety score increases, RT gets shorter."
+
+- Class: text
+  Output: It is all well and good to *describe* the relationship between two variables but
+    it would be nice if we could *predict* the RT of a person not in our sample based
+    on their anxiety score.
+    
+- Class: text
+  Output: Suppose we want to predict the RT of someone with an anxiety score of 30. Since
+    the blue line gives the best estimate of the relationship, our best guess would be the
+    y value of the line in the point where x = 30.
+    
+- Class: figure
+  Output: The point would lie here and the value of RT would be somewhere around the 260 -
+    270 mark.
+  Figure: plot_1.R
+  FigureType: add
+  
+- Class: text
+  Output: In fact, the line is all we need for predicting the values of the outcome
+    variable (in this case RT) form those of the predictor variable. Finding this line of
+    best fit is the point of linear regression.
+
+- Class: cmd_question
+  Output: "Before we get into the details of linear regression, let's clear the plot a bit
+    by getting rid of the individual points and the black lines. The best way to do it is
+    to reuse the plot() command that created the plot and including the type = \"n\"
+    argument in it. Go ahead and do it now."
+  CorrectAnswer: plot(df$anx_score_1, df$rt, type = "n")
+  AnswerTests: match_call('plot(df$anx_score_1, df$rt, type = "n")')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now, just add the same abline() as before.
+  CorrectAnswer: abline(lm(df$rt ~ df$anx_score_1), lw = 2, col = "Blue")
+  AnswerTests: match_call('abline(lm(df$rt ~ df$anx_score_1), lw = 2, col = "Blue")')
+  Hint: Remember that you can use the up arrow to toggle through past commands.
+  
+- Class: text
+  Output: "A line, such as this one, can be unambiguously defined by only two parameters:
+    its intercept and slope. The intercept is the value of y where the line crosses
+    (intercepts) the y axis, i.e., x = 0. The slope is the amount of change in y for every
+    unit change in x. A positive number means the slope goes up, while a negative number
+    means the slope goes down. The bigger the number is in absolute terms, the steeper
+    the line gets."
+    
+- Class: text
+  Output: In our case, the intercept of the line is 411.350 and the slope is -4.815.
+    That means that a point on the line where x = 0 has the y value of 411.350 and
+    that per each unit increase in x (+1) the value of y will drop by 4.815.
+    
+- Class: text
+  Output: Using these two parameters, we can reduce the line to a simple linear equation
+    y = intercept + (slope * x).
+    
+- Class: cmd_question
+  Output: Use this equation substituting the values of intercept and slope above to
+    see that the value of y in the point x = 30 is indeed in the 260 - 270 range.
+  CorrectAnswer: 411.350 + (-4.815 * 30)
+  AnswerTests: omnitest(correctExpr='411.350 + (-4.815 * 30)')
+  Hint: Just type 411.350 + (-4.815 * 30).
+  
+- Class: text
+  Output: "See, our prediction was right. This is how you can use linear regression to
+    predict values of your outcome variable based any value of your predictor variable
+    or variables. Obviously, every model is only valid within certain constraints: it
+    is possible to use the equation above to predict RT of someone with an anxiety score
+    of -200 but it makes no sense to do it since the minimum anxiety score is 1."
+  
+- Class: text
+  Output: "Similarly, as we move up the x axis, the model eventually breaks down and
+    starts predicting unrealistically small and even negative values of RT. This
+    illustrates an important point: all models are wrong. But good models are less
+    wrong than bad ones and can be very useful."
+    
+- Class: text
+  Output: So how can we tell if our mode, whatever it may be, is any good? Well, we
+    can compare it to the most basic model which is likely to be rather bad and see
+    if it predicts the outcome more accurately.
+    
+- Class: text
+  Output: The most basic model there is (for continuous data) is the mean. Yes, the
+    mean is a model too. It's even a linear model.
+    
+- Class: figure
+  Output: "It looks like this. In linear model jargon, this is called an intercept-only
+    model because its slope is 0: for any value of anxiety score, the model predicts
+    a constant RT of ~340 ms."
+  Figure: plot_2.R
+  FigureType: add
+  
+- Class: text
+  Output: So in order to see if our model is better than this baseline model, we need
+    to know if the slope of our model is significantly different from the slope of the
+    baseline model (i.e., 0).
+    
+- Class: text
+  Output: To find out this, we want to see if the predictions of our model are better
+    than those of the intercept-only model. A good measure of accuracy of prediction
+    is the sum of squared deviations, or the sum of squares.
+    
+- Class: figure
+  Output: Let's bring our data points back. You know that the squared deviation from
+    the mean is calculated by subtracting the mean from every data point and squaring
+    the result.
+  Figure: plot_3.R
+  FigureType: add
+    
+- Class: figure
+  Output: That's the same as squaring the length of a vertical line from each of the
+    points on the scatter plot to the intercept-only line, such as this one. Adding
+    all these squared distances yields the sum of squares (SS) which we then use as a
+    measure of how well the model fits the data.
+  Figure: plot_3_add.R
+  FigureType: add
+  
+- Class: text
+  Output: Yes, this is indeed similar to variance. In fact the sum of squares for
+    mean is equal to variance * (N - 1).
+    
+- Class: text
+  Output: In pretty much the same way, we can calculate the SS for any line drawn
+    across the data. If the SS of our blue line is significantly smaller that the SS
+    of the red line, that means our model is a significant improvement upon the
+    baseline model.
+    
+- Class: text
+  Output: "Okay, so deciding whether or not our line is better than the baseline is
+    one thing but how do we find \"our line\" in the first place?"
+    
+- Class: text
+  Output: There are several so-called estimation methods of finding the line that
+    best describes a relationship between two variables. The one used most commonly
+    in linear regression is the Ordinary Least Squares (OLS) method . As the name
+    suggests, this estimation method finds the one line out of all the possible ones
+    that has the smallest SS. Our blue line is the OLS regression line.
+    
+- Class: text
+  Output: This kind of line provides the best possible prediction of the outcome
+    variable given the predictor(s) in a model. The only way how to improve such a
+    model is to include more predictors (or exclude some).
+    
+- Class: text
+  Output: That's the rough theory behind linear OLS regression. Obviously, I encourage
+    you to explore the nitty gritty to as much depth as you can. But now, let's look
+    at how to do regression in R.
+    
+- Class: cmd_question
+  Output: You might be pleased to hear that you've already done a regression. It is
+    the linear model - lm() - you put in the abline() function in order to draw the
+    blue line across the scatter plot. Pull up the documentation for lm().
+  CorrectAnswer: ?lm
+  AnswerTests: omnitest(correctExpr='?lm')
+  Hint:
+  
+- Class: text
+  Output: Okay, to do a very basic simple (one predictor) linear regression, you need
+    to specify the formula just like you did in the abline() function earlier. There's
+    the handy data argument which, if provided, lets you use the names of the variables
+    without the df$ prefix. Use it. Also, We have some missing values in our anx_score_1
+    variable. Conveniently, the default na.action is na.omit which, well, omits cases
+    with missing values. Since, this is the one we want, you don't need to worry about
+    the argument.
+    
+- Class: cmd_question
+  Output: Go ahead and look what the lm() function does. Have R predict rt by
+    anx_score_1.
+  CorrectAnswer: lm(rt ~ anx_score_1, data = df)
+  AnswerTests: match_call('lm(rt ~ anx_score_1, data = df)')
+  Hint: Use the data = df argument and don't put df$ before the var names.
+  
+- Class: text
+  Output: As you can see, R gives you the intercept and the slope - known as the beta
+    or regression coefficient - of the line. You might have noticed that these are
+    the same values as those you used to predict the rt of a person with anx score of
+    30 earlier in the lesson.
+    
+- Class: text
+  Output: These coefficients tell you two things. Firstly, a predicted RT for a person
+    with anx_score_1 = 0 is 411.350 ms and for every +1 on the anx_score_1 variable,
+    RT drops by 4.815 ms.
+    
+- Class: cmd_question
+  Output: If you read the documentation you'll have learned in the Value section that
+    there's more to lm() than this. Often it is useful to store the output of this -
+    and other functions - in an object. Go ahead and store the entire lm(...) command
+    in an object called my_model now.
+  CorrectAnswer: my_model <- lm(rt ~ anx_score_1, data = df)
+  AnswerTests: match_call('my_model <- lm(rt ~ anx_score_1, data = df)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now look at the summary() of my_model.
+  CorrectAnswer: summary(my_model)
+  AnswerTests: omnitest(correctExpr='summary(my_model)')
+  Hint:
+
+- Class: text
+  Output: "Let's break the output down a bit. First, R reminds you what the command
+    that created the model was. Next, you have some information about the residuals.
+    These are the deviations we talked about earlier: a residual is the difference
+    between the value of the outcome the model predicts based on a given value of the
+    predictor and the actual value in the data set. In other words it is the magnitude
+    of the error of prediction."
+    
+- Class: text
+  Output: Here, R gives you the minimum and maximum residual, the 1st and 3rd quartile
+    for the residuals and the median value of the residual. So, for instance, you
+    see that the model underestimated someone's RT by 337.41 ms and overestimated
+    someone else's by 255.55 ms. Residuals must be reasonably normally distributed if
+    we want to call the model valid but more of that later.
+    
+- Class: text
+  Output: Next, you have the intercept and the beta coefficient for your predictor,
+    which we've already covered. These are estimates and just like any other estimate
+    we've talked about so far (from the mean to the correlation coef), we can calculate
+    its standard error. As it turns out, the estimates of regression coefficients
+    follow a t distribution and as such, we can derive the p-values associated with
+    them. You can find these values in the table.
+    
+- Class: text
+  Output: Remember, the null hypothesis tested in a regression is that the coefficients
+    are equal to 0. A p-value of < .05 gives us a reason to believe that in reality
+    the coefficients in the population are in fact not equal to zero. For the beta
+    coefficient (the slope), this means that it is a significant predictor of the
+    outcome variable. In our case, the p-value for anx_score_1 is not < .05 and thus
+    we would not deem it a significant predictor of RT.
+    
+- Class: text
+  Output: As for the intercept, it is rarely meaningful to interpret it's significance
+    so you may as well not worry about it.
+    
+- Class: text
+  Output: Below the table, R gives you the std. error and degrees of freedom of the
+    residual. Further down, there's the multiple R^2 and adjusted R^2. To reiterate,
+    R^2 is the proportion of variance in the outcome accounted for by the variance
+    in the predictor.
+
+- Class: text
+  Output: lm() assumes that the models you build will include more than 1 predictor.
+    If that's the case R^2 can be artificially inflated by the number of predictors
+    and thus the model can seem to explain more than it actually does. The adjusted
+    R^2 accounts for the number of predictors and thus, in the situations of multiple
+    predictors, it is the one to look at. However, we only have 1 predictor so the
+    raw R^2 is not really multiple despite what R says. It is this value that we
+    are interested in.
+    
+- Class: cmd_question
+  Output: As I'm sure you'll recall, we calculated R^2 based on the correlation
+    between the two variables earlier on. Look at rsq again to see its value.
+  CorrectAnswer: rsq
+  AnswerTests: omnitest(correctExpr='rsq')
+  Hint:
+  
+- Class: text
+  Output: Lo and behold, it is identical to the one R gave you! Magic, innit?! So
+    we can say that our model explains 4.2 % of the variance in RT. However, keep
+    in mind that the beta coef for the predictor was not significantly different
+    from 0 which means that our model doesn't do a better job than the intercept-only
+    model, which predicts the mean RT for any value of anx score. In other words,
+    in this case, the 4.2 % of variance explained is no reason to celebrate. Sorry
+    pal!
+    
+- Class: text
+  Output: Finally, R gives you the F value and its associated degrees of freedom
+    and p-value. The F-statistic is another way of expressing the explanatory power
+    of the  model. It is a ratio of variance explained by the model to the residual
+    variance that the model cannot explain. You'll hear more about the F ratio when
+    you learn about analysis of variance (ANOVA).
+
+- Class: text
+  Output: Now, it is very useful to know how your outcome variable is expected to
+    change as a result of a unit change in your predictor but that means that your
+    model's regression coefficients are dependent on the units of measurement. That
+    in itself is not a problem but sometimes you may desire regression coefficients
+    that mean something regardless of whether you measure RT in ms or hours (although,
+    that would be silly, don't do that).
+    
+- Class: text
+  Output: One of such situations where it's better to have standardised coefficients
+    is when you want to compare the relationship between two variables found in your
+    data and previous literature. Often, the units of measurement aren't the same
+    across studies or the same construct is measured using slightly different scales.
+    In this situation, standardised coefficients allow you to compare the various
+    results.
+    
+- Class: text
+  Output: Let's look at how to get standardised regression coefficients now.
+  
+- Class: text
+  Output: A standardised regression coefficient (AKA a Beta coefficient) tells you
+    what the change in the outcome variable is in terms of the number of standard
+    deviations as a result of +1 SD change in the predictor.
+    
+- Class: text
+  Output: If you want to get standardised coefficients out of lm(), all you need
+    to do is standardise your variables before you build the model. Put differently,
+    you need to turn your variables into z scores.
+
+- Class: cmd_question
+  Output: I'm sure you know that standardising a variable involves subtracting the
+    mean value of the variable from each case and then dividing the result by the
+    SD of the variable. Go for it and standardise df$anx_score_1 and store it in
+    anx_z.
+  CorrectAnswer: anx_z <- (df$anx_score_1 - mean(df$anx_score_1)) / sd(df$anx_score_1)
+  AnswerTests: omnitest(correctExpr='anx_z <- (df$anx_score_1 - mean(df$anx_score_1)) /
+    sd(df$anx_score_1)')
+  Hint: That is simply anx_z <- (df$anx_score_1 - mean(df$anx_score_1)) /
+    sd(df$anx_score_1).
+
+- Class: cmd_question
+  Output: Take a look at anx_z.
+  CorrectAnswer: anx_z
+  AnswerTests: omnitest(correctExpr='anx_z')
+  Hint:
+
+- Class: text
+  Output: Okay, something clearly went awry. That something is, as you probably know,
+    that df$anx_score_1 contains missing values and therefore the mean() and sd()
+    functions didn't work well.
+
+- Class: cmd_question
+  Output: You can get around this by including na.rm = TRUE in the mean() and sd()
+    bits of the command above. Do it now.
+  CorrectAnswer: anx_z <- (df$anx_score_1 - mean(df$anx_score_1, na.rm = TRUE)) /
+    sd(df$anx_score_1, na.rm = TRUE)
+  AnswerTests: omnitest(correctExpr='anx_z <- (df$anx_score_1 -
+    mean(df$anx_score_1, na.rm = TRUE)) / sd(df$anx_score_1, na.rm = TRUE)')
+  Hint:
+
+- Class: cmd_question
+  Output: Okay, look at anx_z to see if it worked.
+  CorrectAnswer: anx_z
+  AnswerTests: omnitest(correctExpr='anx_z')
+  Hint:
+  
+- Class: cmd_question
+  Output: Good, now standardise df$rt and store it in rt_z. Since there's no NAs in
+    df$rt, you don't need to worry about the na.rm argument.
+  CorrectAnswer: rt_z <- (df$rt - mean(df$rt)) / sd(df$rt)
+  AnswerTests: omnitest(correctExpr='rt_z <- (df$rt - mean(df$rt)) / sd(df$rt)')
+  Hint:
+
+- Class: cmd_question
+  Output: OK, now check out rt_z.
+  CorrectAnswer: rt_z
+  AnswerTests: omnitest(correctExpr='rt_z')
+  Hint:
+
+- Class: text
+  Output: So you transformed your variables into z scores. These tell you by how many
+    SDs any given data point differs from the mean of the variable.
+
+- Class: cmd_question
+  Output: Now create a lm() predicting rt_z by anx_z and store it in std_model
+  CorrectAnswer: std_model <- lm(rt_z ~ anx_z)
+  AnswerTests: omnitest(correctExpr='std_model <- lm(rt_z ~ anx_z)')
+  Hint:
+
+- Class: cmd_question
+  Output: And look at the summary() of the model.
+  CorrectAnswer: summary(std_model)
+  AnswerTests: omnitest(correctExpr='summary(std_model)')
+  Hint:
+  
+- Class: cmd_question
+  Output: As you can see a +1 SD change in anxiety score results in -0.2 SD change in
+    reaction time. As always, there's a more straightforward way how to get standardised
+    regression coefficients in R. Install the package QuantPsych so I can show you.
+  CorrectAnswer: install.packages("QuantPsych")
+  AnswerTests: omnitest(correctExpr='install.packages("QuantPsych")')
+  Hint: Don't forget the double quotes...
+
+- Class: cmd_question
+  Output: What are you waiting for, load it! :)
+  CorrectAnswer: library(QuantPsych)
+  AnswerTests: omnitest(correctExpr='library(QuantPsych)')
+  Hint:
+
+- Class: cmd_question
+  Output: You can use the lm.beta() function to get the Beta coefficients from my_model.
+  CorrectAnswer: lm.beta(my_model)
+  AnswerTests: omnitest(correctExpr='lm.beta(my_model)')
+  Hint:
+
+- Class: text
+  Output: Hmmm.. There appears to be a slight discrepancy between the std_model coef for
+    anx_z and the Beta coef given by lm.beta(). Take a while to ponder why that might
+    be...
+
+- Class: text
+  Output: So the reason for the discrepancy is the difference in order of operations we
+    performed. You know that we excluded 2 observations which had NAs in anx_score_1 from
+    the regression. In our std_model, we first standardised the variables and then
+    excluded the two offending cases. As a result, we calculated the mean and sd for df$rt
+    based on all 76 cases.
+
+- Class: text
+  Output: However, using lm.beta() we first excluded the 2 cases and
+    only then standardised the variables. That means that mean(df$rt) and sd(df$rt) were
+    based on df$rt[!is.na(df$anx_score_1)] which has 74 cases.
+    
+- Class: text
+  Output: "This illustrates another important point: R can sometimes appear to behave
+    erratically but in most cases, it isn't. It takes quite a bit of understanding and
+    thinking about what you're doing to figure out what's going on."
+
+- Class: text
+  Output: "Another thing to notice is that the Beta coef you got using lm.beta is
+    identical to Pearson's r (cor(df$rt, df$anx_score_1, use = \"all.obs\")). The reason
+    is that, in a simple linear OLS regression (regression with only one predictor),
+    Beta is in fact the correlation."
+  
+- Class: text
+  Output: Congrats, you've just learned how to do a basic simple linear OLS regression
+    in R and how to interpret the output. I think that's plenty for now. In the next
+    few lessons we'll delve deeper into some advanced topics in regression analysis.
+    Until then, tatty-bye!

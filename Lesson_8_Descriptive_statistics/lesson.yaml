@@ -1,0 +1,547 @@
+- Class: meta
+  Course: Y2_Psychology_RMS1
+  Lesson: Lesson_8_Descriptive_statistics
+  Author: Nick Carchedi
+  Type: Standard
+  Organization: JHU Biostatistics
+  Version: 1.0.0
+
+- Class: text
+  Output: Welcome back. In this lesson, you'll learn about descriptive statistics and how
+    to get R to produce them. Now, I showed you the describe() function in the previous
+    lesson but it'd be good to go through some more details of the topic.
+    
+- Class: text
+  Output: Unfortunately, I am feeling a little delicate today (but what a party it was!)
+    and need a break. I'll hand you over to Nick Carchedi form Johns Hopkins School of
+    Public Health who wrote a pretty good lesson on descriptive statistics. This lesson
+    is a part of a course freely available online. I encourage you to look browse through
+    the Swirl courses on offer (google swirl repository); there is some good stuff out there!
+    Oh yeah, did I mention that Nick created Swirl itself? He's a smart chap...
+    
+- Class: text
+  Output: Now if you kindly excuse me; Mummy needs to go to bed. Over to you Nick!
+
+- Class: text
+  Output: "Hi there, I'm Nick and I'll be stepping in for your... indisposed tutor today.
+    Let's get started."
+  
+- Class: text
+  Output: "In this lesson, I will use the \"cars\" data set that comes with the basic
+    R installation. This data set consists of 54 rows and 6 columns. For each of 54 cars
+    from 1993, the following variables are reported: type (large, midsize, small), price
+    (USD), city miles per gallon (MPG), drive train (4WD, front, rear), passengers, and
+    weight (lbs.)."
+
+- Class: cmd_question
+  Output: Type cars now to view the entire data set. You'll see that each row represents
+    one car and each column holds one of the variables we just discussed above.
+  CorrectAnswer: cars
+  AnswerTests: swirl1cmd=cars
+  Hint: Just type cars and press Enter.
+  
+- Class: text
+  Output: Before a statistician engages in a thorough analysis of the data set, it
+    is useful to first visualize the data. By organizing the data into a PLOT or GRAPH,
+    a statistician is able to explore and summarize some basic properties of the data
+    set. There are altogether 3 lessons dedicated to plots in R in this course, one of which
+    you've already completed.
+    
+- Class: text
+  Output: The discipline of quantitatively describing the main properties of a data
+    set is known as DESCRIPTIVE STATISTICS. In the subsequent sections, I will introduce
+    basice descriptive statistical measures.
+
+- Class: text
+  Output: The simplest type of plot is the DOT PLOT, which is used to visually convey
+    the values of one variable. In a dot plot, there is only a horizontal x-axis,
+    and the data points are represented as dots above this axis. Since dot plots effectively
+    display the specific numerical value of one variable for each individual in the
+    data set, it is a particularly useful tool for smaller data sets.
+
+- Class: figure
+  Output: Here's a dot plot using the variable 'price' from our 'cars' data set. As
+    you may notice, the price is reported along the x-axis in $1000s, and each point
+    above the axis represents the price of one of the 54 cars in our data set.
+  Figure: mod1_dotplot.R
+  FigureType: new
+
+- Class: range_question
+  Output: When looking at this dot plot, around what price (in $1000s) does there
+    appear to be the highest density of data points?
+  CorrectAnswer: 13-Jul
+  AnswerTests: range=7-13
+  Hint: Look at the part of the graph where the dots are the darkest and closest together.
+
+- Class: text
+  Output: This discussion of the dot plot brings me to our first descriptive statistic,
+    the RANGE of a data set. Just as the name would seem to imply, the range is the
+    difference between the maximum and minimum values of the data set.
+
+- Class: cmd_question
+  Output: Now that you know what the range measures, take a look back at our dot plot.
+    Using the R-command range(cars$price), determine the exact values for the minimum
+    and maximum of the data set, respectively.
+  CorrectAnswer: range(cars$price)
+  AnswerTests: swirl1cmd=range(cars$price)
+  Hint: Type in 'range(cars$price)' and hit enter to see the minimum and maximum prices.
+
+- Class: figure
+  Output: The first number given is the minimum and the second number given is the
+    maximum. To represent these numbers visually, I've drawn 2 lines on the dot plot.
+    As you can see, the red vertical line on the far left illustrates where the minimum
+    value lies. The red vertical line on the far right illustrates where the maximum
+    value lies. The range of the data is defined as the distance between these two
+    red lines.
+  Figure: mod1_dotplot_add.R
+  FigureType: addition
+  
+- Class: text
+  Output: One of the most common descriptive statistics is a MEASURE OF CENTRAL TENDENCY.
+    For a specific data set, CENTRAL TENDENCY seeks to locate a central value or a
+    typical value for a certain variable. It may also be referred to as the AVERAGE
+    or the CENTER of the data. The most common measures of central tendency are the
+    MEAN, MEDIAN, and MODE of a set of data. In the next few sections, I will continue
+    to introduce different types of plots and show you how to calculate and visualize
+    these measures of central tendency.
+    
+- Class: video
+  Output: Would you like to watch a brief YouTube video on mean, median, and mode?
+  VideoLink: http://youtu.be/h8EYEJ32oQ8
+  
+- Class: text
+  Output: The ARITHMETIC MEAN, or simply just the MEAN or AVERAGE, is the most common
+    measurement of the center of the data. To calculate the mean, you must first sum
+    all of the values of interest, and then divide that sum by the total number of
+    values used in the sum.
+    
+- Class: cmd_question
+  Output: Using the R-command 'sum(cars$price)', can you tell me the sum of the prices
+    of the 54 cars in the data set?
+  CorrectAnswer: sum(cars$price)
+  AnswerTests: swirl1cmd=sum(cars$price)
+  Hint: Type in 'sum(cars$price)'.
+  
+- Class: exact_question
+  Output: Now divide this number, using the '/' symbol as the division operator, by
+    the total number of values in the data subset. What is this value?
+  CorrectAnswer: '19.99259'
+  AnswerTests: exact=19.99259
+  Hint: Divide 1,079.6 by 54.
+  
+- Class: cmd_question
+  Output: Now you understand the process for calculating the mean. Fortunately for
+    you, R contains a built-in function to automatically complete this process for
+    you. Try typing the R-command 'mean(cars$price)'.
+  CorrectAnswer: mean(cars$price)
+  AnswerTests: swirl1cmd=mean(cars$price)
+  Hint: Just type mean(cars$price) and hit enter.
+  
+- Class: text
+  Output: Notice that this value, 19.99259, is exactly the same as what you got above
+    when computing the mean on your own without using the mean() function!
+    
+- Class: text
+  Output: Our second measure of central tendency is known as the MEDIAN. Just as the
+    name would imply, the median is the 'middle value' of the data set.
+    
+- Class: text
+  Output: To illustrate how to find the median, we will turn our attention to the
+    miles per gallon ('mpgCity') data, since these data are nice round numbers.
+    
+- Class: cmd_question
+  Output: I have stored the values of the 'mpgCity' variable for ONLY midsize vehicles
+    in a new variable called 'mpg.midsize', which you can view by typing 'mpg.midsize'
+    below. Try it now.
+  CorrectAnswer: mpg.midsize
+  AnswerTests: swirl1cmd=mpg.midsize
+  
+- Class: cmd_question
+  Output: In R, you may organize your data values from least to greatest using the
+    'sort' function. Try using the command 'sort(mpg.midsize)' to sort the values
+    stored in 'mpg.midsize'.
+  CorrectAnswer: sort(mpg.midsize)
+  AnswerTests: swirl1cmd=sort(mpg.midsize)
+  
+- Class: cmd_question
+  Output: Try assigning 'sort(mpg.midsize)' to a new variable called 'mpg.sorted'
+    by using the assignment operator we introduced earlier.
+  CorrectAnswer: mpg.sorted <- sort(mpg.midsize)
+  AnswerTests: swirl1cmd=mpg.sorted <- sort(mpg.midsize)
+  Hint: Type 'mpg.sorted <- sort(mpg.midsize)'
+
+- Class: text
+  Output: When the total number of values is odd, finding the median, or 'middle'
+    value, is quite easy. However, if the total number of values is even, there is
+    no middle value amongst the actual data. In this case, you must calculate the
+    average of the two middle values amongst the data points. In other words, in the
+    case of an even number of values, the MEDIAN is reported as the MEAN of the two
+    middle values of the data set.
+
+- Class: exact_question
+  Output: Just by looking at the sorted data you generated above, what do you think
+    the median is?
+  CorrectAnswer: '19'
+  AnswerTests: exact=19
+  Hint: Remember that since we have an even number of values here, the MEDIAN is just
+    the MEAN of the two middle values.
+
+- Class: text
+  Output: Even though we have an even number of data points, and thus two middle values,
+    both middle values are 19, so their average is also 19.
+
+- Class: text
+  Output: Now that you understand what goes on behind the scenes to compute the median
+    of a data set, I'll show you a quicker way to get the same answer using the R
+    command 'median'. And the nice thing about doing it this way is that we don't
+    need to sort the data beforehand.
+
+- Class: cmd_question
+  Output: Try computing the median of our original unsorted 'mpg.midsize' by using
+    R's built-in 'median' function.
+  CorrectAnswer: median(mpg.midsize)
+  AnswerTests: swirl1cmd=median(mpg.midsize)
+  Hint: If we wanted the median of 'x', we would type 'median(x)'.
+  
+- Class: text
+  Output: Now you have learned about the RANGE, MEAN, and MEDIAN of a data set, and
+    how to calculate the value of each using simple R-commands.
+    
+- Class: cmd_question
+  Output: Another helpful command in R is the 'summary' command. As you will see,
+    this command reports the values for the minimum, median, mean, and maximum of
+    a particular data set. For now, just ignore the values labeled '1st Qu.' and '3rd
+    Qu.', as we will get to those shortly! Try typing 'summary(cars$mpgCity)' to see
+    exactly what it does.
+  CorrectAnswer: summary(cars$mpgCity)
+  AnswerTests: swirl1cmd=summary(cars$mpgCity)
+  Hint: If we wanted the summary of 'x', we would type 'summary(x)'.
+  
+- Class: text
+  Output: Our last measure of central tendency is the MODE. The mode of a data set is the
+    value that occurs most frequently.
+
+- Class: exact_question
+  Output: By looking at the data above, what is the mode of the MPG?
+  CorrectAnswer: '19'
+  AnswerTests: exact=19
+  Hint: "Look for which number \"repeats\" the most."
+
+- Class: text
+  Output: The measures of central tendency are very useful in briefly summarizing
+    a data set, and finding the best representation of the central or average value
+    of a data set. These are not the sole measures used to describe a data set, however.
+    It is possible for very different data sets to exhibit the exact same values for
+    their measures of central tendency. 'How is this possible?' you might ask. Well,
+    let's take a look!
+    
+- Class: text
+  Output: Another important property specific to each data set is a measure of how
+    spread out or clustered the data values are. This is known as DISPERSION or VARIABILITY.
+    Three measures of variability are interquartile range, variance, and standard
+    deviation.
+    
+- Class: figure
+  Output: "Here I have created a box plot to represent the price data for each of
+    the three car types: large, midsize, and small. You'll notice that each of the
+    3 figures is composed of a closed 4-sided \"box\" with \"whiskers\" on the top
+    and bottom."
+  Figure: mod1_boxplot.R
+  FigureType: new
+
+- Class: text
+  Output: The height of each box is referred to as the INTERQUARTILE RANGE (IQR).
+    The more variability within the data, the larger the IQR. On the other hand, less
+    variability within the data means a smaller IQR. The bottom of the box in the
+    box plot corresponds to the value of the first quartile (Q1), and the top of the
+    box corresponds to the value of the third quartile (Q3). To calculate the value
+    of the IQR, simply subtract the value of Q1 from that of Q3.
+
+- Class: text
+  Output: The whiskers, or lines, that extend above and below each box represent roughly
+    the upper 25% and lower 25% of data points, respectively. The only exception is
+    when there are outliers, which I'll explain shortly.
+
+- Class: range_question
+  Output: Looking at the box plot, what is the approximate interquartile range for
+    the midsize vehicles?
+  CorrectAnswer: 16 - 20
+  AnswerTests: range=16 - 20
+  Hint: Subtract the Q1 value from the Q3 value. The Q1 value is the minimum value
+    contained in the box and the Q3 value is the maximum value contained in the box.
+
+- Class: text
+  Output: Let's take a closer look at how quartiles are calculated. We start by sorting
+    the data from least to greatest, just like when calculating the median. The first
+    quartile (Q1), also known at the 25th PERCENTILE (since 25% of the data points
+    fall at or below this value), is simply the median of the first half of the sorted
+    data. Likewise, the third quartile (Q3), also known as the 75th percentile, is
+    the median of the second half of the sorted data.
+
+- Class: figure
+  Output: As shown in this plot, the blue horizontal line illustrates how to find
+    the value for the first quartile. The green horizontal line illustrates how to
+    find the value for the third quartile. The interquartile range is the range of
+    data values that is contained in between these two lines.
+  Figure: mod1_boxplot_add.R
+  FigureType: addition
+
+- Class: figure
+  Output: Look again at our box plot of price vs. car type. You may be thinking to
+    yourself, 'What is that circle above the box plots for the midsize cars, and why
+    is there no circle above the box plot for the large cars?' Those circles represent
+    OUTLIERS in the data set. An OUTLIER is an observation that is unusual or extreme
+    relative to the other values in the data set. Outliers are useful in identifying
+    a heavy skew in a distribution, and may signify a data collection or data entry
+    error to a scientist. There are many different conventions for identifying outliers
+    within a data set.
+  Figure: mod1_boxplot.R
+  FigureType: new
+
+- Class: text
+  Output: When looking at the box plot, decide which car types appear to have outliers. 
+
+- Class: text
+  Output: Yes, small and midsize look like they have outliers. 
+  
+- Class: text
+  Output: 'Since we have finished our introduction to the interquartile range, we
+    will now take a look at the two other values used when describing the spread of
+    the data: variance and standard deviation. Mathematically, VARIANCE is the average
+    of the squared differences from the mean. Intuitively, variance just represents the
+    total distance of the data from the mean of the data.'
+
+- Class: text
+  Output: A low variance indicates that the data points tend to be located near the
+    mean value, while a high variance indicates that the data points are spread further
+    from the mean.
+
+- Class: text
+  Output: A more conventional measure of variability is the STANDARD DEVIATION, which
+    is calculated as the square root of the variance. Statisticians typically refer
+    to standard deviation because it is expressed in the same units as the original
+    data values. If you are interested in the details of how variance and standard
+    deviation are calculated, I recommend taking a look at the following video.
+
+- Class: video
+  Output: Would you like to watch a brief YouTube video on variance and standard deviation?
+  VideoLink: http://youtu.be/E4HAYd0QnRc
+
+- Class: cmd_question
+  Output: Using the R command 'sd()', calculate the standard deviation of the data
+    subset entitled 'mpg.midsize'.
+  CorrectAnswer: sd(mpg.midsize)
+  AnswerTests: swirl1cmd=sd(mpg.midsize)
+  Hint: If you wanted the sd of 'x', you would type 'sd(x)'.
+
+- Class: exact_question
+  Output: Now that you have calculated the standard deviation of this data, can you
+    tell me what is the variance of the data? To square a quantity in R, the notation
+    is 'quantity^2', where the '^' symbol means 'to the power of'.
+  CorrectAnswer: '3.593072'
+  AnswerTests: exact=3.593072
+  Hint: Variance is the standard deviation squared.
+
+- Class: text
+  Output: To demonstrate differences in variability, I will again refer to the box
+    plot of car type vs. price.
+
+- Class: figure
+  Output: As you can see in the box plot, the data for prices of 'midsize' cars vary
+    from around 15 to 62, encompassing a range of approximately 50. This is a great
+    deal larger than the variation for 'small' cars which range from around 5 to 15,
+    encompassing a range of approximately 10. Therefore, since the range is much greater
+    for 'midsize' cars, prices of 'midsize' cars have much higher variability in comparison
+    to the prices of 'small' cars.
+  Figure: mod1_boxplot.R
+  FigureType: new
+  
+- Class: text
+  Output: Do you think the variability of prices of cars of type 'large' is
+    higher or lower than that of cars of type 'small'..
+  AnswerChoices: Higher; Lower
+  CorrectAnswer: Higher
+  AnswerTests: omnitest(correctVal= 'Higher')
+  Hint: Look to see if the range of cars of type 'large' is greater or less than that
+    of cars of type 'small'.
+    
+
+- Class: text
+  Output: While dispersion measures the variability from the mean in a data set, another
+    important property is the shape of the distribution of the data. We will learn
+    much more about distributions in one of my subsequent lessons, but for now just
+    think of DISTRIBUTION as a histogram.
+
+- Class: text
+  Output: Histograms are particularly useful in viewing and describing the shape of
+    the distribution of the data. A distribution of data may have a left skew, a right
+    skew, or no skew at all. SKEWNESS is a measure of the extent to which the distribution
+    of the data 'leans' to one side or the other.
+
+- Class: figure
+  Output: A distribution that has a left skew is one in which the left TAIL of the
+    plot is longer. In other words, on a histogram the majority of the distribution
+    is located to the right of the mean. This distribution is also said to be left-skewed.
+    When a distribution is left-skewed, the value of the MEAN is less than that of
+    the MEDIAN, and thus the MEAN is located further to the left of the distribution.
+    In this plot, the green line represents the median and the blue line represents
+    the mean.
+  Figure: mod1_leftskew.R
+  FigureType: new
+
+- Class: figure
+  Output: On the other hand, a distribution that has a right skew is one in which
+    the right tail is longer, such that the majority of the data falls to the left
+    of the mean, when viewed on the histogram. This distribution is said to be right-skewed.
+    When a distribution is right-skewed, the value of the MEAN is greater than that
+    of the MEDIAN, and thus the MEAN is located further to the right of the distribution.
+    In this plot, the green line represents the median and the blue line represents
+    the mean.
+  Figure: mod1_rightskew.R
+  FigureType: new
+
+- Class: figure
+  Output: A plot that has no skew is one in which the tails on both sides of the mean
+    balance out, and is referred to as symmetric. When a distribution is symmetric,
+    the MEAN and MEDIAN are approximately equal in value. In this plot, the green
+    line represents the median and the blue line represents the mean. The green line
+    is the only one visible since the mean and median are so close to the same value.
+  Figure: mod1_symmetric.R
+  FigureType: new
+
+- Class: figure
+  Output: Let's take a look back at the histogram we made earlier, which represents
+    the distribution of the values for city MPG for each of the 54 cars from our 'cars'
+    data set.
+  Figure: mod1_histogram.R
+  FigureType: new
+
+- Class: mult_question
+  Output: How would you classify the shape of the distribution represented by this
+    histogram?
+  AnswerChoices: Symmetric; Right-skewed; Left-skewed
+  CorrectAnswer: Right-skewed
+  AnswerTests: omnitest(correctVal= 'Right-skewed')
+  Hint: Look to see which tail extends further. The plot is said to be skewed in that
+    direction.
+
+- Class: mult_question
+  Output: Referring to the same histogram, and keeping in mind your answer to the
+    previous question, would you expect the MEDIAN to be greater than, less than,
+    or equal to the MEAN?
+  AnswerChoices: Greater than; Less than; Equal to
+  CorrectAnswer: Less than
+  AnswerTests: omnitest(correctVal= 'Less than')
+  Hint: Keep in mind that data points that create a plot's long tail will tend to
+    'pull' the mean in that direction. The median is not affected by how far away
+    the data points are.
+
+- Class: text
+  Output: Up to this point, I have covered useful techniques to visualize numerical,
+    or continuous variables, but what about categorical variables? Well, one useful
+    way to display a single categorical variable is via a BAR GRAPH, in which the
+    various categories lie on the x-axis and the numerical values corresponding to
+    each category lie on the y-axis.
+
+- Class: figure
+  Output: 'Here is a BAR GRAPH representing the average price for each of the three
+    car types: large, midsize, and small. Because there are numerous data points within
+    each category, the height of each bar is the MEAN price ($1000s) of all of the
+    cars within that category.'
+  Figure: mod1_bargraph.R
+  FigureType: new
+
+- Class: mult_question
+  Output: According to the bar graph, which car type is the most expensive, on average?
+  AnswerChoices: Small; Midsize; Large
+  CorrectAnswer: Midsize
+  AnswerTests: omnitest(correctVal= 'Midsize')
+  Hint: Look at the corresponding car type for the tallest bar to determine which
+    car is the most expensive.
+    
+- Class: mult_question
+  Output: Which is the least expensive, on average?
+  AnswerChoices: Small; Midsize; Large
+  CorrectAnswer: Small
+  AnswerTests: omnitest(correctVal= 'Small')
+  Hint: Look at the corresponding car type for the shortest
+    bar to determine which car is the least expensive.
+
+- Class: figure
+  Output: The 'midsize' bar has been highlighted green and is the most expensive on
+    average. The 'small' bar has been highlighted blue and is the least expensive
+    on average.
+  Figure: mod1_bargraph_add.R
+  FigureType: addition
+
+- Class: range_question
+  Output: According to the bar graph, what is the average price for a 'large' car
+    (in $1000s)?
+  CorrectAnswer: 22- 26
+  AnswerTests: range=22- 26
+  Hint: Look at the highest value on the y-axis that the \large\" bar reaches."
+
+- Class: figure
+  Output: The red horizontal line added to the plot illustrates how to find your previous
+    answer.
+  Figure: mod1_bargraph_add1.R
+  FigureType: addition
+
+- Class: cmd_question
+  Output: OK, now to put your knowledge of descriptive statistics to practice, it is good to
+    know about a couple of functions. First, load the psych package you installed last time.
+  CorrectAnswer: library(psych)
+  AnswerTests: omnitest(correctExpr= 'library(psych)')
+  Hint: library(psych)
+  
+- Class: cmd_question
+  Output: You've already learned about the describe() function but to practice, use it to
+    get the summary of decriptive stats for the cars data set.
+  CorrectAnswer: describe(cars)
+  AnswerTests: omnitest(correctExpr= 'describe(cars)')
+  Hint:
+  
+- Class: cmd_question
+  Output: You've already learned about the describe() function but to practice, use it to
+    get the summary of decriptive stats for the cars data set.
+  CorrectAnswer: describe(cars)
+  AnswerTests: omnitest(correctExpr= 'describe(cars)')
+  Hint:
+
+- Class: text
+  Output: Nice one! Here you have most of the descriptives you will ever need; the number
+    of cases per variable (n), mean, standard deviation, median, 10% trimmed mean (the mean
+    of the data after you discard the top and bottom 10%), median absolute deviation (MAD),
+    that is like SD for ordinal variables, minimum and maximum values, range, skew, kurtosis,
+    and the standard error of the mean (more on that later)
+    
+- Class: cmd_question
+  Output: Now for the last bit, we will need a little more complex data set. Luckily, the
+    mtcars data set is suitable. Look at ?mtcars.
+  CorrectAnswer: ?mtcars
+  AnswerTests: omnitest(correctExpr= '?mtcars')
+  Hint:
+  
+- Class: cmd_question
+  Output: Say, we want to see the descriptive statistics for the variables in mtcars, but not
+    for all data combined but for groups of cars with a given number of forward grears. You
+    can do this by creating subsets of mtcars and using describe() on each one but there is
+    a more convenient way of doing this. Look up the describeBy() function documentation and
+    read about it.
+  CorrectAnswer: ?describeBy() 
+  AnswerTests: omnitest(correctExpr= '?describeBy()')
+  Hint:
+  
+- Class: cmd_question
+  Output: Good, now use the function to get the descriptives for mtcars by mtcars$gear.
+  CorrectAnswer: describeBy(mtcars, mtcars$gear)
+  AnswerTests: omnitest(correctExpr= 'describeBy(mtcars, mtcars$gear)')
+  Hint:
+  
+- Class: text
+  Output: Pretty neat, huh? This function is very useful when you want to report
+    characteristics of different groups in your sample (e.g., experiemntal and control groups).
+
+- Class: text
+  Output: CONGRATULATIONS! You've completed the descriptive stats lesson! I hope you enjoyed
+    it. That's it from me. Good luck with the rest of the course!

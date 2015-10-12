@@ -1,0 +1,336 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 5 Plots
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Hey, good to see you again! In the 5th lesson, I'll show you how to plot your data
+    and modify the graphs.
+
+- Class: text
+  Output: Before I do that, make sure you set your working directory using setwd(). Remember
+    how it's done? Good. No? Well, you'll have to look it up, I suppose. Pause swirl by typing
+    play() and set your WD somewhere convenient. Once you're done, type nxt() and we can
+    resume...
+    
+- Class: text
+  Output: In the previous lesson, you created a histogram of the random binomial variable you
+    generated using the rbinom() function. Let's reuse that example to find out more about
+    basic R plots.
+  
+- Class: cmd_question
+  Output: "First of all, create an object called some_variable with a random binomial
+    variable of N = 1000, size = 100, and p = 0.2 just like the other time."
+  CorrectAnswer: some_variable <- rbinom(1000, 100, .2)
+  AnswerTests: any_of_exprs('some_variable <- rbinom(1000, 100, .2)',
+    'some_variable <- rbinom(1000, size = 100, prob = .2)',
+    'some_variable <- rbinom(n = 1000, size = 100, prob = .2)',
+    'some_variable <- rbinom(1000, 100, 0.2)',
+    'some_variable <- rbinom(1000, size = 100, prob = 0.2)',
+    'some_variable <- rbinom(n = 1000, size = 100, prob = 0.2)',
+    'some_variable <- rbinom(1000, 100, 1/5)',
+    'some_variable <- rbinom(1000, size = 100, prob = 1/5)',
+    'some_variable <- rbinom(n = 1000, size = 100, prob = 1/5)')
+  Hint: Just type some_variable <- rbinom(1000, 100, .2)
+  
+- Class: cmd_question
+  Output: "Now create a plot of some_variable using hist()."
+  CorrectAnswer: hist(some_variable)
+  AnswerTests: omnitest(correctExpr='hist(some_variable)')
+  Hint:
+  
+- Class: text
+  Output: This is by no means a bad plot but sometimes you may want to tweak the details a
+    little. Let me show you how to do that.
+    
+- Class: cmd_question
+  Output: "Pull up the documentation for the hist() function"
+  CorrectAnswer: ?hist
+  AnswerTests: any_of_exprs('?hist', '?hist()')
+  Hint:
+  
+- Class: text
+  Output: "As you can see, the function can take quite a few arguments. Take a few moments
+    to read through the documentation and let me know (press Enter) when you're ready."
+  
+- Class: text
+  Output: "OK, let's play around with some of these arguments a little. First of all,
+    \"breaks\". This argument sets the number of the columns in the histogram. By default,
+    it uses an algorithm that guesses the best number of breaks. Usually, it does a pretty
+    good job but on occasion, you may want more or fewer columns."
+    
+- Class: cmd_question
+  Output: "Finding the right number of breaks can be a trial and error process. Let's just
+    look at two values and how they affect the graph. Create a histogram of some_variable
+    just like a while ago but, this time, tell R you want it with 5 breaks"
+  CorrectAnswer: hist(some_variable, 5)
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 5)', 'hist(some_variable, 5)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Right, this is not very pretty and you are losing quite a lot of definition. How
+    about you try it with 20 breaks instead?"
+  CorrectAnswer: hist(some_variable, 20)
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20)', 'hist(some_variable, 20)')
+  Hint:
+  
+- Class: text
+  Output: "On to the \"freq\" argument. It takes boolean values and usually defaults to
+    TRUE. If TRUE, the columns of the histogram represent frequences, i.e., the number of
+    cases in each of the columns. If FALSE, the columns represent density, which means that
+    entire area of the graph will add to 1."
+
+- Class: cmd_question
+  Output: "Add freq = FALSE to the graph you just made."
+  CorrectAnswer: hist(some_variable, 20, freq = FALSE)
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20, freq = FALSE)',
+    'hist(some_variable, 20, freq = FALSE)', 'hist(some_variable, 20, FALSE)',
+    'hist(some_variable, breaks = 20, freq = F)', 'hist(some_variable, 20, F)')
+  Hint:
+  
+- Class: text
+  Output: "If you ever get tired of an all-white graph, you can use the \"col\" argument
+    to add colour to your graphs. The argument accepts a string that can be either the
+    name (i.e., \"Green\") or the Hex code of the colour. The Hex code consists of a \"#\"
+    and a 6-character string: the first 2 characters code the amount of red in the colour,
+    the second 2 specify the amount of green and the last 3 the amount of blue, all in
+    hexadecimal system (numbers 0-1 and letters A-F)."
+
+- Class: cmd_question
+  Output: "Add \"col = \"Tan\"\" to your graph."
+  CorrectAnswer: hist(some_variable, 20, freq = FALSE, col = "Tan")
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20, freq = FALSE, col = "Tan")',
+    'hist(some_variable, 20, frea = FALSE, col = "Tan")',
+    'hist(some_variable, 20, FALSE, col = "Tan")',
+    'hist(some_variable, breaks = 20, freq = F, col = "Tan")',
+    'hist(some_variable, 20, F, col = "Tan")')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Nice, isn't it? Now change the colour to \"#FF69B4\"."
+  CorrectAnswer: hist(some_variable, 20, freq = FALSE, col = "#FF69B4")
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20, freq = FALSE, col = "#FF69B4")',
+    'hist(some_variable, 20, freq = FALSE, col = "#FF69B4")',
+    'hist(some_variable, 20, FALSE, col = "#FF69B4")',
+    'hist(some_variable, breaks = 20, freq = F, col = "#FF69B4")',
+    'hist(some_variable, 20, F, col = "#FF69B4")')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Oh dear, look what you've done! Put it back!"
+  CorrectAnswer: hist(some_variable, 20, freq = FALSE, col = "Tan")
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20, freq = FALSE, col = "Tan")',
+    'hist(some_variable, 20, freq = FALSE, col = "Tan")',
+    'hist(some_variable, 20, FALSE, col = "Tan")',
+    'hist(some_variable, breaks = 20, freq = F, col = "Tan")',
+    'hist(some_variable, 20, F, col = "Tan")')
+  Hint: Seriously, change it please. It's hurting my eyes!
+  
+- Class: text
+  Output: "Thanks! Now, if you want to find the code for your favourite colour, just google
+    \"HTML Color Codes\" or something like that."
+    
+- Class: text
+  Output: "There is also a \"border\" argument which changes the default black lining of the
+    individual histogram columns. Since it works the same way \"col\", I won't make you
+    change it now but feel free to play around at your leisure."
+
+- Class: text
+  Output: "Let's do something about the relatively uninformative title now. The argument
+    \"main\" takes a string as its value."
+    
+- Class: cmd_question
+  Output: "Delete the \"freq\" argument and add a title to the graph reading \"Distribution
+    of correct guesses\"."
+  CorrectAnswer: hist(some_variable, 20, col = "Tan", main = "Distribution
+    of correct guesses")
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20, col = "Tan", main =
+    "Distribution of correct guesses")', 'hist(some_variable, 20, col = "Tan", main =
+    "Distribution of correct guesses")', 'hist(some_variable, 20, col = "Tan", main =
+    "Distribution of correct guesses")', 'hist(some_variable, breaks = 20, col = "Tan", main
+    = "Distribution  of correct guesses")', 'hist(some_variable, 20, col = "Tan", main =
+    "Distribution of correct guesses")')
+  Hint: Don't forget to get rid of the freq argument and put the title into quotes.
+  
+- Class: text
+  Output: "Now let's have a proper x-axis label. Labels of X are changed using the \"xlab\"
+    argument which also takes a string as its value."
+    
+- Class: cmd_question
+  Output: "Change the x-axis label to \"Number of correct guesses per experiment\"."
+  CorrectAnswer: hist(some_variable, 20, col = "Tan", main = "Distribution
+    of correct guesses", xlab = "Number of correct guesses per experiment")
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20, col = "Tan",
+    main = "Distribution of correct guesses",
+    xlab = "Number of correct guesses per experiment")',
+    'hist(some_variable, 20, col = "Tan", main = "Distribution of correct guesses",
+    xlab = "Number of correct guesses per experiment")',
+    'hist(some_variable, breaks = 20, col = "Tan", main = "Distribution  of correct guesses",
+    xlab = "Number of correct guesses per experiment")',
+    'hist(some_variable, 20, col = "Tan", main = "Distribution of correct guesses",
+    xlab = "Number of correct guesses per experiment")')
+  Hint:
+  
+- Class: text
+  Output: "OK, so you have your fancy histogram. Now you want to put it in your report,
+    paper, or share it on Facebook. Let's save it then."
+    
+- Class: text
+  Output: "There are several ways of saving a graph. You can save it as a bitmap file (.bmp),
+    in a portable document format (.pdf), a tagged image file format (.tiff), or as a
+    portable network graphics file (.png). The choice is yours, I personally like using the
+    latter."
+    
+- Class: cmd_question
+  Output: "Look up the documentation for png() now."
+  CorrectAnswer: ?png
+  AnswerTests: any_of_exprs('?png', '?png()')
+  Hint:
+
+- Class: text
+  Output: "As you can see, all the various options are used in a similar way. For the time
+    being, let's not worry about the arguments and just save your graph."
+  
+- Class: text
+  Output: "Saving graphs is in a way very similar to printing graphs. When you typed all the
+    plotting commands above, you basically told R to draw the graphs internally and then put
+    them somewhere."
+    
+- Class: text
+  Output: "That \"somwehere\" is, by default here in the lower right screen (if you're using
+    the default 4-screen setup). The functions you just looked up tell R to change the place
+    to put any FOLLOWING graphical output to wherever you tell it to. That means that if you
+    want to save any of the previously made graphs, you have to rerun the command that created
+    them."
+
+- Class: cmd_question
+  Output: "Use the png() function to set the graphical output to a file named \"my_histogram.
+    png\"." 
+  CorrectAnswer: png("my_histogram.png")
+  AnswerTests: any_of_exprs('png("my_histogram.png")', 'png(filename = "my_histogram.png")')
+  Hint: Just type png("my_histogram.png").
+
+- Class: cmd_question
+  Output: "Now use the up arrow to rerun the command that created the last plot."
+  CorrectAnswer: hist(some_variable, 20, col = "Tan", main = "Distribution
+    of correct guesses", xlab = "Number of correct guesses per experiment")
+  AnswerTests: any_of_exprs('hist(some_variable, breaks = 20, col = "Tan",
+    main = "Distribution of correct guesses",
+    xlab = "Number of correct guesses per experiment")',
+    'hist(some_variable, 20, col = "Tan", main = "Distribution of correct guesses",
+    xlab = "Number of correct guesses per experiment")',
+    'hist(some_variable, breaks = 20, col = "Tan", main = "Distribution  of correct guesses",
+    xlab = "Number of correct guesses per experiment")',
+    'hist(some_variable, 20, col = "Tan", main = "Distribution of correct guesses",
+    xlab = "Number of correct guesses per experiment")')
+  Hint:
+
+- Class: text
+  Output: "Great! The file should now be in your working directory. Go check..."
+
+- Class: text
+  Output: "Every subsequent graph you create will be saved in the my_histogram.png file,
+    overwriting anything that's currently stored there. Obviously, that is not what we want."
+    
+- Class: cmd_question
+  Output: "what we do want is to return the graphic output back to our little window. This
+    is done using the dev.off() command. Go ahead, type it in."
+  CorrectAnswer: dev.off()
+  AnswerTests: omnitest(correctExpr='dev.off()')
+  Hint: Just type dev.off().
+
+- Class: text
+  Output: "Good stuff! Your plot is saved and everything is back to normal."
+  
+- Class: text
+  Output: "There is another plotting function that's worth knowing about: plot()."
+
+- Class: cmd_question
+  Output: "Look up the documentation for it now."
+  CorrectAnswer: ?plot
+  AnswerTests: any_of_exprs('?plot', '?plot()')
+  Hint:
+
+- Class: text
+  Output: "As you can see, the function can draw several types of graphs, one of them being
+    a histogram. If you don't explicitly tell R what type you wish for, it will attempt to
+    give you the one that makes the most sense given the type of data you provide to arguments
+    x and y."
+    
+- Class: text
+  Output: "To demonstrate this, we need a data set. As luck would have it, R comes with a few
+    of them. One of the most basic ones is the car data set."
+    
+- Class: cmd_question
+  Output: "It comes with its own help file. Pull it up now and take a minute to familiarise
+    yourself with it."
+  CorrectAnswer: ?cars
+  AnswerTests: omnitest(correctExpr='?cars')
+  Hint: Just type ?cars.
+
+- Class: cmd_question
+  Output: "OK, now to see what I was talking about earlier ask R to plot the data set without
+    specifying which plot type to use."
+  CorrectAnswer: plot(cars)
+  AnswerTests: any_of_exprs('plot(cars)', 'plot(x = cars)')
+  Hint: Just type plot(cars).
+
+- Class: text
+  Output: "Since both variables are numeric, R quite sensibly decided that the best graph to
+    use to visualise the data would be a scatter plot (type = \"p\")."
+    
+- Class: cmd_question
+  Output: "Now, it does not make much sense to use other types in this case but just for the
+    hell of it, ask for a line graph."
+  CorrectAnswer: plot(cars, type = "l")
+  AnswerTests: any_of_exprs('plot(cars, type = "l")', 'plot(x = cars, type = "l")')
+  Hint: "That would be type \"l\"."
+  
+- Class: text
+  Output: "Okay, but what if one of the variables were not a continuous numeric variable
+    but, say, a factor? In that case, you might want something like a box plot."
+    
+- Class: cmd_question
+  Output: "We will talk about how to turn a variable into a factor later on but for now,
+    try typing \"plot(as.factor(cars$speed), cars$dist)\" and see what happens."
+  CorrectAnswer: plot(as.factor(cars$speed), cars$dist)
+  AnswerTests: omnitest(correctExpr='plot(as.factor(cars$speed), cars$dist)')
+  Hint:
+  
+- Class: text
+  Output: "R automatically decided that, since the first variable is a factor, a box plot
+    would indeed be the most appropriate type of plot. That's pretty cool, isn't it?"
+
+- Class: text
+  Output: "You can, of course, also change any of the other plot() arguments in pretty much
+    the same way as with hist()."
+  
+- Class: text
+  Output: "The plot() function can handle even entire data sets of multiple variables. To
+    illustrate this, we'll need a more complex data set than cars. Again, one such a data
+    set is provided."
+
+- Class: cmd_question
+  Output: "Look at the help file for mtcars."
+  CorrectAnswer: ?mtcars
+  AnswerTests: omnitest(correctExpr='?mtcars')
+  Hint: Just type ?mtcars.
+  
+- Class: cmd_question
+  Output: "As you can see, there are 11 variables in the data set. Go ahead and plot the
+    whole thing."
+  CorrectAnswer: plot(mtcars)
+  AnswerTests: any_of_exprs('plot(mtcars)', 'plot(x = mtcars)')
+  Hint: Just type plot(mtcars).
+  
+- Class: text
+  Output: "It's quite an intense graph, I know, but it can be quite handy to plot an entire
+    data set just to get the initial feel for it. You can also magnify the plot by clicking
+    on the zoom icon."
+    
+- Class: text
+  Output: "Right, so that's another lesson over. Well done, you're a star. Now go away, give
+    me a break! :) I'll see you another time."

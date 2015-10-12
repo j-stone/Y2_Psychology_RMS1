@@ -1,0 +1,37 @@
+binom.plot <- function(n, p) {
+  if (n <= 0) stop("n has to be a positive integer.")
+  if (n %% 1 != 0) stop("n has to be a positive integer.")
+  if (p >= 1 | p <= 0) stop("p has to be larger than 0 and smaller than 1.")
+  prob <- dbinom(0:n, n, p)
+  names(prob) <- 0:n
+  prob <- prob[prob > 10^-5]
+  cols = c(rep("red", length(which(as.numeric(names(prob)) <
+                                     qbinom(.975, n,p,lower.tail=F)))),
+           rep("gold", length(which(as.numeric(names(prob)) <
+                                      qbinom(.95, n,p,lower.tail=F) &
+                                      as.numeric(names(prob)) >=
+                                      qbinom(.975, n,p,lower.tail=F)))),
+           rep("grey", length(which(as.numeric(names(prob)) >=
+                                      qbinom(.95, n,p,lower.tail=F) &
+                                      as.numeric(names(prob)) <
+                                      qbinom(.5, n,p)))),
+           "blue",
+           rep("grey", length(which(as.numeric(names(prob)) >
+                                      qbinom(.5, n,p) &
+                                      as.numeric(names(prob)) <=
+                                      qbinom(.95, n,p)))),
+           rep("orange", length(which(as.numeric(names(prob)) >
+                                        qbinom(.95, n,p) &
+                                        as.numeric(names(prob)) <=
+                                        qbinom(.975, n,p)))),
+           rep("red", length(which(as.numeric(names(prob)) >
+                                     qbinom(.975, n,p)))))
+  bar <- barplot(prob, col=cols,
+                 main = paste0("Distribution of successes in experiments of ", n ,
+                               " Bernoulli trials\nwith p(success) = ", p),
+                 xlab = "No. of successes (k)", ylab = "Probability",
+                 ylim = c(0,1.15*max(prob))                 )
+  legend("topright", legend = c("2-tailed p < .05", "p(k <= x) < .05",
+                                "p(k >= x) < .05", "median"),
+         fill = c("red", "gold", "orange", "blue"))
+}

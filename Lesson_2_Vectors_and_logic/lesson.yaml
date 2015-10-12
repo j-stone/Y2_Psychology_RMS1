@@ -1,0 +1,390 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 2 Vectors and logic
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 2.3.1
+
+- Class: text
+  Output: Welcome back! In this lesson, we will look a little more at vectors and I will tell
+    you a little bit about logical operations and logical values in R.
+
+- Class: text
+  Output: "Previously, we talked about how R allows you to store numeric values in variables
+    using the \"<-\" operator. You will also recall (I hope!) that we referred to these
+    variables as vectors, which are basically lines of values of any length (including 0)."
+    
+- Class: text
+  Output: "Besides numeric vectors (including numbers), there are two more types of vectors
+    in R: character and logical. Let's take a look at character vectors first..."
+  
+- Class: text
+  Output: "Character vectors are composed of strings. A string is a group of characters,
+    such as \"a\", and \"Q\", but also \"%\" and \"1\". The difference between numeric
+    values and strings is that you cannot perform arithmetic operations on strings, even
+    if the strings consists of numerals."
+    
+- Class: text
+  Output: "So how do you tell R that something is a string? You simply put it inside double
+    quotes. That means, that while 42 is a number which you can, say, multiply by another
+    number, \"42\" is a string."
+  
+- Class: cmd_question
+  Output: "Try it for yourself. Create a variable called year and assign it a numeric
+    value 2015."
+  CorrectAnswer: year <- 2015
+  AnswerTests: omnitest(correctExpr='year <- 2015')
+  Hint: The name is year, the value is 2015 and the assignment is done by the <- operator.
+  
+- Class: cmd_question
+  Output: "Now create another variable, this time call it year_str. Now store the value
+    2015 in the form of string in this variable."
+  CorrectAnswer: year_str <- "2015"
+  AnswerTests: omnitest(correctExpr='year_str <- "2015"')
+  Hint: Remember how you tell R that a value is a string and not a number.
+  
+- Class: mult_question
+  Output: "Before I ask you to do some more things with these variables, I have a question
+    for you. What value do you think R will return if you type year + 1?"
+  CorrectAnswer: 2016
+  AnswerChoices: 2016; year; NA; No value, just an error message 
+  AnswerTests: omnitest(correctVal='2016')
+  Hint: The + 1 will affect the value stored in the year variable.
+  
+- Class: mult_question
+  Output: "OK, and what value do you think R will return if you type year_str + 1?"
+  CorrectAnswer: No value, just an error message
+  AnswerChoices: 2016; year; NA; No value, just an error message 
+  AnswerTests: omnitest(correctVal='No value, just an error message')
+  Hint: The value stored in year_str is a string of characters. You cannot do maths with
+    strings.
+    
+- Class: cmd_question
+  Output: "See for yourself. First add 1 to year."
+  CorrectAnswer: year + 1
+  AnswerTests: omnitest(correctExpr='year + 1')
+  Hint:
+  
+- Class: cmd_question
+  Output: "And now to year_str (you might have to type skip() afterwards in order
+    to get past the error message)."
+  CorrectAnswer: year_str <- "2015"
+  AnswerTests: omnitest()
+  Hint: "You might have to type skip() in order to proceed."
+  
+- Class: text
+  Output: "Unless you have previously made a mistake this has been your first error message.
+    Congrats! Don't worry, it's not the last time you've seen one, there will be more.
+    Many more..."
+    
+- Class: text
+  Output: "Now let's inspect the error message. Learning how to read, understand, and
+    deal with error messages is a crucial part of improving your R skills."
+    
+- Class: text
+  Output: "First, R tells you where in your command (or, later on, your script) the
+    error occured \"Error in year_str + 1\"..."
+    
+- Class: text
+  Output: "...and second, R lets you know what the issue is. \"non-numeric argument to
+    binary operator\" means that you attempted to use addition (a kind of binary operation)
+    with a non-numeric value, in this case a string. R doesn't know how to deal with this
+    curious request of yours (seriously, what were you thinking?!) and stops."
+
+- Class: text
+  Output: "Alright, back to stings and vectors. Character vectors are created in much
+    the same way as numeric vectors, using the c() command."
+
+- Class: cmd_question
+  Output: "Try creating a variable called \"beatles\" and use it to store the big four
+    names: John, Paul, George, and... Pete (in this order)."
+  CorrectAnswer: beatles <- c("John", "Paul", "George", "Pete")
+  AnswerTests: omnitest(correctExpr='beatles <- c("John", "Paul", "George", "Pete")')
+  Hint: "Remeber, R is case sensitive so upper/lower case matters. Strings must be
+    surrounded by \"s but variable names must not."
+    
+- Class: text
+  Output: "Yes, that's right, Pete Best was the original Beatles drummer. He was then
+    replaced by Richard Starkey, better known as Ringo Starr. This fantastic bit of
+    trivia will become relevant later on."
+
+- Class: cmd_question
+  Output: "Now ask R to return the values stored in your new variable."
+  CorrectAnswer: beatles
+  AnswerTests: omnitest(correctExpr='beatles')
+  Hint: "Just type the name of the variable."
+  
+- Class: text
+  Output: "So that's the basics of character vector covered, well done! Let's move on
+    the last vector type, the logical vector."
+    
+- Class: text
+  Output: "Just like numeric vectors store numbers and character vectors store strings
+  of characters, logical vectors contain logical values."
+  
+- Class: text
+  Output: "There are two logical (also called boolean, named after one George Boole)
+  values: TRUE and FALSE. These are extremely useful because they basically
+  allow R to answer any yes/no questions you ask."
+  
+- Class: text
+  Output: "The simplest way to ask such questions is using the equality operator
+  \"==\" (not to be confused with \"=\"). Every time you use it, you are virtually
+  asking R to tell you if the things on either side of the operator are the same."
+    
+- Class: cmd_question
+  Output: "Use the equality operator below to find out if 1 is equal to 1."
+  CorrectAnswer: 1 == 1
+  AnswerTests: omnitest(correctExpr='1 == 1')
+  Hint: "Use the equality operator and type 1 == 1."
+  
+- Class: cmd_question
+  Output: "Now try comparing two things that are not the same, let's say TRUE and
+    FALSE."
+  CorrectAnswer: TRUE == FALSE
+  AnswerTests: omnitest(correctExpr='TRUE == FALSE')
+  Hint: "Remember, boolean values do not have double quotes around them have to be in
+    CAPITALS."
+  
+- Class: text
+  Output: "Just like arithmetic, logical expressions can be grouped by parenthesis so
+    that the entire expression (TRUE == TRUE) == TRUE yields or \"evaluates to\" TRUE." 
+
+- Class: cmd_question
+  Output: "To test out this property, try evaluating (FALSE == TRUE) == FALSE."
+  CorrectAnswer: (FALSE == TRUE) == FALSE
+  AnswerTests: omnitest(correctExpr='(FALSE == TRUE) == FALSE')
+  Hint: "Try typing: (FALSE == TRUE) == FALSE"
+  
+- Class: text
+  Output: "The reason why it came out TRUE is that R first evaluated FALSE == TREU,
+    which is FALSE, since the two are not equal and then compared the result to FALSE."
+    
+- Class: text
+  Output: "Apart from asking R whether two (or more) values are equal, we can also ask
+    if a value is less than or greater than another value."
+
+- Class: cmd_question
+  Output: "The less than operator \"<\" tests whether the number on the left side of the
+    operator (called the left operand) is less than the number on the right side of the
+    operator (called the right operand). Write an expression to test whether 6 is less
+    than 7."
+  CorrectAnswer: 6 < 7
+  AnswerTests: omnitest(correctExpr='6 < 7')
+  Hint: Use the less than operator and type 6 < 7.
+
+- Class: cmd_question
+  Output: "There is also a less-than-or-equal-to operator \"<=\" which tests whether the
+    left operand is less than or equal to the right operand. Write an expression to test
+    whether 10 is less than or equal to 10."
+  CorrectAnswer: 10 <= 10
+  AnswerTests: omnitest(correctExpr='10 <= 10')
+  Hint: "Use the \"<=\" operator and type 10 <= 10."
+
+- Class: text
+  Output: "Keep in mind that there are the corresponding greater than \">\" and greater-
+    than-or-equal-to \">=\" operators."
+
+- Class: mult_question
+  Output: "Which of the following evaluates to FALSE?"
+  CorrectAnswer: 9 >= 10
+  AnswerChoices: 9 >= 10; 7 == 7; 6 < 8; 0 > -36 
+  AnswerTests: omnitest(correctVal='9 >= 10')
+  Hint: "If you need to, you can evaluate each expression in a separate R session to
+    find the correct answer."
+
+- Class: mult_question
+  Output: "Which of the following evaluates to TRUE?"
+  CorrectAnswer: 9 >= 10
+  AnswerChoices: 9 >= 10; 7 == 9; 57 < 8; -6 > -7 
+  AnswerTests: omnitest(correctVal='-6 > -7')
+  Hint: "If you need to, you can evaluate each expression in a separate R session to find
+    the correct answer."
+
+- Class: cmd_question
+  Output: "Another operator worth mentioning is the \"not equals\" operator represented by
+    \"!=\". Not equals tests whether two values are unequal, so TRUE != FALSE evaluates
+    to TRUE. Like the equality operator, \"!=\" can also be used with numbers. Try writing
+    an expression to see if 5 is not equal to 7."
+  CorrectAnswer: 5 != 7
+  AnswerTests: omnitest(correctExpr='5 != 7')
+  Hint: "Use the not equals operator and type 5 != 7."
+
+- Class: cmd_question
+  Output: "And finally, you can negate boolean expressions you can use the NOT operator. An
+    exclamation mark \"!\" will cause !TRUE (say: not true) to evaluate to FALSE and !FALSE
+    (say: not false) to evaluate to TRUE. Try using the NOT operator and the equals operator
+    to find the opposite of whether 5 is equal to 7."
+  CorrectAnswer: '!5 == 7'
+  AnswerTests: any_of_exprs('!5 == 7', '!(5 == 7)')
+  Hint: "This expression may be a little tricky, so think about negating the expression
+    5 == 7 (all you need is an exclamation point in front)."
+
+- Class: text
+  Output: To review, the equals operator \"==\" tests whether two boolean values or numbers
+    are equal, the not equals operator \"!=\" tests whether two boolean values or numbers
+    are unequal, and the NOT operator \"!\" negates logical expressions so that TRUE
+    expressions become FALSE and FALSE expressions become TRUE. Furthermore, the \"<\",
+    \">\", \"<=\", and \">=\" operators are used to test the direction of the inequality.
+
+- Class: mult_question
+  Output: "Which of the following evaluates to FALSE?"
+  CorrectAnswer: "!(0 >= -1)"
+  AnswerChoices: "!(0 >= -1); !FALSE; 7 != 8; 9 < 10"
+  AnswerTests: omnitest(correctVal='!(0 >= -1)')
+  Hint: "If you need to, you can evaluate each expression in a separate R session to find
+    the correct answer."
+
+- Class: mult_question
+  Output: "What do you think the following expression will evaluate to?: (TRUE != FALSE) ==
+    !(6 == 7)."
+  CorrectAnswer: TRUE
+  AnswerChoices: TRUE; FALSE; Can there be objective truth when programming?; %>%
+  AnswerTests: omnitest(correctVal='TRUE')
+  Hint: "Try to evaluate each expression in isolation and build up an answer."
+  
+- Class: text
+  Output: "There are other logical (boolean) operators that can come in handy, namely
+  AND (represented by \"&\" and \"&&\") and OR (represented by \"|\" and \"||\") but I think
+  for now we will make do with what we've already learnt."
+
+- Class: cmd_question
+  Output: "The logical operators I just showed you can also be used with variables.
+    Try asking R if \"beatles\" is equal to \"Pete\". Don't forget, that one of these
+    is a variable and the other is a character string and think of what that means when it
+    comes to using double quotes."
+  CorrectAnswer: 'beatles == "Pete"'
+  AnswerTests: omnitest(correctExpr='beatles == "Pete"')
+  Hint: "you want to equate beatles with \"Pete\"."
+  
+- Class : text
+  Output: "As you can see, R returned a logical vector of 4 values. It basically asked
+    the same question (\"is this equal to \"Pete\"?\") about each of the elements in beatles.
+    Since only the last element is equal to \"Pete\", all but the last element of the
+    returned logical vector are FALSE."
+
+- Class : text
+  Output: "Let me now show you some functions you can use to ask slightly different
+    questions."
+    
+- Class : cmd_question
+  Output: "Let's say that you don't need to know whether each of the elements of beatles
+    equals to \"Pete\". Instead you are only interested in whether or not Pete is in beatles.
+    In other words, you want to know whether any element of beatles satisfies the condition
+    of being equal to \"Pete\". For this kind of question, there is the any() function. Try
+    typing any(beatles == \"Pete\") now."
+  CorrectAnswer: "any(beatles == \"Pete\")"
+  AnswerTests: omnitest(correctExpr='any(beatles == "Pete")')
+  Hint: "Just type any(beatles == \"Pete\")."
+  
+- Class : cmd_question
+  Output: "As you can see, R returned a single logical value because the answer to \"is any
+    element of beatles equal to \"Pete\"?\" is a single yes. Now ask R if Ringo is in beatles."
+  CorrectAnswer: "any(beatles == \"Ringo\")"
+  AnswerTests: omnitest(correctExpr='any(beatles == "Ringo")')
+  Hint: "Just type any(beatles == \"Ringo\")."
+  
+- Class : cmd_question
+  Output: "Sometimes all you need to know is whether all the elements in a variable meet a
+    certain criterion. In that case, you can use the all() function. Give it a go, ask R if
+    all the memebers of beatles are \"Pete\"."
+  CorrectAnswer: "all(beatles == \"Pete\")"
+  AnswerTests: omnitest(correctExpr='all(beatles == \"Pete\")')
+  Hint: "Just type all(beatles == \"Pete\")."
+  
+- Class : text
+  Output: "Since only one element of beatles is equal to \"Pete\", R returns FALSE. Finally
+    you may want to identify elements of a vector that satisfy a condition. That is when you
+    use the which() function."
+  
+- Class: mult_question
+  Output: "Before I ask you to try it out, tell me one thing. What do you think R will 
+    return if you ask it which element of beatles is \"Pete\"?"
+  CorrectAnswer: "4, becuase \"Pete\" is the 4th element of beatles"
+  AnswerChoices: "4, becuase \"Pete\" is the 4th element of beatles; \"Pete\", becuase it
+    is equal to \"Pete\"; A logical vector identifying \"Pete\"; An error message; NA"
+  AnswerTests: omnitest(correctVal='4, becuase \"Pete\" is the 4th element of beatles')
+  Hint: "Think of the question you are asking R and what a useful answer would look like."
+  
+- Class : cmd_question
+  Output: "OK, now see for yourself. Type in the command that asks the question."
+  CorrectAnswer: "which(beatles == \"Pete\")"
+  AnswerTests: omnitest(correctExpr='which(beatles == \"Pete\")')
+  Hint: "Just type which(beatles == \"Pete\")."
+  
+- Class : text
+  Output: "These questions can be very handy in various situations. For example, if you want
+    to know if there are any missing values in your data you'd type \"any(is.na(variable))\"
+    or if you want to make sure all the values are positive, you'd use the \"all(variable >=
+    0)\" command."
+    
+- Class : text
+  Output: "One last thing before I'll let you go. We need to do histroy justice, chuck
+    Pete from the Beatles and replace him with Ringo. In order to do that, we need to
+    introduce a new concept - indexing."
+    
+- Class : text
+  Output: "Indexing allows you to work with one or more elements of a vector. Let's say we
+    want to know what the second element of beatles is. For that we need the variable, a
+    set of square brackets to tell R we want to index the variable, and the number of the
+    element of interest."
+    
+- Class : cmd_question
+  Output: "Type in beatles[2] and see what happens."
+  CorrectAnswer: "beatles[2]"
+  AnswerTests: omnitest(correctExpr='beatles[2]')
+  Hint: "Type in beatles[2]."
+  
+- Class : text
+  Output: "As you can see, Paul is the second Beatle. You can do all sorts of things with
+    indexing. Let's try a few!"
+    
+- Class : cmd_question
+  Output: "Get R to tell you who the 1st and the 3rd Beatle are. Basically you want to index
+    the variable using a vector of 2 numbers."
+  CorrectAnswer: "beatles[c(1,3)]"
+  AnswerTests: omnitest(correctExpr='beatles[c(1,3)]')
+  Hint: "Remember the c() command."
+  
+- Class : text
+  Output: "That was far from straight-forward so well done getting through! Now, you can
+    also use logical expressions for indexing."
+  
+- Class : mult_question
+  Output: "That was far from straight-forward so well done getting through! Now, you can
+    also use logical expressions for indexing. Let's say you want to print only those
+    elements of beatles that are equal to \"Pete\". Which of these commands does the trick?"
+  CorrectAnswer: "beatles[beatles == \"Pete\"]"
+  AnswerChoices: "beatles[beatles == \"Pete\"]; beatles[!beatles != \"Pete\"];
+    beatles[which(beatles == \"Pete\")]; beatles[which(!beatles != \"Pete\")]"
+  AnswerTests: omnitest()
+  Hint:
+  
+- Class : text
+  Output: "In fact all of the above work. This nicely illustrates an important point with
+    programming in general: there are always multiple ways of doing something and the
+    differences can sometimes be very subtle. Just like in science, usually you
+    want to aim for simplicity. That is why, in this case, \"beatles[beatles == \"Pete\"]\"
+    is the best (haha, Pete Best) option."
+    
+- Class : cmd_question
+  Output: "I think you are ready for the grand finale now. It's going to be a bit of a
+    but don't despair if you don't get it right the first time around. Think of the simplest,
+    most efficient, and most elegant way of replacing Pete with Ringo using all you have
+    learnt about R thus far. In other words you are assigning new values to the beatles
+    variable. These values include 3 of the original values and one new value."
+  CorrectAnswer: beatles <- c(beatles[beatles != "Pete"], "Ringo")
+  AnswerTests: any_of_exprs("beatles <- c(beatles[beatles != \"Pete\"], \"Ringo\")",
+    "beatles <- c(!beatles[beatles == \"Pete\"], \"Ringo\")")
+  Hint: "Sometimes the best way to do x is not to do anything else. So, to include 3 out of 4
+    values is the same as to exclude 1. The new beatles variable gets assigned a vector (
+      remember c()). This vector includes the 3 elements of the beatles variable and Ringo.
+      Use logical indexing (similar to the previous exercise) to get the 3 elements. They
+      are all the elements that do not equal \"Pete\"."
+      
+- Class : text
+  Output: "That was quite impressive, well done! You have now completed Lesson 2. Have a
+    well-deserved rest and I will see you in the next lesson. :)"
+
+  

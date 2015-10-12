@@ -1,0 +1,324 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 12 Binomial test
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Hi there! Glad you came back after that monster of a lesson I made you go through
+    last time. As I promised this one is going to be much shorter. Let me show you how to
+    perform a binomial test in R.
+    
+- Class: text
+  Output: "Okay, first a few words about the binomial test: what is it for and how does it
+    work?"
+  
+- Class: mult_question
+  Output: If you scan your memory for a recollection of the time we talked about generating
+    random variables, you may remember that we also talked about binomial variables. Which
+    of the following describes a binomial variable?
+  AnswerChoices: It is based on trials with two possible outcomes - success/failure
+    (Bernoulli trials); It is based on the number of occurrences of an event over time
+    (Poisson process); It is based on the amount of discontinuity of a random process
+    (Mohorovicic discontinuity); It is based on the differences between two groups of random
+    normal variables (Gosset binomials)
+  CorrectAnswer: It is based on trials with two possible outcomes - success/failure
+    (Bernoulli trials)
+  AnswerTests: omnitest(correctVal= 'It is based on trials with two possible outcomes -
+    success/failure (Bernoulli trials)')
+  Hint: There is a slight clue in the name - binomial...
+  
+- Class: mult_question
+  Output: Which of these cannot be described as a binomial variable?
+  AnswerChoices: A sequence of coin flips; A lie-detection task; A card-guessing game;
+    The result of a game of football; None of the above can
+  CorrectAnswer: The result of a game of football
+  AnswerTests: omnitest(correctVal= 'The result of a game of football')
+  Hint: Think of the success/failure outcomes.
+  
+- Class: text
+  Output: "Jolly good. Now, the binomial test is a statistical procedure that tests
+    hypotheses concerning the outcome of a binomial \"experiment\". A sequence of coin
+    flips can be such an experiment..."
+    
+- Class: text
+  Output: "Suppose you flipped a coin 100 times and it came out heads 53 times. Further
+    suppose, that we have a suspicion that this coin may not be fair. This is our
+    \"alternative\" hypothesis. To test the coin, we postulate a \"null hypothesis\" that
+    is the opposite of the alternative hypothesis: \"This is a fair coin\"."
+    
+- Class: cmd_question
+  Output: What is the probability of any one given outcome (heads or tails) if the coin is
+    fair?
+  CorrectAnswer: .5
+  AnswerTests: omnitest(correctVal='.5')
+  Hint: Bear in mind that probability is always a positive number < 1. That means 27% is .27.
+  
+- Class: text
+  Output: Right so in our example, we would be testing the hypothesis that, given a fair
+    coin with a probability of .5 of either outcome, getting 53 heads out of 100 flips is
+    rather likely.
+    
+- Class: text
+  Output: If our test says that this outcome is not likely, we reject the null hypothesis
+    in favour of the alternative.
+    
+- Class: cmd_question
+  Output: "Where do we conventionally draw the line separating likely form unlikely in this
+    sense? This time give me an answer in percentage the form (just the number)."
+  CorrectAnswer: 5
+  AnswerTests: omnitest(correctVal='5')
+  Hint: Think of when a p-value is significant but translate the number to a percentage.
+  
+- Class: text
+  Output: Okay, so the test looks at all the possible outcomes of a sequence of 100 coin
+    flips and based on that gives us a p-value.
+    
+- Class: mult_question
+  Output: "Just to test we are clear on what a p-value is, since, y'know, it's one of the
+    most important concepts you will encounter in your stats courses. A p-value is the
+    probability...:"
+  AnswerChoices: ...of a given - or a more extreme - outcome if the null hypothesis is true;
+    ...that the outcome arose by chance alone; ...that the finding is a fluke; ...of
+    committing a Type I error by rejecting the null hypothesis.
+  CorrectAnswer:  ...of a given - or a more extreme - outcome if the null  hypothesis is true
+  AnswerTests: omnitest(correctVal= '...of a given - or a more extreme - outcome if the null
+    hypothesis is true')
+  Hint: You *really* need to get this one right.
+  
+- Class: cmd_question
+  Output: "To help you visualise this admittedly abstract concept, I wrote a wee function
+    just for you. It's called binom.plot() and takes two arguments: n - the number of trials
+    and p - the probability of success. Plug in the values from our example: 100 and .5,
+    respectively."
+  CorrectAnswer: binom.plot(100, .5)
+  AnswerTests: match_call('binom.plot(100, .5)')
+  Hint: 
+  
+- Class: text
+  Output: Right so here is the probability distribution of the outcomes of our 100-coin-flip
+    experiment. You may notice that the plot doesn't show ALL outcomes. It is certainly
+    possible to flip a coin 100 times in a row and not get heads once but it is very unlikely
+    
+- Class: cmd_question
+  Output: Actually, why don't you tell me what the probability of getting 0 heads out of 100
+    coin flips (assuming a fair coin) is? Find out using the dbinom() function.
+  CorrectAnswer: dbinom(0, 100, .5)
+  AnswerTests: match_call('dbinom(0, 100, .5)')
+  Hint: Just type dbinom(0, 100, .5).
+
+- Class: text
+  Output: I think we can safely call an event with the probability of
+    .0000000000000000000000000000008 pretty unlikely, would you agree? I knew you would.
+  
+- Class: text
+  Output: "You can also look at the combined probability of all the outcomes that are omitted
+    by the plot. To do this you will need to give the dbinom() function a vector of all the
+    numbers as the first argument. I am sure you know by now that's done using c(). You can
+    also use the : operator to create a sequence of numbers 0 to 29 and 71 to 100."
+  
+- Class: cmd_question
+  Output: Do it now.
+  CorrectAnswer: dbinom(c(0:29, 71:100), 100, .5)
+  AnswerTests: match_call('dbinom(c(0:29, 71:100), 100, .5)')
+  Hint: That would be dbinom(c(0:29, 71:100), 100, .5).
+  
+- Class: cmd_question
+  Output: Okay, that gave us a vector of probabilities for each of the outcomes. To look at
+    the combined probability, you just need to add the elements of the vector up. Use sum()
+    to do it.
+  CorrectAnswer: sum(dbinom(c(0:29, 71:100), 100, .5))
+  AnswerTests: match_call('sum(dbinom(c(0:29, 71:100), 100, .5))')
+  Hint:
+
+- Class: text
+  Output: As you can see, the plot omitted outcomes with a combined probability of .00003. I
+    think that's more reasonable than having 60 floor-low bars on the plot.
+
+- Class: text
+  Output: Now, the blue bar indicated the median of the distribution (but since the
+    distribution is symmetrical, it is also the mean and the mode). This is the outcome you
+    would expect to occur most often. Clearly, most often is a relative term since the height
+    of the bar is only just under .8 (precisely dbinom(50, 100, .5), i.e., .07958924). That
+    means that you would get a 50-50 split only about 8% of the time you flip a coin 100 times.
+    
+- Class: text
+  Output: The other 3 colours (red, yellow, and orange) show outcomes that would return a
+    significant test under different null hypotheses. Let's take them one at a time.
+    
+- Class: text
+  Output: The orange part of the graph (along with the right red part and omitted bars 71-100)
+    covers just under 5% of the overall distribution (precisely sum(dbinom(59:100, 100, .5)),
+    i.e., .04431304). If we had a so-called one-sided alternative hypothesis that the coin
+    is biased towards heads, any result in this range would be significant. That means, that
+    based on it, we would reject the null hypothesis in favour of the alternative.
+
+- Class: mult_question
+  Output: Speaking of which, what would be the null hypothesis in this case?
+  AnswerChoices: The coin does not favour heads; The coin is fair; The coin does not favour
+    tails; the coin favours either heads or tails;
+  CorrectAnswer: The coin does not favour heads
+  AnswerTests: omnitest(correctVal= 'The coin does not favour heads')
+  Hint: Remember the null hypothesis has to cover all the possibilities except those covered
+    by the alternative hytpothesis.
+
+- Class: text
+  Output: The yellow bit of the graph (less than 41 heads) marks the exact opposite. If our
+    alternative hypothesis was 'the coin is biased towards tails', any result in this range
+    (out of 100 coin flips) would produce a significant p-value. Since the binomial
+    distribution is symmetrical, sum(dbinom(0:29, 100, .5)) = sum(dbinom(59:100, 100, .5)))
+    
+- Class: text
+  Output: Finally the red bit takes just under 5% of the distribution and divides it equally
+    between both tails (that's why it's called a 2-tailed p-value). You would use a 2-tailed
+    test in situations where your alternative hypothesis is non-directional, i.e. 'the coin
+    is not fair' or 'the coin is biased either way'.
+  
+- Class: text
+  Output: By the way, the source code for the function is in the swirl course directory on
+    your computer (...swirl/Courses/Y2_Psychology_SRM/Data). It is called binom_plot_function
+    and it is a text file which you can open in Notepad. Feel free to use it (copy the content
+    of the file into R and run the code) and play around with it to get a feel for the
+    binomial distribution.
+    
+- Class: text
+  Output: With the theory covered, let's look at how to run binomial tests in R. We need
+    data. Lots of data... The Matrix anyone?
+  
+- Class: cmd_question
+  Output: Just like last time, I loaded the data frame for you. Check its structure using.
+  CorrectAnswer: str(df)
+  AnswerTests: omnitest(correctExpr='str(df)')
+  Hint: Maybe str()?
+  
+- Class: cmd_question
+  Output: We need a variable of binomial data for the test. Which one would that be?
+  CorrectAnswer: df$hit
+  AnswerTests: omnitest(correctExpr='df$hit')
+  Hint: Don't forget the df$ bit...
+
+- Class: text
+  Output: Suppose the variable represents the outcome of a task, where we asked our
+    participants to guess which one of four cards they would be shown and we code
+    a correct guess as 1 and an incorrect one as 0.
+    
+- Class: cmd_question
+  Output: What is the probability of a correct hit in this kind of task?
+  CorrectAnswer: .25
+  AnswerTests: omnitest(correctVal='.25')
+  Hint: Probability is always a number between 0 and 1.
+    
+- Class: mult_question
+  Output: With binomial variables coded like this one it is very easy to calculate the number
+    of successes and the overall success rate. Which of the following pairs of functions is
+    the right one to use for calculating these two respectively?
+  AnswerChoices: sum() and mean(); mean() and sum(); mean() and median(); median() and mean();
+    sum() and median(); median() and sum()
+  CorrectAnswer: sum() and mean()
+  AnswerTests: omnitest(correctVal='sum() and mean()')
+  Hint:
+
+- Class: cmd_question
+  Output: Look at the number of correct guesses in the df$hit variable now.
+  CorrectAnswer: sum(df$hit, na.rm = TRUE)
+  AnswerTests: omnitest(correctExpr='sum(df$hit, na.rm = TRUE)')
+  Hint: If you're getting NA, it is because you forgot to account for the presence of
+    missing values. There's an argument that works with the sum() function that does
+    the job, remember?
+  
+- Class: cmd_question
+  Output: And now look at the overall success rate.
+  CorrectAnswer: mean(df$hit, na.rm = TRUE)
+  AnswerTests: match_call('mean(df$hit, na.rm = TRUE)')
+  Hint:
+    
+- Class: text
+  Output: Right, so the 'hit rate' is .33 which is more than the .25 we would expect. The
+    question here is whether is statistically significantly more.
+    
+- Class: cmd_question
+  Output: In order to find out, we can use the binom.test() function. Pull up the function's
+    documentation and read through it.
+  CorrectAnswer: ?binom.test
+  AnswerTests: omnitest(correctExpr='?binom.test')
+  Hint:
+  
+- Class: cmd_question
+  Output: Since the function does not take a na.rm argument and doesn't know how to deal with
+    missing data, we need to subset our df. Create df2 that contains the gender [ , 2], group
+    [ , 4], and hit [ , 9] variables but gets rid of all the cases that have a missing value
+    for hit.
+  CorrectAnswer: ?binom.test
+  AnswerTests: omnitest(correctExpr='df2 <- df[!is.na(df$hit), c(2, 4, 9)]')
+  Hint: Use !is.na(df$hit) inside the indexing brackets.
+
+- Class: cmd_question
+  Output: Check if the command got rid of the NAs using any(is.na(df2$hit))
+  CorrectAnswer: any(is.na(df2$hit))
+  AnswerTests: omnitest(correctExpr='any(is.na(df2$hit))')
+  Hint:
+
+- Class: cmd_question
+  Output: Now, let's use binom.test to test the two-sided hypothesis that the number of hits
+    is different from that expected under the null hypothesis of p(hit) = .25. The n argument
+    is equal to number of rows - nrow() - of df2.
+  CorrectAnswer: binom.test(sum(df2$hit), nrow(df2), .25, "two.sided")
+  AnswerTests: match_call('binom.test(sum(df2$hit), nrow(df2), .25, "two.sided")')
+  Hint: Don't forget that you need the number of hits.
+  
+- Class: mult_question
+  Output: "If you read the output, you will see that the p-value of the test is .1039. This
+    means that the result is:"
+  AnswerChoices: significant so we accept the null.; significant so we reject the null.;
+    significant so we reject the alternative.; non-significant so we reject the null.;
+    non-significant so we accept the null.; non-significant so we accept the alternative.;
+  CorrectAnswer: significant so we reject the null.
+  AnswerTests: omnitest(correctVal='significant so we reject the null.')
+  Hint:
+
+- Class: cmd_question
+  Output: Now, re-run the command but this time, make the function test the alternative
+    hypothesis that the number of hits is greater from that expected under the null.
+  CorrectAnswer: binom.test(sum(df2$hit), nrow(df2), .25, "greater")
+  AnswerTests: match_call('binom.test(sum(df2$hit), nrow(df2), .25, "greater")')
+  Hint: Don't forget that you need the number of hits.
+  
+- Class: text
+  Output: This is non-significant (*not* insignificant, mind you!) as well, so we can say
+    that overall the participants did not guess any more or less correctly than we would
+    expect by chance alone.
+
+- Class: text
+  Output: Suppose, however, that we hypothesised that only those in the experimental group
+    would score above chance, while those in the control group would not.
+
+- Class: cmd_question
+  Output: "Let's first test the control group. You can do this by adding indexing brackets
+    to the first argument of the binom.test() function with df2$group==\"control\" inside.
+    Make sure these brackets are inside of the sum() function. You also need to adjust the
+    n argument using a similar indexing bracket."
+  CorrectAnswer: binom.test(sum(df2$hit[df2$group=="control"]), nrow(df2[df2$group=="control",
+    ]), .25, "greater")
+  AnswerTests: match_call('binom.test(sum(df2$hit[df2$group=="control"]), nrow(df2
+    [df2$group=="control",]), .25, "greater")')
+  Hint: Just type binom.test(sum(df2$hit[df2$group=="control"]), nrow(df2[df2$group=="control",
+    ]), .25, "greater").
+  
+- Class: cmd_question
+  Output: Non-significant again. Now run the test on the data from the experimental group.
+  CorrectAnswer: binom.test(sum(df2$hit[df2$group=="experimental"]),
+    nrow(df2[df2$group=="experimental", ]), .25, "greater")
+  AnswerTests: match_call('binom.test(sum(df2$hit[df2$group=="experimental"]),
+    nrow(df2[df2$group== "experimental", ]), .25, "greater")')
+  Hint:
+  
+- Class: text
+  Output: Yay, result! As you can see the p-value is less than .05 and thus significant.
+    That means that your experimental group did indeed perform above chance level (with
+    caveats we are not going to discuss here).
+    
+- Class: text
+  Output: So, today, you learnt the logic behind a binomial test and how to perform the test
+    in R. Well done! You made it through yet another lesson. Talk to you later.

@@ -1,0 +1,334 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 4 Functions
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+  
+- Class: text
+  Output: Welcome to lesson 4! In this lesson, I'll tell you how to use functions in R.
+  
+- Class: text
+  Output: Function are basically reusable bits of code wrapped up in a easy-to-use package
+    that allow the user to do pretty complex stuff without having to programme it all. You
+    have already encountered a fair few functions yourself during in the previous 3 lessons,
+    such as c(), data.frame(), seq(), and pretty much every command with a set of brackets
+    at the end.
+    
+- Class: text
+  Output: The things you put inside the brackets are called arguments. Each function has at
+    least one argument but there is no upper limit. Obviously, a function with too many
+    arguments is not practical.
+    
+- Class: text
+  Output: "Every time you use a function, it executes the code that's stored inside of it.
+    However, every function needs you to feed it some input values so that it has something
+    to work with. This is done with arguments. For example, the seq() function creates a
+    sequence that spans from x to y but without you defining what x and y are, it doesn't
+    know what to do. That is why you used the arguments \"from =\" and \"to =\" in Lesson 3."
+    
+- Class: cmd_question
+  Output: "To see this is the case, type seq() with no arguments."
+  CorrectAnswer: seq()
+  AnswerTests: omnitest(correctExpr='seq()')
+  Hint:
+  
+- Class: text
+  Output: Okay, this is weird. You didn't feed any arguments to the function so why on Earth
+    did it spit out 1? Let's explore...
+    
+- Class: cmd_question
+  Output: "I have previously introduced the \"?\" operator that calls up the help file for
+    whatever you put after it. Use it now to open the documentation for the seq() function.
+    You don't have to include the brackets when you ask for help."
+  CorrectAnswer: ?seq
+  AnswerTests: any_of_exprs('?seq', '?seq()')
+  Hint:
+    
+- Class: text
+  Output: "Let's have a look at the documentation now. First, the \"seq {base}\" tells you
+    the name of the function and the place where the code for the function is stored.
+    \"base}\" means that the function is built in the programming language itself and does
+    not require any additional \"libraries\" (more on those later). Next you have the purpose
+    of the function \"Sequence Generation\" and a short description of what the function
+    does."
+    
+- Class: text
+  Output: "The \"Usage\" section is very important because it tells you about the user
+    structure of the function. Look at the bit below \"## Default S3 method:\". You can
+    see that there are 5 specified arguments: \"from\", \"to\", \"by\", \"length.out\",
+    and \"along.with\". The \"...\" means that some other arguments can be passed to the
+    function."
+    
+- Class: text
+  Output: "Notice that 3 of the 5 arguments are not empty (do not equal NULL). That means
+    that the function seq() has a default pre-defined behaviour. That explains why we got
+    1 from typing an empty function. Typing seq() is basically the same as typing seq(
+    from = 1, to = 1, by = 0), or seq(1,1,0) because these are the default values for
+    the arguments of seq()."
+    
+- Class: text
+  Output: "Next you can see some variations on the seq() function. For example, you can
+    use the seq.along(8) function instead of seq(along.with = 8)."
+    
+- Class: text
+  Output: "The \"Arguments\" section tells you more about the arguments the function
+    takes and about the acceptable values thereof. In \"Details\" you can find a rather...
+    well, detailed description of what the function does, how it does it, and what to
+    keep in mind when using it. The style can be a bit difficult to digest but it's well
+    worth getting used to it."
+    
+- Class: text
+  Output: "The \"Value\" section tells you what the output of the function is. In this
+    case, seq() returns a integer or double (a synonym for numeric) vector. The \"See
+    also\" bit suggests some related functions that might be worth checking out.
+    \"References\" and \"Examples\" should be pretty self-explanatory."
+    
+- Class: video
+  Output: "There is a good website with useful basic R functions. Would you like me to
+    open it for you?"
+  VideoLink: "http://www.statmethods.net/management/functions.html"
+  
+- Class: cmd_question
+  Output: "Let's practice working with functions a little. First, pull up the help file
+    for the function mean()."
+  CorrectAnswer: ?mean
+  AnswerTests: any_of_exprs('?mean', '?mean()')
+  Hint:
+    
+- Class: text
+  Output: "Read through the documentation and familiarise yourself with the function.
+    When you're ready, press Enter to move on."
+    
+- Class: mult_question
+  Output: "Good job. Tell me now, which of the following is NEVER an acceptable value for
+    the x argument?"
+  AnswerChoices: A vector of numbers; A character vector; A single Boolean value;
+    Vectors containg NAs; All but "a vector of numbers"
+  CorrectAnswer: A character vector
+  AnswerTests: omnitest(correctVal= 'A character vector')
+  Hint: "See the \"Arguments\" section, x and na.rm, in particular."
+    
+- Class: cmd_question
+  Output: "Now find the mean of the following numbers: 51, 2.5, 726, -333, and 16.77 using
+    the mean() function."
+  CorrectAnswer: mean(c(51, 2.5, 726, -333, 16.77))
+  AnswerTests: omnitest(correctExpr='mean(c(51, 2.5, 726, -333, 16.77))')
+  Hint: Maybe c()?
+
+- Class: text
+  Output: "You can also input an object (variable) into the x argument of the mean()
+    function, as long as its content is of acceptable type."
+    
+- Class: cmd_question
+  Output: "Create a variable some_numbers and in it store the vector c(42, 402, -95,
+    31.6, 6.87, 555)."
+  CorrectAnswer: some_numbers <- c(42, 402, -95, 31.6, 6.87, 555)
+  AnswerTests: omnitest(correctExpr='some_numbers <- c(42, 402, -95, 31.6, 6.87, 555)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Now find the mean of some_numbers."
+  CorrectAnswer: mean(some_numbers)
+  AnswerTests: omnitest(correctExpr='mean(some_numbers)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Sometimes the variables we analyse include missing values (NA). Replace the 2nd
+    element of some_numbers with NA. NA is a special value that can be included in all types
+    of vectors."
+  CorrectAnswer: some_numbers[2] <- NA
+  AnswerTests: omnitest(correctExpr='some_numbers[2] <- NA')
+  Hint: Use indexing, Luke!
+  
+- Class: cmd_question
+  Output: "As you probably know, simply typing mean(some_numbers) won't work when there
+    missing values. Give it a go nevertheless."
+  CorrectAnswer: mean(some_numbers)
+  AnswerTests: omnitest(correctExpr='mean(some_numbers)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Now what is the argument you need to define and what value do you need to give
+    it in order for the mean() to be able to handle it?."
+  CorrectAnswer: na.rm = TRUE
+  AnswerTests: omnitest(correctExpr='na.rm = TRUE')
+  Hint: "It's going to be <something> = <something>..."
+  
+- Class: cmd_question
+  Output: "OK, run the command now including the na.rm argument on some_numbers."
+  CorrectAnswer: mean(some_numbers, na.rm = TRUE)
+  AnswerTests: omnitest(correctExpr='mean(some_numbers, na.rm = TRUE)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "You can also create an object (variable) and assign it the output of a function.
+    Create an object some_mean and store in it the mean of some_numbers (i.e., store the mean of some_numbers as the object some_mean."
+  CorrectAnswer: some_mean <- mean(some_numbers, na.rm = TRUE)
+  AnswerTests: omnitest(correctExpr='some_mean <- mean(some_numbers, na.rm = TRUE)')
+  Hint: Don't forget about the NAs.
+  
+- Class: text
+  Output: "So that's how you work with the mean() function. Let's now look at the binomial
+    distribution functions."
+
+- Class: text
+  Output: "Binomial distribution is a distribution that describes outcomes of a binomial, or
+    Bernoulli trials. These are such events where there is a pass/fail outcome. For instance,
+    flipping a coin and having tails come out. You can either get the tails, in which case it
+    is a pass or not get it, which would be a fail. Other examples might be casting dice (and
+    expecting a certain outcome) or a participant's performance on a change detection
+    task under the null hypothesis."
+    
+- Class: cmd_question
+  Output: "Look at the documentation for the pbinom() function."
+  CorrectAnswer: ?pbinom
+  AnswerTests: any_of_exprs('?pbinom', '?pbinom()')
+  Hint:
+  
+- Class: text
+  Output: "In order to work with this function (and the variations you can see listed in the
+    \"Usage\") section, you need to decide on a few things. Firstly, the probability of the
+    desired outcome. In case of coin tosses, that would be .5, or 1/2, assuming a fair coin.
+    Secondly, it is the number of observations or how many times you perform your experiment.
+    Finally (for pbinom()), it is the number of passes, or successes. In the coin toss,
+    that would be the number of times the coin came out tails."
+    
+- Class: text
+  Output: "These parameters are given to the pbinom() function as prob, size, and q arguments,
+    respectively."
+    
+- Class: cmd_question
+  Output: "Let's say you flipped a coin 1,000 times and got 547 tails. Assuming a fair coin,
+    what is the probability of getting this many or more tails? Use pbinom() to find out.
+    Since you want to know the probability of 547 OR MORE tails, you want to look at the
+    upper (right) tail of the binomial distribution."
+  CorrectAnswer: pbinom(547, 1000, .5, lower.tail = FALSE)
+  AnswerTests: any_of_exprs('pbinom(547, 1000, .5, lower.tail = FALSE)',
+    'pbinom(547, 1000, .5, lower.tail = F)', 'pbinom(547, 1000, .5, FALSE)',
+    'pbinom(547, 1000, .5, F)', 'pbinom(547, size = 1000, prob = .5, lower.tail = FALSE)',
+    'pbinom(547, size = 1000, prob = .5, lower.tail = F)',
+    'pbinom(q = 547, size = 1000, prob = .5, lower.tail = F)',
+    'pbinom(547, 1000, 0.5, lower.tail = FALSE)', 'pbinom(547, 1000, 0.5, lower.tail = F)',
+    'pbinom(547, 1000, 0.5, FALSE)', 'pbinom(547, 1000, 0.5, F)',
+    'pbinom(547, size = 1000, prob = 0.5, lower.tail = FALSE)',
+    'pbinom(547, size = 1000, prob = 0.5, lower.tail = F)',
+    'pbinom(q = 547, size = 1000, prob = 0.5, lower.tail = F)',
+    'pbinom(547, 1000, 1/2, lower.tail = FALSE)', 'pbinom(547, 1000, 1/2, lower.tail = F)',
+    'pbinom(547, 1000, 1/2, FALSE)', 'pbinom(547, 1000, 1/2, F)',
+    'pbinom(547, size = 1000, prob = 1/2, lower.tail = FALSE)',
+    'pbinom(547, size = 1000, prob = 1/2, lower.tail = F)',
+    'pbinom(q = 547, size = 1000, prob = 1/2, lower.tail = F)')
+  Hint: "\"q\" is the number of tails, \"size\" is the number of trials you ran, and \"prob\"
+    is the probability of getting a tail, assuming a fair coin. YOu will also have to change
+    the value of the \"lower.tail\" argument. Look what it defaults to."
+    
+- Class: text
+  Output: "Clearly, functions are very useful, since they save a lot of time compared to
+    doing everything yourself. Good thing you've now learnt how to use them and how to read
+    the help files. It may take a bit of practice to become confidently familiar with new
+    functions but keep in mind that basically all of them are used the same way."
+    
+- Class: text
+  Output: "Let me show you one more thing. A nice thing with functions is that they can be
+    nested one within another. For example, look at the rbinom() function in the help file
+    you've opened."
+    
+- Class: text
+  Output: "It simulates the binomial distribution based on the probability of the outcome
+    and the number of trials. Say, you want to look at the distribution of correct guesses
+    in a card guessing game. There are five different cards lying face down on a table and
+    the participant is asked to guess which one is the ace of spades. They pick a card and
+    find out whether or not they guessed correctly. Then the cards are shuffled and the
+    procedure is repeated. There are 100 such trials per participant. In order to get a
+    good estimate of the distribution, you need a large sample size. Say, you repeat the
+    experiment 1,000 times."
+    
+- Class: cmd_question
+  Output: "Use the rbinom() function to simulate the distribution of such an experiment."
+  CorrectAnswer: rbinom(1000, 100, .2)
+  AnswerTests: any_of_exprs('rbinom(1000, 100, .2)', 'rbinom(1000, size = 100, prob = .2)',
+    'rbinom(n = 1000, size = 100, prob = .2)',
+    'rbinom(1000, 100, 0.2)', 'rbinom(1000, size = 100, prob = 0.2)',
+    'rbinom(n = 1000, size = 100, prob = 0.2)',
+    'rbinom(1000, 100, 1/5)', 'rbinom(1000, size = 100, prob = 1/5)',
+    'rbinom(n = 1000, size = 100, prob = 1/5)')
+  Hint: "\"n\" is the number of experiments, \"size\" is the number of trials you ran, and
+    \"prob\" is the probability of guessing the correct card. Remember, there are 5 different
+    card and the participant only picks one."
+
+- Class: cmd_question
+  Output: "OK, this is slightly difficult to make sense of. Maybe you just want to see the
+    histogram of the distribution. Put the whole command into a hist() function and see
+    what happens."
+  CorrectAnswer: hist(rbinom(1000, 100, .2))
+  AnswerTests: any_of_exprs('hist(rbinom(1000, 100, .2))', 'hist(rbinom(1000, size = 100,
+    prob = .2))', 'hist(rbinom(n = 1000, size = 100, prob = .2))',
+    'hist(rbinom(1000, 100, 0.2))', 'hist(rbinom(1000, size = 100, prob = 0.2))',
+    'hist(rbinom(n = 1000, size = 100, prob = 0.2))',
+    'hist(rbinom(1000, 100, 1/5))', 'hist(rbinom(1000, size = 100, prob = 1/5))',
+    'hist(rbinom(n = 1000, size = 100, prob = 1/5))')
+    
+- Class: text
+  Output: "Well done on your first plot! It's a nice one, isn't it? As you can see the
+    distribution is centred around roughly 20 correct guesses (out of 100 trials), which
+    is exactly what you would expect."
+
+- Class: text
+  Output: "And to finish off, let's try a different test of the outcome of the experiment.
+    You can expect some people guessing more than 20 cards correctly and some people
+    guessing fewer just by chance alone. These random fluctuations should, however, cancel
+    out in the long run. That means that the average number of correct guesses should be
+    identical to the probability of a correct guess (after all, that's what probability means."
+    
+- Class: cmd_question
+  Output: "Obviously, the smaller the sample size (N) is, the larger the random fluctuations
+    will be. To see this, first create an object \"test\" and store in it the mean of
+    rbinom(10, 100, 0.2). The arguments are listed in order so there is no need to type them
+    out."
+  CorrectAnswer: test <- mean(rbinom(10, 100, 0.2))
+  AnswerTests: omnitest(correctExpr='test <- mean(rbinom(10, 100, 0.2))')
+  Hint: Just type test <- mean(rbinom(10, 100, 0.2))
+  
+- Class: cmd_question
+  Output: "Now, add to test another mean of the same function but this time with n of
+    100."
+  CorrectAnswer: test <- c(test, mean(rbinom(100, 100, 0.2)))
+  AnswerTests: omnitest(correctExpr='test <- c(test, mean(rbinom(100, 100, 0.2)))')
+  Hint: "Recall that you need to use c() to bind the original \"test\" object and the output
+    of the new mean(...) function into a vector. This vector is then reassigned to \"test\"."
+    
+- Class: cmd_question
+  Output: "And now 1,000."
+  CorrectAnswer: test <- c(test, mean(rbinom(1000, 100, 0.2)))
+  AnswerTests: omnitest(correctExpr='test <- c(test, mean(rbinom(1000, 100, 0.2)))')
+  Hint: "Recall that you need to use c() to bind the original \"test\" object and the output
+    of the new mean(...) function into a vector. This vector is then reassigned to \"test\"."
+    
+- Class: cmd_question
+  Output: "And finally 10,000."
+  CorrectAnswer: test <- c(test, mean(rbinom(10000, 100, 0.2)))
+  AnswerTests: omnitest(correctExpr='test <- c(test, mean(rbinom(10000, 100, 0.2)))')
+  Hint: "Recall that you need to use c() to bind the original \"test\" object and the output
+    of the new mean(...) function into a vector. This vector is then reassigned to \"test\"."
+    
+- Class: mult_question
+  Output: "Good job. Now, what would you expect the values in test to look like as N goes
+    from 10 to 10,000? They will approximate the true probability of a correct guess:"
+  AnswerChoices: More precisely; Less precisely; Roughly equally precisely; With random
+    precision
+  CorrectAnswer: More precisely
+  AnswerTests: omnitest(correctVal= 'More precisely')
+  Hint:
+  
+- Class: cmd_question
+  Output: "See for yourself. Have R print the object test."
+  CorrectAnswer: test
+  AnswerTests: omnitest(correctExpr='test')
+  Hint:
+  
+- Class: text
+  Output: "As you can see, the numbers get ever closer to 20 (out of 100), which is the same
+    as p = .2. This example nicely illustrates why large sample sizes matter. It also
+    concludes Lesson 4. Well done! I shall see you soon."

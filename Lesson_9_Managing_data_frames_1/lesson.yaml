@@ -1,0 +1,394 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 9 Managing data frames 1
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Hiya! Hope you're well. Let's get down to business. Lesson 9 awaits you...
+  
+- Class: text
+  Output: So after 8 lessons of elementary R, it's time to start with some serious data
+    processing. In this lesson, I'll show you how to do some advanced things with data frames,
+    drawing on the stuff you've learnt thus far. Hold your hat!
+
+- Class: text
+  Output: First of all, we need a data frame. Let's make one!
+
+- Class: text
+  Output: Let's say our df contains data from an experiment, where you compared two groups
+    of participants - control and experimental - on their reaction time and their performance
+    on a two-item 5-point Likert scale questionnaire.
+  
+- Class: cmd_question
+  Output: "Say there are 100 participants. Let's create a variable id, with the integers
+    1 to 100 in random order. You will need the sample() function and the : operator."
+  CorrectAnswer: id <- sample(1:100)
+  AnswerTests: match_call('id <- sample(1:100)')
+  Hint: There are several ways of doing this but I was after id <- sample(1:100).
+
+- Class: cmd_question
+  Output: "Now, print the id variable just to see what it looks like."
+  CorrectAnswer: id
+  AnswerTests: omnitest(correctExpr='id')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Now, lets create a gender variable. There will be three values in this variable
+    - 0 for male, 1 for female, and 2 for non-binary - and it will be of the same length as
+    id. Let's say that, by some stroke of fortune, the genders were 0, 1, 2, 0, 1, 2 and
+    so on. You want to replicate a sequence 0:2 as many times as it gets to get a vector of
+    the same length() as id. In other words, you need to use the rep() function and specify
+    the length.out argument. Don't forget to store the vector in the gender variable."
+  CorrectAnswer: gender <- rep(0:2, length.out = length(id))
+  AnswerTests: match_call('gender <- rep(0:2, length.out = length(id))')
+  Hint: The argument of the rep() function should be length.out = length(id).
+  
+- Class: cmd_question
+  Output: "Now, print the gender variable."
+  CorrectAnswer: gender
+  AnswerTests: omnitest(correctExpr='gender')
+  Hint:
+  
+- Class: cmd_question
+  Output: "And check if its length is the same as that of id."
+  CorrectAnswer: length(gender) == length(id)
+  AnswerTests: omnitest(correctExpr='length(gender) == length(id)')
+  Hint: To check this, type length(gender) == length(id)
+  
+- Class: cmd_question
+  Output: "Jolly good, let's give our participants age. Let's say you only rectruited
+    undergrads and you ended up with ages between 17 and 23. You want to sample N = length
+    of id numbers between 17 and 23. since there are only 7 numbers to choose from and you
+    want a sample of 100 numbers, you need to sample with replacement."
+  CorrectAnswer: age <- sample(x = 17:23, size = length(id), replace = TRUE)
+  AnswerTests: match_call('age <- sample(x = 17:23, size = length(id), replace = TRUE)')
+  Hint: "You need to provide 3 arguments to the sample() function: x, size and replace."
+  
+- Class: cmd_question
+  Output: "Now, plot a histogram of age."
+  CorrectAnswer: hist(age)
+  AnswerTests: omnitest(correctExpr='hist(age)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "So that's the basic participant characteristics out of the way. Now, let's
+    assign our folks into the experimental and control group. Create a variable group with
+    values of 0 (control) for the first 50 participants and 1(experimental) for the latter 50
+    using the rep() with the each argument."
+  CorrectAnswer: group <- rep(0:1, each = 50)
+  AnswerTests: match_call('group <- rep(0:1, each = 50)')
+  Hint: That would be group <- rep(0:1, each = 50).
+  
+- Class: cmd_question
+  Output: "OK, now create a reaction time variable rt, a random normal variable of
+    length(id) with a mean of 315.427 and a standard deviation of 164.224."
+  CorrectAnswer: rt <- rnorm(length(id), mean = 315.427, sd = 164.224)
+  AnswerTests: match_call('rt <- rnorm(length(id), mean = 315.427, sd = 164.224)')
+  Hint: use the rnorm() function.
+  
+- Class: mult_question
+  Output: "Two more variables left. We want these to be 2 5-point Likerst scale items (from
+    1 to 5). Which of the following is a good function for generating such a variable?"
+  AnswerChoices: pt(); dnorm(); rpois(); rbinom(); qbinom(); ppois(); runif(); dt()
+  CorrectAnswer: rbinom()
+  AnswerTests: omnitest(correctVal= 'rbinom()')
+  Hint: "You want to generate a random variable with only integers between x and y. In a way
+    that's similar to creating a random variable of outcomes of dice throws..."    
+    
+- Class: cmd_question
+  Output: "Okay, so were generating a random binomial variable of length(id) with 5 levels.
+    However, rbinom() always generates numbers between 0 (not 1) and y so if you want there
+    to be only 5 values, you need to account for this. Also since we want the middle value to
+    be the most likely to occur, let's give the outcome a probability of .5. Go ahead and
+    create this variable and call it item_1."
+  CorrectAnswer: item_1 <- rbinom(n = 100, size = 4, prob = .5)
+  AnswerTests: match_call('item_1 <- rbinom(n = 100, size = 4, prob = .5)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "We do, however, want the values to go from 1 to 5, not 0 to 4. This can be easily
+    mended by simply adding one to the variable."
+  CorrectAnswer: item_1 <- item_1 + 1
+  AnswerTests: match_call('item_1 <- item_1 + 1')
+  Hint: "Don't forget the \"item_1\" has to appear on both sides of <-."
+  
+- Class: cmd_question
+  Output: "And finally, create item_2 with the same characteristics, only this time,
+    let's make it a little skewed by giving the outcome a probability of .4. To save time, add
+    the 1 at the end of the command."
+  CorrectAnswer: item_2 <- rbinom(n = 100, size = 4, prob = .4) + 1
+  AnswerTests: match_call('item_2 <- rbinom(n = 100, size = 4, prob = .4) + 1')
+  Hint:
+  
+- Class: cmd_question
+  Output: "There you go, all your variables have now been created. Put them all in a data
+    frame called df in the same order as they were created using the data.frame()
+    function."
+  CorrectAnswer: df <- data.frame(id, gender, age, group, item_1, item_2)
+  AnswerTests: match_call('df <- data.frame(id, gender, age, group, rt, item_1, item_2)')
+  Hint: "It's done like this: df <- data.frame(id, gender, age, group, rt, item_1, item_2)."
+
+- Class: cmd_question
+  Output: "Great, look at a preview of your df using the head() function."
+  CorrectAnswer: head(df)
+  AnswerTests: omnitest(correctExpr='head(df)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Just to keep your working environment tidy, let's delete the variables you've
+    created. look up the documentation for the rm() function. Don't worry, this won't affect
+    the data frame."
+  CorrectAnswer: ?rm
+  AnswerTests: omnitest(correctExpr='?rm')
+  Hint:
+  
+- Class: cmd_question
+  Output: "You can remove each object one at a time. But I think it's neater to do it in one
+    go. you can do this by putting the names of the objects you want to remove in c() and
+    double quotes and putting this whole thing in the list argument of rm(). Remove all
+    the variables now and, if you can do me a favour, put them all in the same order as
+    before. Much obliged!"
+  CorrectAnswer: "rm(list=c(\"id\", \"gender\", \"age\", \"group\", \"rt\", \"item_1\",
+    \"item_2\"))"
+  AnswerTests: match_call('rm(list=c("id", "gender", "age", "group", "rt", "item_1", "item_2"))')
+  Hint: "This will do the trick: rm(list=c(\"id\", \"gender\", \"age\", \"group\", \"rt\", \"item_1\",
+    \"item_2\"))."
+    
+- Class: cmd_question
+  Output: "Let's look at the structure of your df, using the str() function."
+  CorrectAnswer: str(df)
+  AnswerTests: omnitest(correctExpr='str(df)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "And for a quick summary of the variables, use the... well, summary() function."
+  CorrectAnswer: summary(df)
+  AnswerTests: omnitest(correctExpr='summary(df)')
+  Hint:
+  
+- Class: text
+  Output: As you can see, all the variables are integer or numeric. R will therefore treat
+    them as continuous variables. It would, however, make sense to designate gender and group
+    as nominal and items as ordinal variables (let's not worry about id). Let me show you how
+    to do this.
+    
+- Class: cmd_question
+  Output: You can reassign gender as a character variable by typing df$gender <-
+    as.character(df$gender). Remember the df$ tells R the variable you're looking for is in
+    df. Do it now.
+  CorrectAnswer: df$gender <- as.character(df$gender)
+  AnswerTests: omnitest(correctExpr='df$gender <- as.character(df$gender)')
+  Hint:
+    
+- Class: cmd_question
+  Output: Look at df$gender to see what happened.
+  CorrectAnswer: df$gender
+  AnswerTests: omnitest(correctExpr='df$gender')
+  Hint:
+  
+- Class: cmd_question
+  Output: This isn't the best way, though. Put it back by reassigning the variable using
+    as.numeric().
+  CorrectAnswer: df$gender <- as.numeric(df$gender)
+  AnswerTests: omnitest(correctExpr='df$gender <- as.numeric(df$gender)')
+  Hint:
+  
+- Class: cmd_question
+  Output: The best way is to turn the variable into a factor. Pull up the documentation for
+    factor() and take a minute to read through it.
+  CorrectAnswer: ?factor
+  AnswerTests: omnitest(correctExpr='?factor')
+  Hint:
+  
+- Class: cmd_question
+  Output: "So you need to reassign (that's a helluva lot of reassigning for one small variable,
+    don't you think?) the variable. Tell it to turn into a factor and specify the labels as
+    c(\"male\", \"female\", \"non-binary\")."
+  CorrectAnswer: "df$gender <- factor(df$gender, labels = c(\"male\", \"female\",
+    \"non-binary\"))"
+  AnswerTests: match_call('df$gender <- factor(df$gender, labels = c("male", "female",
+    "non-binary"))')
+  Hint: "Type df$gender <- factor(df$gender, labels = c(\"male\", \"female\", \"non-binary\"))."
+
+- Class: cmd_question
+  Output: Look at the variable now.
+  CorrectAnswer: df$gender
+  AnswerTests: omnitest(correctExpr='df$gender')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Similarly, you can turn df$group into a factor with 2 labels: \"control\" and
+    \"experimental\". Go for it!"
+  CorrectAnswer: "df$group <- factor(df$group, labels = c(\"control\", \"experimental\"))"
+  AnswerTests: match_call('df$group <- factor(df$group, labels = c("control", "experimental"))')
+  Hint:
+  
+- Class: text
+  Output: "Now, the item variables. Since these are responses on a Likert scale, it'd be good
+    to tell R to treat them as ordinal variables. This is done similarly to what you just
+    did, only you need the ordered() function."
+    
+- Class: cmd_question
+  Output: "Turn df$item_1 to an ordered factor now. This time, you don't need to specify any
+    labels (although you could, should you want to)."
+  CorrectAnswer: df$item_1 <- ordered(df$item_1)
+  AnswerTests: match_call('df$item_1 <- ordered(df$item_1)')
+  Hint: Just type df$item_1 <- ordered(df$item_1).
+  
+- Class: cmd_question
+  Output: Look at df$item_1 to see what happened.
+  CorrectAnswer: df$item_1
+  AnswerTests: omnitest(correctExpr='df$item_1')
+  Hint:
+
+- Class: text
+  Output: "So as you can see, R now recognises the variable as a factor but at the same time
+    it understands the relationships between the individual levels (1 < 2 < 3...)."
+    
+- Class: text
+  Output: "Before we turn item_2 into an ordered factor, let's pretend it was a reverse-scored
+    item, and thus you want to turn 1s into 5s, 2s into 4s and so on. There's a function for
+    this: recode(). However, while your variable is still numeric, there's an easier way to
+    reverse-score it. You can simply subtract the variable from (n + 1), where n is the number
+    of levels of the variable, in our case, n = 5."
+    
+- Class: cmd_question
+  Output: Go ahead and recode item_2.
+  CorrectAnswer: df$item_2 <- 6 - df$item_2
+  AnswerTests: omnitest(correctExpr='df$item_2 <- 6 - df$item_2')
+  Hint: 5 + 1 = 6... :)
+
+- Class: text
+  Output: "A more \"principled\ way of doing this would be df$item_2 <-
+  (length(levels(df$item_2)) + 1) - df$item_2 since it works regardless of the number of
+  levels, but hey..."
+
+- Class: cmd_question
+  Output: "OK, now you can turn item_2 into an ordered factor."
+  CorrectAnswer: df$item_2 <- ordered(df$item_2)
+  AnswerTests: match_call('df$item_2 <- ordered(df$item_2)')
+  Hint: Just type df$item_2 <- ordered(df$item_2).
+  
+- Class: cmd_question
+  Output: "Let's look at the structure of df again to see the changes you've made."
+  CorrectAnswer: str(df)
+  AnswerTests: omnitest(correctExpr='str(df)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "These changes also affect the summary() function. See how."
+  CorrectAnswer: summary(df)
+  AnswerTests: omnitest(correctExpr='summary(df)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "To check the type (or class as it is known in R) of a variable you can use the
+    class() function. Look at the class of df$item_1 now."
+  CorrectAnswer: class(df$item_1)
+  AnswerTests: omnitest(correctExpr='class(df$item_1)')
+  Hint:
+
+- Class: text
+  Output: "Now, to make the data frame a little more realistic and to practice some advanced
+    indexing, let's introduced some missing data."
+    
+- Class: text
+  Output: "Let's say, that 5 participants didn't provide their gender. So let's take 5 random
+    elements of df$gender and assign them NA. To make things slightly more complicated, let's
+    sample 5 random elements but only from those participants, who chose the \"non-binary\"
+    option."
+    
+- Class: text
+  Output: "The command is df[sample(which(df$gender == \"non-binary\"), 5), 2] <- NA. It's
+    quite a mouthful so let's break it down."
+  
+- Class: cmd_question
+  Output: "The innermost part of the command is df$gender == \"non-binary\". It returns a
+    logical vector that checks whether any particular element of df$gender is equal to
+    \"non-binary\". Type it in to see what that looks like."
+  CorrectAnswer: "df$gender == \"non-binary\""
+  AnswerTests: omnitest(correctExpr='df$gender == "non-binary"')
+  Hint:
+  
+- Class: cmd_question
+  Output: "As you can see, the condition is TRUE for some of the cases. Put the expression
+    inside which() to get the indices of these cases."
+  CorrectAnswer: "which(df$gender == \"non-binary\")"
+  AnswerTests: omnitest(correctExpr='which(df$gender == "non-binary")')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Now, you can use this vector as a pool to sample() 5 random numbers from. Give it
+    a try."
+  CorrectAnswer: "sample(which(df$gender == \"non-binary\"), 5)"
+  AnswerTests: omnitest(correctExpr='sample(which(df$gender == "non-binary"), 5)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "This is how you sample 5 numbers from those that denote the index of \"non-binary
+    \" elements of df$gender. Next, you can use these 5 numbers to index out the corresponding
+    cases. Remember, for indexing a data frame, we use the two-dimensional indexing [ , ].
+    Select those elements of the gender variable df[<something>, 2], that correspond to the
+    numbers you just sampled."
+  CorrectAnswer: "df[sample(which(df$gender == \"non-binary\"), 5), 2]"
+  AnswerTests: omnitest(correctExpr='df[sample(which(df$gender == "non-binary"), 5), 2]')
+  Hint: Just scroll up to where I gave you the entire command.
+  
+- Class: cmd_question
+  Output: "Finally, change these to NA, using the <- operator."
+  CorrectAnswer: "df[sample(which(df$gender == \"non-binary\"), 5), 2] <- NA"
+  AnswerTests: omnitest(correctExpr='df[sample(which(df$gender == "non-binary"), 5), 2] <- NA')
+  Hint:
+  
+- Class: cmd_question
+  Output: "That's it! To check it worked, look at the summary() of gender."
+  CorrectAnswer: summary(df$gender)
+  AnswerTests: omnitest(correctExpr='summary(df$gender)')
+  Hint:
+  
+- Class: text
+  Output: "I appreciate this was a bit tricky but try to get your head around it, for if you
+    do you're sorted. Indexing doesn't really get THAT much more complex than this."
+    
+- Class: text
+  Output: "Okay, your turn now. Let's say there's some missing values in the rt variable too."
+  
+- Class: cmd_question
+  Output: "Based on what you just learnt, pick 3 random elements of rt and change them to NA.
+    This time you're just sampling 3 numbers from 100. rt is the 5th variable in df."
+  CorrectAnswer: df[sample(100, 3), 5] <- NA
+  AnswerTests: omnitest(correctExpr='df[sample(100, 3), 5] <- NA')
+  Hint:
+  
+- Class: text
+  Output: "Well done you! This was not trivial. Let's see what the cases with NA's look like."
+  
+- Class: mult_question
+  Output: "Do you remember what the function that tests whether a value equals NA is?"
+  AnswerChoices: is.na(); as.na(); na(); na.rm(); qbinom(); ppois(); runif(); dt()
+  CorrectAnswer: is.na()
+  AnswerTests: omnitest(correctVal= 'is.na()')
+  Hint:
+  
+- Class: cmd_question
+  Output: "You can use this function to index those cases that have NA for any given
+    variable. Go ahead and look at the data from those participants, who have NA for gender."
+  CorrectAnswer: df[is.na(df$gender), ]
+  AnswerTests: omnitest(correctExpr='df[is.na(df$gender), ]')
+  Hint: Put the is.na function in the first dimension of the [], and leave the second one
+    empty in order to see all variables (entire rows).
+    
+- Class: cmd_question
+  Output: "And to refresh working with logical operators look at all the cases that have NA
+    in gender or rt."
+  CorrectAnswer: df[is.na(df$gender) | is.na(df$rt), ]
+  AnswerTests: omnitest(correctExpr='df[is.na(df$gender) | is.na(df$rt), ]')
+  Hint: The or operator is | and it should connct is.na() functions, not arguments of a single
+    is.na().
+
+- Class: text
+  Output: "So that's our data frame created and another lesson completed. Next time, I'll
+    show you how to clean your data and work with multiple data frames. Ciao!"

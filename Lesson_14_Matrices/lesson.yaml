@@ -1,0 +1,305 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 14 Matrices
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Welcome back! After two lessons dedicated to statistical tests, let's take a wee
+    detour and talk about matrices (the plural of 'matrix').
+    
+- Class: cmd_question
+  Output: A matrices are simply a bunch of values arranged in a rectangle. I made one for
+    you. Type mat_1 to see what I mean.
+  CorrectAnswer: mat_1
+  AnswerTests: omnitest(correctExpr='mat_1')
+  Hint:
+  
+- Class: text
+  Output: So, as you can see, there's 200 numbers arranged in 10 columns and 20 rows.
+  
+- Class: text
+  Output: You might be thinking 'isn't this just a data frame?'... Well, no. Matrices share
+    some features with data frames but in some other ways, they are more like vectors.
+
+- Class: cmd_question
+  Output: Look at class(mat_1) to see it is, in fact, not a data frame.
+  CorrectAnswer: class(mat_1)
+  AnswerTests: omnitest(correctExpr='class(mat_1)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Just like data frames, matrices must be rectangular, meaning they have 2 dimensions.
+    Use the dim() function to see the dimensions of mat_1.
+  CorrectAnswer: dim(mat_1)
+  AnswerTests: omnitest(correctExpr='dim(mat_1)')
+  Hint:
+  
+- Class: text
+  Output: "The first number denotes number of rows and the second the number of columns: 20
+    rows by 10 columns."
+    
+- Class: cmd_question
+  Output: Just like df's, matrices are indexable using these dimensions. Let's say you want
+    to look at row 17 of mat_1. Use [] to print it.
+  CorrectAnswer: mat_1[17, ]
+  AnswerTests: omnitest(correctExpr='mat_1[17, ]')
+  Hint: There's 2 dimensions in the [] and they are separated by a comma. First dimension
+    indicates rows and the second one columns.
+    
+- Class: cmd_question
+  Output: Okay, that command gave us the elements of row 17 of mat_1 in a single vector.
+    Now give me the 7th and 20th element of columns 3 to 10.
+  CorrectAnswer: mat_1[c(7,20), 3:10]
+  AnswerTests: omnitest(correctExpr='mat_1[c(7,20), 3:10]')
+  Hint: "Use c() for the first dimension and : for the second."
+  
+- Class: text
+  Output: Of course, you can just use one-dimensional indexing but if you do, R will
+    ignore the rectangular structure of the matrix and count the elements as if they
+    were in a single line, column by column.
+    
+- Class: mult_question
+  Output: Look at the matrix printed above again. What element will you get if you type
+    mat_1[11]?
+  AnswerChoices: 54; 47
+  CorrectAnswer: 47
+  AnswerTests: omnitest(correctVal= '47')
+  Hint: Column... by... column...
+  
+- Class: cmd_question
+  Output: Okay, that command gave us the elements of row 17 of mat_1 in a single vector.
+    Now give me the 7th and 20th element of columns 3 to 10.
+  CorrectAnswer: mat_1[c(7,20), 3:10]
+  AnswerTests: omnitest(correctExpr='mat_1[c(7,20), 3:10]')
+  Hint:
+  
+- Class: cmd_question
+  Output: As was the case with df's, you can name the rows and columns of a matrix. Right
+    now, they are unnamed. Use dimnames(mat_1) to see for yourself.
+  CorrectAnswer: dimnames(mat_1)
+  AnswerTests: omnitest(correctExpr='dimnames(mat_1)')
+  Hint: That's dimnames(mat_1).
+  
+- Class: cmd_question
+  Output: One way of naming the dimensions is using the rownames() and colnames()
+    functions that can each be assigned a numeric, logical or a character vector (but
+    turns numeric and logical) vectors into character vectors). Let's  say you want to
+    name the columns of mat_1 using numbers 1 to 10. Do it now using colnames()
+  CorrectAnswer: colnames(mat_1) <- c(1:10)
+  AnswerTests: omnitest(correctExpr='colnames(mat_1) <- c(1:10)')
+  Hint: That's colnames(mat_1) <- c(1:10).
+  
+- Class: cmd_question
+  Output: Look at mat_1 again to see what happened.
+  CorrectAnswer: mat_1
+  AnswerTests: omnitest(correctExpr='mat_1')
+  Hint:
+  
+- Class: cmd_question
+  Output: See? The columns now have numbers 1:10 as their names. Unlike with data frames,
+    however, you cannot use the $ operator with matrices. It would just return an error
+    statement. Look at dimnames(mat_1) again.
+  CorrectAnswer: dimnames(mat_1)
+  AnswerTests: omnitest(correctExpr='dimnames(mat_1)')
+  Hint: That's dimnames(mat_1).
+  
+- Class: text
+  Output: The 2nd dimension now includes the numbers 1 to 10 (as characters) while the
+    first dimension remains empty. The [[]]s may remind you of something you've seen
+    before...
+    
+- Class: text
+  Output: That's right, lists! Well done, you! That brings us to the other way of naming
+    dimensions of a matrix. You can use dimnames(mat_1) and assign it a list of length
+    2 where [[1]] includes row names and [[2]] includes column names. Additionally, you can
+    name [[1]] and [[2]].
+    
+- Class: cmd_question
+  Output: Use dimnames() to give the dimensions of our matrix names. Call the row dimension
+    row and give the rows numbers from 1 to 20. Also, call the column dimension column and
+    name the columns with upper-case letters from A to J. To do this you will need to recall
+    that lists are created using list(<name of [[1]]> = <elements of [[1]]>, <name of [[2]]>
+    = <elements of [[2]], ...). Also, you want the first 10 elements of the variable LETTERS.
+  CorrectAnswer: dimnames(mat_1) <- list(rows = 1:20, columns = LETTERS[1:10])
+  AnswerTests: omnitest(correctExpr='dimnames(mat_1) <- list(rows = 1:20,
+    columns = LETTERS[1:10])')
+  Hint: That would be something along the lines of dimnames(mat_1) <- list(rows = 1:20,
+    columns = LETTERS[1:10]).
+    
+- Class: cmd_question
+  Output: Look at mat_1 again to see what the result.
+  CorrectAnswer: mat_1
+  AnswerTests: omnitest(correctExpr='mat_1')
+  Hint:
+  
+- Class: cmd_question
+  Output: Okay, now that you know how to index and name matrices, let's look at how to
+    create them. Pull up the documentation for the matrix() function and read through it.
+  CorrectAnswer: ?matrix
+  AnswerTests: omnitest(correctExpr='?matrix')
+  Hint:
+  
+- Class: text
+  Output: So, the function takes a vector and arranges it into a matrix form. You can
+    specify how many rows and columns you want the matrix to have and whether you want R
+    to populate (fill in) the matrix by rows or by columns.
+    
+- Class: cmd_question
+  Output: Create a matrix called mat_2 with numbers from 1 to 80 arranged into 4 rows (ncol
+    is not needed). Let's keep the byrow argument at its default so let's omit it.
+  CorrectAnswer: mat_2 <- matrix(1:80, nrow = 4)
+  AnswerTests: omnitest(correctExpr='mat_2 <- matrix(1:80, nrow = 4)')
+  Hint: Just type mat_2 <- matrix(1:80, nrow = 4).
+  
+- Class: cmd_question
+  Output: Look at mat_2 now.
+  CorrectAnswer: mat_2
+  AnswerTests: omnitest(correctExpr='mat_2')
+  Hint:
+
+- Class: cmd_question
+  Output: To see the byrow = TRUE argument in action, create a matrix with the same content
+    and nrow but this time add the byrow argument. Call it mat_3.
+  CorrectAnswer: mat_3 <- matrix(1:80, nrow = 4, byrow=T)
+  AnswerTests: omnitest(correctExpr='mat_3 <- matrix(1:80, nrow = 4, byrow=T)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now, look at mat_3.
+  CorrectAnswer: mat_3
+  AnswerTests: omnitest(correctExpr='mat_3')
+  Hint:
+  
+- Class: text
+  Output: Mark the difference. The first matrix is populated column-wise, the second
+    row-wise.
+    
+- Class: cmd_question
+  Output: You can also turn variables into matrices by feeding them as vectors in the
+    matrix() function. Create a matrix called mat_4 with df$age as data arranged into
+    8 columns (by column).
+  CorrectAnswer: mat_4  <- matrix(df$age, ncol = 8)
+  AnswerTests: omnitest(correctExpr='mat_4  <- matrix(df$age, ncol = 8)')
+  Hint: Instead of byrow = FALSE, just omit the byrow argument altogether.
+  
+- Class: cmd_question
+  Output: R gave you a warning message telling you that you tried to fit a vector of 76
+    numbers into 8 columns (76/8 is not an integer). Look at mat_4 to see what happened.
+  CorrectAnswer: mat_4
+  AnswerTests: omnitest(correctExpr='mat_4')
+  Hint:
+  
+- Class: text
+  Output: As you might notice, R recycled the vector and used it again to populate the
+    remaining elements of the matrix. The last 4 elements of [,8] are the same as the
+    first 4 elements of [,1].
+    
+- Class: cmd_question
+  Output: Redo mat_4 so that it's arranged into 4 columns, instead of 8.
+  CorrectAnswer: mat_4  <- matrix(df$age, ncol = 4)
+  AnswerTests: omnitest(correctExpr='mat_4  <- matrix(df$age, ncol = 4)')
+  Hint:
+
+- Class: text
+  Output: There are several things you can do with a matrix. Let me show you some of them.
+  
+- Class: cmd_question
+  Output: A matrix can be transposed, meaning rotated along its diagonal. Before I show
+    you what that looks like, print mat_1 again.
+  CorrectAnswer: mat_1
+  AnswerTests: omnitest(correctExpr='mat_1')
+  Hint:
+
+- Class: cmd_question
+  Output: Now to transpose it, simply type t(mat_1) and see the difference.
+  CorrectAnswer: t(mat_1)
+  AnswerTests: omnitest(correctExpr='t(mat_1)')
+  Hint:
+
+- Class: cmd_question
+  Output: You can also perform mathematical operations with matrices, provided they contain
+    values of class = c("numeric", "integer"). To add or subtract matrices, they must have
+    an equal number of rows and columns. If you try to add or subtract matrices of different
+    dimensions, you will get an error statement about 'non-conformable arguments'. Try adding
+    mat_2 and mat_3 and store the result in mat_add.
+  CorrectAnswer: mat_add <- mat_2 + mat_3
+  AnswerTests: omnitest(correctExpr='mat_add <- mat_2 + mat_3')
+  Hint:
+  
+- Class: cmd_question
+  Output: Print mat_add.
+  CorrectAnswer: mat_add
+  AnswerTests: omnitest(correctExpr='mat_add')
+  Hint:
+  
+- Class: text
+  Output: What happened here is that R took element [x,y] from mat_2 and added it to the
+    corresponding element for mat_3.
+  
+- Class: cmd_question
+  Output: Now, if you subtract mat_2 from mat_add, you should get mat_3, right? To test this,
+    you can use the identical() function that compares two matrices. use identical(mat_add -
+    mat_2, mat_3) to do this.
+  CorrectAnswer: identical(mat_add - mat_2, mat_3)
+  AnswerTests: omnitest(correctExpr='identical(mat_add - mat_2, mat_3)')
+  Hint:
+  
+- Class: text
+  Output: Matrices can also be multiplied. Now, you can do, for instance, mat_2 * mat_3 and
+    R will multiply the corresponding elements of the two matrices with each other. This,
+    however is not how matrices are multiplied.
+    
+- Class: text
+  Output: The rules for how they *are* multiplied are not all that straight forward but if
+    you want to know how it's done you can always look up matrix multiplication. What you
+    need to know now is that you can only multiply two matrices when the number of *columns*
+    of the *first* matrix equals the number of *rows* of the *second* matrix. If you try to
+    multiply matrices that don't meet this criterion, you will get a 'non-conformable
+    arguments' error.
+    
+- Class: cmd_question
+  Output: Two of our matrices meet this criterion - mat_4 and mat_2. You can multiply them
+    using the %*% operator. Do it now.
+  CorrectAnswer: mat_4 %*% mat_2
+  AnswerTests: omnitest(correctExpr='mat_4 %*% mat_2')
+  Hint: Order matters!
+  
+- Class: text
+  Output: One thing to be mindful of is that, unlike with numbers and vectors, when it comes
+    to matrices A %*% B != B %*% A. In the same vein, you could not multiply mat_2 %*% mat_4,
+    because mat_2 has 20 columns and mat_4 has only 19 rows.
+    
+- Class: text
+  Output: Finally, when it comes to dividing matrices... Let's just say matrices cannot be
+    divided and let's leave it at that. If you want the long answer, I'm afraid you'll have
+    to invest some effort into learning matrix algebra. I would certainly encourage you to!
+    
+- Class: text
+  Output: Okay, two more things...
+  
+- Class: cmd_question
+  Output: Firstly, you can check if an object is a matrix using the is.matrix() function
+    that returns a Boolean value. Check if df is a matrix.
+  CorrectAnswer: is.matrix(df)
+  AnswerTests: omnitest(correctExpr='is.matrix(df)')
+  Hint: is.matrix(df)
+  
+- Class: cmd_question
+  Output: Surprise, surprise, it is not! YOu can however coerce it into a matrix. This is
+    done using the as.matrix() function. Try to force df into a matrix now.
+  CorrectAnswer: as.matrix(df)
+  AnswerTests: omnitest(correctExpr='as.matrix(df)')
+  Hint:
+  
+- Class: text
+  Output: "All the values now have double quotes around them. This nicely illustrates another
+    important feature of matrices. Like vectors and unlike df's, they can only include
+    values of a single class (plus NAs, because they're a bit special). So by coercing df
+    of multiple classes into a matrix, R changed them all into the 'lowest' class: character."
+    
+- Class: text
+  Output: OK doke, this is all I prepared for this lesson. Next time, we're back to
+    statistical tests. See you soon!

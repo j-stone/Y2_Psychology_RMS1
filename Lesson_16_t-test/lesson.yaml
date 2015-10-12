@@ -1,0 +1,390 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 16 t-test
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+  
+- Class: text
+  Output: Good to see you again. In this lesson, I'll tell you about the t-test. Just like
+    with the chi^2 tests, we will cover the logic behind the test, then I'll show you how to
+    calculate it in R, and finally I'll show you the R functions that do most of the leg work
+    for you.
+    
+- Class: text
+  Output: The t-test (there are actually 3 t-tests, each used in a different context) is used
+    for comparing means of continuous variables. For instance, you might be interested in
+    finding out whether the mean reaction time of your sample is significantly different from
+    some value you found in literature.
+
+- Class: text
+  Output: "'Now wait a second!' I hear you say. 'We already did this with a z-test,' I hear
+    you add. Well, yes, you are right. But the t-test has one big advantage over the z-test
+    that makes it preferable for hypothesis testing in psychology."
+    
+- Class: text
+  Output: Recall, that in order to calculate the z-test, we need to know the properties of
+    the population distribution (mean and variance, or standard deviation).
+    
+- Class: text
+  Output: However, in most real-life scenarios, this is not the case. To come back to our
+    reaction time example, you don't know what the variance or sd of RT are in the population.
+    We thus have to estimate them from the data.
+
+- Class: text
+  Output: Obviously, the larger your sample size, the more closely will the estimation resemble
+    the actual variance/sd (think back to the Central Limit Theorem...) and the more closely
+    will the sampling distribution of the compared means approach the normal distribution.
+    
+- Class: text
+  Output: As luck would have it, there is a distribution that captures this gradual
+    approximation of the normal distribution. It is, you guessed it, the t distribution. Just
+    like the chi^2 distribution, its shape changes as a function of the number of degrees
+    of freedom. And that number is linked to your N (sample size).
+    
+- Class: figure
+  Output: Here is a graph showing how the shape of the t distribution changes depending on
+    the number of degrees of freedom. Again, do not close the display window manually. As
+    you can see, with 1 DF, the distribution looks a bit pointy with rather fat tails (that
+    *is* a technical term).
+  Figure: t_plot.R
+  FigureType: new
+
+- Class: text
+  Output: As the number of DF's gets bigger, the shapes looks more and more
+    normal. Again, the critical value (associated with p-value < .05) varies, but unlike with
+    the chi^2 distribution, it gets closer and closer to +- 1.96 for a two-tailed test (the
+    critical value of the z-test). The line for the critical value of a 2-tailed p < .05 for
+    1 DF is not even on the plot, since its value is |12.71| (absolute value). But for 8 DFs
+    it is already substantially closer to |1.96| at |2.30| and for 1000 DFs it's almost there
+    at |1.96...|.
+    
+- Class: text
+  Output: The logic of the t-test is very similar to that of the chi^2 test. Like I said,
+    we are interested in comparing the mean RT of our sample to some assumed value. Again,
+    we test the null hypothesis (H0) that states that there is no significant difference
+    between the mean RT of our sample and the assumed value of population mean. To test this,
+    we assess the difference between these two values, taking into account the spread of our
+    data. As it turns out, doing this gets us a value that follows the t distribution with
+    N - 1 DF's. The value is called the t statistic.
+    
+- Class: text
+  Output: That means, that we are able to assess the probability of getting a given - or, sing
+    it with me, a more extreme - t statistic based on the values of t that we would get if we
+    sampled all the possible samples of size N from the population in a world where the null
+    hypothesis is true. If this probability (p-value) is below .05, we reject H0 in favour of
+    the alternative hypothesis.
+    
+- Class: cmd_question
+  Output: If you're done looking at the pretty graph I made for you, close the window by
+    typing dev.off()
+  CorrectAnswer: dev.off()
+  AnswerTests: omnitest(correctExpr='dev.off()')
+  Hint:
+
+- Class: cmd_question
+  Output: Okay, let's see how this all works in practice. I've loaded our good old df for you.
+    We're interested in the df$rt variable. Just to refresh some very basic plotting, look at
+    the distribution of the variable using hist().
+  CorrectAnswer: hist(df$rt)
+  AnswerTests: omnitest(correctExpr='hist(df$rt)')
+  Hint:
+
+- Class: text
+  Output: "Like I said, there are 3 versions of the t-test: the one sample t-test which
+    compares the mean of a variable to some assumed population mean, the independent
+    t-test that compares two... wait for it... independent groups and the paired-sample
+    t-test that compares two dependent groups. They are all rather similar, so let me show
+    you the calculation of the test on a one sample t-test example."
+
+- Class: cmd_question
+  Output: "Computing a t statistic requires 4 important values: sample mean, assumed population
+    mean, variance (or standard deviation), and sample size. Get R to store the mean of df$rt
+    in an object called rt_mean."
+  CorrectAnswer: rt_mean <- mean(df$rt)
+  AnswerTests: omnitest(correctExpr='rt_mean <- mean(df$rt)')
+  Hint: A bit rusty, eh? Just type rt_mean <- mean(df$rt).
+
+- Class: cmd_question
+  Output: Look at the value of rt_mean.
+  CorrectAnswer: rt_mean
+  AnswerTests: omnitest(correctExpr='rt_mean')
+  Hint:
+  
+- Class: text
+  Output: It's difficult to say whether the difference of ~7.64 ms is statistically meaningful.
+    that's why we need to run the test.
+  
+- Class: cmd_question
+  Output: Since we used sd for the z-test calculation, to mix it up, let's work out our t-test
+    using variance. Store the var() of our RT variable in an object called rt_var, please.
+  CorrectAnswer: rt_var <- var(df$rt)
+  AnswerTests: omnitest(correctExpr='rt_var <- var(df$rt)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now look at the result.
+  CorrectAnswer: rt_var
+  AnswerTests: omnitest(correctExpr='rt_var')
+  Hint:
+
+- Class: mult_question
+  Output: Just out of interest, what is the relationship between variance and std deviation?
+  AnswerChoices: var = sd^2; sd = var^2; var = sqrt(sd); sd = var/n; var = sd/sqrt(n)
+  CorrectAnswer: var = sd^2
+  AnswerTests: omnitest(correctVal='var = sd^2')
+  Hint:
+  
+- Class: text
+  Output: The next value that we need for our t statistic is the assumed population
+    mean, which is, according to our hypothesis, 350 ms.
+
+- Class: cmd_question
+  Output: The last value needed for our t statistic calculation is the sample
+    size of our dataset. Since there are no missing values for the rt variable, the
+    sample size will be equal to the length of the vector. Store it in an object called n.
+  CorrectAnswer: n <- length(df$rt)
+  AnswerTests: omnitest(correctExpr='n <- length(df$rt)')
+  Hint:
+
+- Class: text
+  Output: I meantioned before that the t statistic is the difference between the sample mean
+    and the assumed mean taking sample spread into account. The spread is taken into account
+    by dividing the difference by (standard deviation / square root of N).
+  
+- Class: mult_question
+  Output: Since we are working with var and not sd, what is the expression we need to use
+    to divide the difference?
+  AnswerChoices: var/sqrt(n); var/n^2; sqrt(var/n); (var/n)^2; none of the above; any, since
+    they're all equivalent
+  CorrectAnswer: sqrt(var/n)
+  AnswerTests: omnitest(correctVal='sqrt(var/n)')
+  Hint: Var = sd^2, therefore sd = sqrt(var). Thus you divide by sqrt(var)/sqrt(n), which
+    is...
+  
+- Class: cmd_question
+  Output: Okay, apply the above formula for the t statistic and store the retult in an object
+    called t_stat.
+  CorrectAnswer: t_stat <- (rt_mean - 350) / sqrt(rt_var/n)
+  AnswerTests: omnitest(correctExpr='t_stat <- (rt_mean - 350) / sqrt(rt_var/n)')
+  Hint: You want to subtract 350 from rt_mean and then divide the whole thing by
+    sqrt(rt_var/n).
+    
+- Class: cmd_question
+  Output: Look at the result.
+  CorrectAnswer: t_stat
+  AnswerTests: omnitest(correctExpr='t_stat')
+  Hint:
+
+- Class: text
+  Output: Okay, so we have our t statistic. Similarly to the chi^2 statistic, we now want to
+    find out what proportion of the corresponding t distribution with the appropriate number
+    of DF's is equal to or more extreme than our value.
+    
+- Class: text
+  Output: Unlike the chi^2 distribution, however, the t distribution is symmetrical and the
+    values of the t statistic can be either positive or negative (a chi^2 stat is always
+    positive, since you can't have less than no deviation from the hypothetical distribution).
+    That means, we have to be careful about which tail we look at.
+    
+- Class: text
+  Output: Our t statistic is negative (our sample mean was less than 350). That means that
+    the majority of the distribution will lie to the right of it. This is *not* the side we
+    are interested in. We thus need to look at the lower tail to get the probability that
+    any t statistic derived based on a sample of size n from a population where the mean
+    RT is 350 is -0.48718 *or less*.
+
+- Class: cmd_question
+  Output: "Okay, last time qe used the pchisq() function to get the p-value associated with
+    our chi^2 statistic. There's an equivalent function for the t distribution: pt(). Pull
+    up the documentation for it."
+  CorrectAnswer: ?pt
+  AnswerTests: omnitest(correctExpr='?pt')
+  Hint:
+
+- Class: cmd_question
+  Output: Use the pt() function to get the probability of t being <= t_stat.
+  CorrectAnswer: pt(t_stat, n-1)
+  AnswerTests: match_call('pt(t_stat, n-1)')
+  Hint: You only need to specify the q argument, which is t_stat and the df argument.
+    Remember, the number of DF's for the t-tset is equal to n less 1.
+
+- Class: text
+  Output: Cool, the p-value is greater than .05. However, this is not the whole story.
+    Since we only looked at one tail of the distribution, this p-value tests the one-sided
+    alternative hypothesis that the sample mean is *smaller* than 350 ms. But the
+    alternative hypothesis we originally aimed to test was that the sample mean is
+    *different* either way.
+  
+- Class: cmd_question
+  Output: To get the p-value for this two-sided hypothesis, you have to multiply the p-value
+    by 2. You can just multiply the whole command you just used. Go ahead and do it.
+  CorrectAnswer: pt(t_stat, n-1) * 2
+  AnswerTests: match_call('pt(t_stat, n-1) * 2')
+  Hint:
+
+- Class: text
+  Output: Et voila, your two-tailed p-value! Since it's > .05, we retain H0 and say that
+    the sample mean was not significantly different from 350 ms (t(df = 75) = -0.48, p = .628).
+  
+- Class: cmd_question
+  Output: Great, so this is how a one sample t-test is calculated. And as with chi^2 (and most
+    other statistical tests), there's a dedicated R function that does the numbers for you.
+    Look up the t.test() function's documentation and read through it.
+  CorrectAnswer: ?t.test
+  AnswerTests: omnitest(correctExpr='?t.test')
+  Hint:
+  
+- Class: cmd_question
+  Output: See if you can run the test without any hints from me...
+  CorrectAnswer: t.test(df$rt, mu=350)
+  AnswerTests: match_call('t.test(df$rt, mu=350)')
+  Hint: Oh alright then, you only need to specify the variable you want to test as the x
+    argument and the value against which you are comparing as the mu argument. You can
+    leave the rest as it is.
+
+- Class: cmd_question
+  Output: "Great, we got exactly the same values again (within rounding error). Magic!
+    Now to get the one-tailed p-value, change specify the alternative argument as \"less\"."
+  CorrectAnswer: t.test(df$rt, mu = 350, alternative = "less")
+  AnswerTests: match_call('t.test(df$rt, mu=350, alternative = "less")')
+  Hint:
+
+- Class: text
+  Output: "That's the one-sample t-test covered. Let's move on to the second flavour: the
+    independent t-test."
+
+- Class: text
+  Output: As I mentioned before, the test is used to compare two independent samples, such
+    as two groups of different individuals. Let's say we want to know whether the
+    experimental group had a different mean RT from the control.
+    
+- Class: text
+  Output: "The logic and the calculation of the independent t-test is very similar to those
+    of the one sample version: You calculate the difference in means (this time between
+    the two groups), divide it by the variance in the data and compare the resulting
+    t statistic to the t distribution with appropriate number of DF's."
+    
+- Class: text
+  Output: "The differences are twofold: firstly, you now have two groups and each one comes
+    with its own variance. That means you need to pool these two together and use this
+    pooled variance to divide the difference in means. For the formula, consult your
+    textbook. Secondly, the way the number of DF's is determined is slightly different.
+    For an independent sample t-test, it is the number of participants (in both groups
+    combined) less the number of groups (which is 2)."
+
+- Class: text
+  Output: Okay, let's do this! The function that gives you the independent t-test is the same;
+    you just need to specify it differently. You could provide the rt data for the control
+    group as the x argument and the rt data for the experimental group as the y argument.
+    
+- Class: text
+  Output: Alternatively, you can use a formula notation using the ~ operator, you've seen before.
+    y ~ x tells R that you want to predict y by x. In other words x is the independent variable
+    and y is the dependent. In our case, we want to predict rt by group.
+    
+- Class: cmd_question
+  Output: Say, we want to test a 2-sided hypothesis. Although you don't have to specify this
+    explicitly, let's do it anyway using the alternative argument. Put the formula (the bit with
+    ~) as the first argument. Go ahead and do it now.
+  CorrectAnswer: t.test(df$rt ~ df$group, alternative = "two.sided")
+  AnswerTests: match_call('t.test(df$rt ~ df$group, alternative = "two.sided")')
+  Hint: Just type t.test(df$rt ~ df$group, alternative = "two.sided")
+  
+- Class: text
+  Output: Great, your p-value is less than .05, which means that the group means were
+    significantly different. The t statistic is positive, which tells you that the group
+    coded with 1 (in our case the experimental group) had a smaller mean that the group
+    coded with 0, since the t statistic is based on subtracting mean_1 from mean_0.
+    
+- Class: text
+  Output: R also gives you the group means as well as 95% confidence interval for the
+    t statistic. Now, you may be slightly puzzled by the number of DF's R gave you. It is
+    definitely not n - 2. So what's going on here?
+    
+- Class: text
+  Output: Well, the independent t-test relies on the assumption of equal variances. That
+    means it assumes that var(group_1) = var(group_2). By '=', I mean that the variances are
+    not significantly different from each other. If this assumption is broken, using the
+    basic t-test is inappropriate. Instead, we use the so-called Welch correction (or the
+    Welch test), which slightly changes the way the t statistic and the DF's are calculated.
+
+- Class: cmd_question
+  Output: However, turns out that there is almost never a benefit to using the t-test
+    over the Welch test even if the variances are equal. And that's why R gives you
+    the Welch test by default. You can change this by adding the var.equal = TRUE
+    argument to the command. Try it now.
+  CorrectAnswer: t.test(df$rt ~ df$group, alternative = "two.sided", var.equal = TRUE)
+  AnswerTests: match_call('t.test(df$rt ~ df$group, alternative = "two.sided",
+    var.equal = TRUE)')
+  Hint: Just type t.test(df$rt ~ df$group, alternative = "two.sided", var.equal = TRUE)
+
+- Class: text
+  Output: See, the result is ever so slightly different and, this time around, the number
+    of DF's is indeed equal to n - 2.
+
+- Class: text
+  Output: "So that's test number 2 dealt with. Now for the final stretch: the paired-sample
+    t-test."
+    
+- Class: text
+  Output: This test is used when your two groups are not independent of each other. For
+    instance, they may include twins separated into groups A and B. They are genetically
+    very similar, so their data are probably correlated. Another case is a repeated
+    measures design, when you have the same people in both groups and you take two
+    measurements from each of them. For instance you take their anxiety score before and
+    after a test.
+    
+- Class: text
+  Output: Let's say we hypothesised that the participants' anx_score at time 1 (before the
+    test) will be greater than at time 2 (after the test). The differences between a
+    paired-sample t-test and the other ones are slight but crucial.
+    
+- Class: text
+  Output: Firstly, in a paired-sample t-test, you don't look at the differences between
+    the group means but the mean of the differences between var_1 and var_2 for every
+    given participant. Secondly, the variance in the data is calculated in a way that
+    accounts for the lack of independence between the two groups. Again, for more details,
+    check out your textbook or lecture notes.
+
+- Class: mult_question
+  Output: "Very well, let's test the hypothesis that df$anx_score_1 > df$anx_score_2. Just
+    like with the independent test we have to subtract the latter from the former. Given
+    our hypothesis we would expect the difference df$anx_score_1 - df$anx_score_2 to be:"
+  AnswerChoices: less than 0; greater than 0; equal to 0
+  CorrectAnswer: greater than 0
+  AnswerTests: omnitest(correctVal='greater than 0')
+  Hint:
+
+- Class: cmd_question
+  Output: Okay, let's run the test. The function is again the same. You need to specify
+    both x and y arguments by giving the function both variable sin question. Also, you
+    just figured out the alternative argument. Finally, to tell R this is a paired-sample
+    t-test, you need to change the paired argument to TRUE. Give it a go, I know you can do
+    it!
+  CorrectAnswer: t.test(df$anx_score_1, df$anx_score_2, alternative = "greater",
+    paired = TRUE)
+  AnswerTests: match_call('t.test(df$anx_score_1, df$anx_score_2, alternative = "greater",
+    paired = TRUE)')
+  Hint:
+  
+- Class: text
+  Output: This time the result is not significant, although the p-value is pretty close.
+    Alas, the world is not always what we would like it to be...
+    
+- Class: cmd_question
+  Output: Just to show you that it really matters whether you use the independent or the
+    paired-sample t-test with correlated data, run the command again but this time omit
+    the paired argument.
+  CorrectAnswer: t.test(df$anx_score_1, df$anx_score_2, alternative = "greater")
+  AnswerTests: match_call('t.test(df$anx_score_1, df$anx_score_2, alternative = "greater")')
+  Hint:
+
+- Class: text
+  Output: That's a pretty big difference in p-values and DF's. That is because the test
+    now doesn't take into consideration the lack of independence in the data.
+
+- Class: text
+  Output: Okay, that is all I wanted to show you regarding the t-test. See you another day
+    for some more exciting stats. Cheerio!

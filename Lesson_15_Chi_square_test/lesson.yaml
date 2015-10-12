@@ -1,0 +1,329 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 15 Chi square test
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Hiya! I am sure that after our last lesson's trip to the topic of matrices, you are
+    more than ready to go back to statistical testing. Let's talk about the chi-square test
+    then!
+    
+- Class: text
+  Output: I already mentioned the chi-square (chi^2; X^2 - as in the Greek letter 'chi', not
+    'x') distribution in one of the earlier lessons and I told you that it describes the
+    number of occurrences of an event over a certain period of time (for instance, the annual
+    number of soldiers killed by horse kicks during the Prussian war). It can, however, be
+    used for testing certain hypotheses.
+
+- Class: text
+  Output: Now, in lessons 12 and 13 We talked about testing hypotheses about binomial outcomes
+    (binomial test) and about group differences on variables with known population parameters
+    (z-test). These tests had something in common.
+    
+- Class: text
+  Output: They used distributions with known characteristics (binomial and normal) to find the
+    probability of getting a certain - or a more extreme - test statistic (number of successes
+    and z-score, respectively) under the null hypothesis. The very same logic applies to
+    Pearson's chi^2 test.
+    
+- Class: text
+  Output: Pearson's chi^2 test is useful for, among other things, testing hypotheses regarding
+    categorical data. It can be applied to a single variable case or to exploring the
+    relationship between two categorical variables. Let's talk about them one at a time.
+    
+- Class: text
+  Output: Pearson's chi^2 used in the single variable case is also called a goodness-of-fit test.
+    It looks at the distribution of a categorical variable and assesses how similar it is
+    compared to what we would expect under the null hypothesis.
+    
+- Class: mult_question
+  Output: Let's say, you want to know whether the numbers of males and females in your sample
+    are fairly equal or whether your recruitment method had a gender bias. Suppose you have a
+    sample size of 100. How many males would you expect (on average) to have in such a sample?
+    Let's assume, for the sake of simplicity, that there are only two gender categories...
+  AnswerChoices: 50;48;52;25;75
+  CorrectAnswer: 50
+  AnswerTests: omnitest(correctVal= '50')
+  Hint:
+
+- Class: text
+  Output: And as for females, the 'expected frequency' will be the same. To see whether this
+    null model of expected 50-50 distribution fits your data (hence the goodness-of-fit test),
+    you can look at some measure of the differences between the expectation and your data.
+    
+- Class: text
+  Output: The measure we use to assess this kind of discrepancy is the standardised sum of
+    squared differences and as it happens, if you look at the sampling distribution of it,
+    you will find that it follows the chi^2 distribution. Just like the distribution of all
+    possible numbers of heads in a sequence coin flips follows the binomial distribution, or
+    the sampling distribution of the mean follows the normal distribution...
+    
+- Class: text
+  Output: "Now the chi^2 distribution is a bit different from the other two: it does not have
+    a fixed shape. Its shape depends on the number of degrees of freedom which in the
+    goodness-of-fit sense is the number of categories in our variable less 1. For two gender
+    categories, there is one degree of freedom."
+  
+- Class: figure
+  Output: Here is a graph showing how the shape of the chi^2 distribution changes depending on
+    the number of degrees of freedom. Do not close the display window manually, there's a
+    command for it. As you can see the shape varies quite drastically. As a result, the critical
+    value (associated with p-value < .05) also varies, unlike with the normal distribution,
+    where it is always +- 1.96 for a two-tailed test.
+  Figure: chisq_plot.R
+  FigureType: new
+  
+- Class: text
+  Output: For example, for 1 degree of freedom, you need a chi^2 statistic of 3.84 for the
+    probability of getting this or a bigger value to be .05. As the number of degrees of
+    freedom gets bigger, so does the critical value. With 2 DFs, it is 5.99, with 8 DFs, it's
+    15.51.
+
+- Class: text
+  Output: This makes sense because, as I said, the chi^2 statistic for the goodness-of-fit test
+    is the standardised sum of squared differences. The more categories you have, the more
+    squared differences there will be to add and the bigger the chi^2 statistics will be even
+    if the distribution is not significantly different from that expected under the null.
+    
+- Class: cmd_question
+  Output: Feel free to take a moment to inspect the plot some more to make sure you're down
+    with the concept of varying shapes and critical values. Then type dev.off() to close the
+    graph window.
+  CorrectAnswer: dev.off()
+  AnswerTests: omnitest(correctExpr='dev.off()')
+  Hint:
+    
+- Class: cmd_question
+  Output: Okay, let's see how this works in practice. Here's our old data frame. Type
+    summary(df$gender) to see how many men, women and non-binary people you have in there.
+  CorrectAnswer: summary(df$gender)
+  AnswerTests: omnitest(correctExpr='summary(df$gender)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now let's see how many people we have in the sample. You could just manually add
+   the numbers but doing stuff manually isn't what programming is about. Use length() to have
+   R count the cases for you.
+  CorrectAnswer: length(df$gender)
+  AnswerTests: omnitest(correctExpr='length(df$gender)')
+  Hint: Just type length(df$gender).
+  
+- Class: cmd_question
+  Output: This number, however, includes the 5 NA's. To omit these you need to tell R to take
+    the length() of only the portion of the df$gender vector which() doesn't have missing
+    values, or !is.na(). See if you can figure out the command and store its output in an
+    object called number.
+  CorrectAnswer: number <- length(which(!is.na(df$gender)))
+  AnswerTests: omnitest(correctExpr='number <- length(which(!is.na(df$gender)))')
+  Hint: That's number <- length(which(!is.na(df$gender))).
+
+- Class: cmd_question
+  Output: Look at the number object now.
+  CorrectAnswer: number
+  AnswerTests: omnitest(correctExpr='number')
+  Hint:
+  
+- Class: cmd_question
+  Output: Okay, that's equal to 27 + 27 + 17. Get R to count the number of categories
+    (or levels() of the gender variable) and  store it in an object called categories.
+  CorrectAnswer: categories <- length(levels(df$gender))
+  AnswerTests: omnitest(correctExpr='categories <- length(levels(df$gender))')
+  Hint: You only need the length() of levels() of df$gender.
+  
+- Class: cmd_question
+  Output: And now Look at the new object.
+  CorrectAnswer: categories
+  AnswerTests: omnitest(correctExpr='categories')
+  Hint:
+  
+- Class: cmd_question
+  Output: We also need a varaible with the observed numbers per category. Unlike the summary()
+    function, table() does not count NA's. Use it and store the result in an object called
+    observed.
+  CorrectAnswer: observed <- table(df$gender)
+  AnswerTests: omnitest(correctExpr='observed <- table(df$gender)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Have R print the object.
+  CorrectAnswer: observed
+  AnswerTests: omnitest(correctExpr='observed')
+  Hint:
+  
+- Class: mult_question
+  Output: So far so good. Now, under the null hypothesis of equal frequencies, you'd expect
+    the 3 categories to be evenly distributed over the 71 cases. Which of these will give
+    you the expected frequency?
+  AnswerChoices: number / categories; 3 / 71; number * categories; 71 + 3; categories
+    - number
+  CorrectAnswer: number / categories
+  AnswerTests: omnitest(correctVal= 'number / categories')
+  Hint:
+  
+- Class: cmd_question
+  Output: The expected frequency is the same for each of the categories. Tell R to calculate
+    the expected frequency and store it in an object called expected.
+  CorrectAnswer: expected <- number / categories
+  AnswerTests: omnitest(correctExpr='expected <- number / categories')
+  Hint:
+
+- Class: cmd_question
+  Output: Let's calculate the squared differences for each category. This is done by taking
+    the expected frequencies away from the observed frequencies and squaring the result. store
+    the squared differences in a variable called sq_diff now.
+  CorrectAnswer: sq_diff <- (observed - expected)^2
+  AnswerTests: omnitest(correctExpr='sq_diff <- (observed - expected)^2')
+  Hint: Maybe something like (observed - expected)^2?
+
+- Class: cmd_question
+  Output: Go ahead and look at sq_diff.
+  CorrectAnswer: sq_diff
+  AnswerTests: omnitest(correctExpr='sq_diff')
+  Hint:
+  
+- Class: cmd_question
+  Output: "The squared differences have one drawback: they get bigger as the overall sample
+    size increases. What we want is some 'standardised' measure of differences that doesn't
+    depend on the sample size. We can standardise squared differences by dividing them by
+    their respective expected frequencies. Do it now and store the output in an object called
+    std_square."
+  CorrectAnswer: std_square <- sq_diff/expected
+  AnswerTests: omnitest(correctExpr='std_square <- sq_diff/expected')
+  Hint: Just type std_square <- sq_diff/expected.
+  
+- Class: cmd_question
+  Output: Now, the single-number measure of how much the distribution of our gender variable
+    differs from the expected uniform is the sum of the standardised squared differences.
+    Calculate is now and put it in an object called chi_square.
+  CorrectAnswer: chi_square <- sum(std_square)
+  AnswerTests: omnitest(correctExpr='chi_square <- sum(std_square)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Look at the result.
+  CorrectAnswer: chi_square
+  AnswerTests: omnitest(correctExpr='chi_square')
+  Hint:
+  
+- Class: text
+  Output: This is a fairly small number which means that the distribution of gender
+    categories in our sample does not differ that much from the uniform distribution
+    expected under the null hypothesis. 'Not that much' is, however, not that exact; a
+    p-value would be much, much better.
+    
+- Class: text
+  Output: I told you earlier that the sum of standardised squared differences follows
+    a chi square distribution with k-1 degrees of freedom, where k is the number of
+    categories within the variable.
+    
+- Class: text
+  Output: This means that if we were to sample all the possible samples of size 100 from
+    the population in which males, females, and non-binary people are distributed equally,
+    and plotted the sums of squares of each respective sample, the shape of the plot would
+    be equal to the chi^2 distribution with 2 degrees of freedom.
+    
+- Class: text
+  Output: The p-value tells us what portion of this distribution lies to the right of our
+   value of 2.817.
+   
+- Class: cmd_question
+  Output: You may remember from the lesson on sampling that there are the r*, q*, p* and d*
+    functions for many standard distributions. The p* functions give you the probability of
+    a given or more extreme value. Look up the documentation for pchisq() and check out the
+    usage and arguments sections.
+  CorrectAnswer: ?pchisq
+  AnswerTests: omnitest(correctExpr='?pchisq')
+  Hint:
+
+- Class: cmd_question
+  Output: Use the q and df parameters to provide the chi_square statistic we just calculated
+    and the corresponding number of degrees of freedom to get the associated p-value. Note,
+    however, that we are interested in the upper tail of the distribution so there's one more
+    argument that needs changing. Don't worry about the others.
+  CorrectAnswer: pchisq(chi_square, 2, lower.tail = FALSE)
+  AnswerTests: omnitest(correctExpr='pchisq(chi_square, 2, lower.tail = FALSE)')
+  Hint: The argument in question is lower.tail = FALSE.
+  
+- Class: text
+  Output: This value means that if we took all the possible samples of size 100 from the
+    null hypothesis population, 25.45% of these samples would depart from the uniform as
+    much or more that our one. Since the p-value is larger than .05, this departure is
+    not statistically significant and we can say that gender categories were not distributed
+    significanlty differently from uniform distribution (chi^2(df = 2) = 2.717, p = .245).
+    
+- Class: cmd_question
+  Output: Now that we spent a few minutes calculating the goodness-of-fit test, it might
+    please you to learn that you won't have to do this every time you want to run such a test.
+    Pull up the documentation for chisq.test() and read through it.
+  CorrectAnswer: ?chisq.test
+  AnswerTests: omnitest(correctExpr='?chisq.test')
+  Hint:
+  
+- Class: cmd_question
+  Output: Feed table(df$gender) to the function and compare the result to the one we calculated
+    'by hand'.
+  CorrectAnswer: chisq.test(table(df$gender))
+  AnswerTests: omnitest(correctExpr='chisq.test(table(df$gender))')
+  Hint:
+  
+- Class: text
+  Output: Don't know about you but the fact that the results match makes me kind of happy.
+  
+- Class: text
+  Output: Okay, so that's the Pearson's goodness-of-fit test logic, calculation, and R function
+    covered. Moving on to the test of independence.
+    
+- Class: text
+  Output: This test is used to see whether there's a relationship between two categorical
+    variables. For instance, whether you allocated people into the control and experimental
+    groups independently of their gender or whether there's a bias for who gets where. The
+    test assumes independence so a significant p-value tells you that this assumption should
+    be rejected and that there is indeed a relationship between the two variables.
+    
+- Class: text
+  Output: The logic and the calculation of the test of independence are very similar to the
+    goodness-of-fit test. You calculate the expected frequencies for each combination of the
+    two variables, then use it to calculate the sum of standardised squared differences and
+    compare the resulting statistic to the chi^2 distribution with the corresponding number
+    of degrees of freedom.
+    
+- Class: text
+  Output: The difference is in the way the expected frequencies and DF's are calculated. The
+    number of DF's = (n of var_1 categories - 1) * (n of var_2 categories - 1). For details
+    on the calculation of the expected frequencies, check out your textbook.
+    
+- Class: cmd_question
+  Output: Okay, let's see whether there's a relationship between df$gender and df$group.
+    The numbers of categories for these variables are 3 and 2, respectively. How many degrees
+    of freedom do you have?
+  CorrectAnswer: 2
+  AnswerTests: omnitest(correctVal='2')
+  Hint: What's (3-1) * (2-1)?
+  
+- Class: cmd_question
+  Output: It's always worth looking at the frequencies in your data. You can cross-tabulate
+   the two variables using xtabs( ~ df$gender + df$group). Try it now.
+  CorrectAnswer: xtabs( ~ df$gender + df$group)
+  AnswerTests: omnitest(correctExpr='xtabs( ~ df$gender + df$group)')
+  Hint:
+  
+- Class: cmd_question
+  Output: To test whether there's a relationship between df$gender and df$group, just put them
+    in the chisq.test() function. Go ahead!
+  CorrectAnswer: chisq.test(df$gender, df$group)
+  AnswerTests: omnitest(correctExpr='chisq.test(df$gender, df$group)')
+  Hint: No need for table() this time.
+  
+- Class: text
+  Output: Again, the p-value is > .05 and thus we can conclude that the various gender
+    categories were represented equally in both the experimental and the control groups
+    (chi^2 (df = 2) - 1.199, p = .549).
+    
+- Class: text
+  Output: In this lesson you learnt when, how, and why to use the chi square test. Good on you.
+    I shall see you soon. Bye for now!
+  
+

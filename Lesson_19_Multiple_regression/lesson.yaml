@@ -1,0 +1,339 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 19 Multiple regression
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+  
+- Class: text
+  Output: Hi there! Last time we talked about simple linear Ordinary Least Square
+    regression, that is, a linear (straight line) model predicting an outcome variable
+    by a single predictor variable. In this lesson, I'll show you how to include
+    more predictor variables in your model. In other words, I will show you how to
+    conduct a multiple regression.
+    
+- Class: text
+  Output: It is all very nice to look at the relationship between to variables but
+    we live in a messy world, where most things are influenced by a host of
+    factors. Take reaction time, for instance. It may well be the case that
+    the level of anxiety experienced by a person affects the speed with which
+    the they react to stimuli.
+    
+- Class: text
+  Output: "However, RT most likely depends on other things as well: the integrity
+    and conductivity of the nervous system, processing speed, and the
+    characteristics of the RT task just to name a few."
+    
+- Class: text
+  Output: This is why creating a model of a variable, such as RT, usually
+    requires more than one predictor. This is what multiple regression is for.
+    The maths behind it is rather more advanced than that behind simple
+    regression and requires decent knowledge of matrix algebra.
+    
+- Class: text
+  Output: Suffice to say that multiple regression is a direct extension of
+    simple regression in that that all the calculations (e.g., sum of squares)
+    take place in a n + 1 dimensional space instead of a 2D space (n is the
+    number of predictors in the model).
+
+- Class: text
+  Output: "Last time I told you that the equation for simple regression is
+    basically identical to the equation for a straight line: it requires an
+    intercept and a slope: outcome = intercept + slope * predictor."
+
+- Class: text
+  Output: "Since multiple regression is an extension of the simple case, the
+    equation is similar. The only difference is that the slope consists of
+    multiple parameter * predictor combinations. If b is the regression
+    coefficient, p is the predictor and n is the number of predictors, the
+    equation is: outcome = intercept + b_1 * p_1 + b_2 * p_2 + ... + b_n * p_n."
+  
+- Class: text
+  Output: Okay, let's look at how to do multiple regression in R.
+
+- Class: text
+  Output: Suppose that we have good grounds to believe that, apart from
+    anx score, a model predicting reaction time should also include gender,
+    age, and, of course, our experimental treatment (group).
+    
+- Class: cmd_question
+  Output: To put these predictor into a model, all you need to do is put them
+    in the formula, separating them by + signs. Go ahead, create a multiple
+    regression model including the predictors discussed above in the same order
+    (starting with anx_score_1) and store it in mult_reg_1.
+  CorrectAnswer: mult_reg_1 <- lm(rt ~ anx_score_1 + gender + age + group, df)
+  AnswerTests: match_call('mult_reg_1 <- lm(rt ~ anx_score_1 + gender + age +
+    group, df)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now look at the summary of mult_reg_1.
+  CorrectAnswer: summary(mult_reg_1)
+  AnswerTests: omnitest(correctExpr='summary(mult_reg_1)')
+  Hint:
+  
+- Class: text
+  Output: "Looks like two of your predictors are significant, namely age and group.
+    The way to interpret the results is the same as with simple regression: the
+    intercept represents the mean time predicted for someone who has a value of 0
+    for all the predictors, that is a 0 years old female in control group with
+    anxiety score of 0."
+    
+- Class: text
+  Output: "Each regression coefficient represents the change in predicted RT with
+    a unit change in the given predictor: +1 on anx score od age, female -> male
+    -> non-binary, and control -> experimental."
+
+- Class: text
+  Output: "Of course, in reality, you wouldn't have a 0 years old participant and since
+    it is likely that whatever relationship in not linear at very early and very late ages,
+    it is not a good idea to extrapolate this far beyond your data. After all, you only
+    have 18+ years old participants in your data set."
+    
+- Class: cmd_question
+  Output: For this reason it might be a good idea to centre the age variable so that
+    the value of 0 represents the sample mean age rather than 0 years of age. You can
+    do this either by subtracting mean(df$age, na.rm = TRUE) from the variable and
+    feeding the resulting variable into the regression. Alternatively, you can use
+    the scale() function. Pull up its documentation now.
+  CorrectAnswer: ?scale
+  AnswerTests: omnitest(correctExpr='?scale')
+  Hint:
+  
+- Class: cmd_question
+  Output: Using the function with its default settings on a variable will standardise it.
+    However, in this case, that is not what we want. We only want to centre it. Thus, you
+    need to set the scale argument to FALSE. Rerun the multiple regression command now
+    with age and anx_score_1 centred using scale(). This time, name the resulting object
+    mult_reg_2.
+  CorrectAnswer: mult_reg_2 <- lm(rt ~ scale(anx_score_1, scale = FALSE) + gender +
+    scale(age, scale = FALSE) + group, df)
+  AnswerTests:  match_call('mult_reg_2 <- lm(rt ~ scale(anx_score_1, scale = FALSE) +
+    gender + scale(age, scale = FALSE) + group, df)')
+  Hint: Include scale(age, scale = FALSE) and centre anxiety score in the same fashion.
+
+- Class: cmd_question
+  Output: Now look at the summary of mult_reg_2.
+  CorrectAnswer: summary(mult_reg_2)
+  AnswerTests: omnitest(correctExpr='summary(mult_reg_2)')
+  Hint:
+
+- Class: text
+  Output: In this case, the results are identical. However, including centred age variable
+    is worth doing nonetheless since it is philosophically more sound than the alternative.
+    
+- Class: text
+  Output: Okay, below the regression table in the output, you have some additional info
+    about the model. Since you ran a model with several predictor variables, this time you
+    do want to look at the Adjusted R-squared for an accurate estimate of the proportion of
+    variance in RT accounted for by the model. In this case, it is just over 10%.That's not
+    too bad, especially considering that anx score and gender were not significant predictors
+    and are therefore probably redundant.
+
+- Class: text
+  Output: Based on the F-value and the associated p-value, you can see that your model fits
+    the data significantly better that an intercept-only model. That is good.
+  
+- Class: text
+  Output: However, we don't know if it fits better than a simpler model. And you should
+    always go for the simpler of two models if their explanatory power is the same (or not
+    significantly different). In order to assess this, you need to compare two models. Let
+    me show you how that is done.
+    
+- Class: text
+  Output: Let's say that you found a study that says that anxiety is a significant predictor
+    of RT. So, in your experiment, you measured anx score on top of the effect of your
+    experimental manipulation. Now, you want to know if including the manipulation has an
+    effect above that of anxiety. However, you also want to see if you can replicate the
+    findings of this study.
+  
+- Class: cmd_question
+  Output: To do this, you need to build a baseline model. It is a good idea to include only
+    demographic variables (gender and centred age) in this model. Go for it, create the model
+    and store it in baseline_model.
+  CorrectAnswer: baseline_model  <- lm(rt ~ gender + scale(age, scale = FALSE), df)
+  AnswerTests: match_call('baseline_model  <- lm(rt ~ gender + scale(age, scale = FALSE), df)')
+  Hint: Don't forget to scale() age.
+  
+- Class: cmd_question
+  Output: Now build a model that adds centred anx_score_1 to your baseline model. You can
+    add predictors using update(<original model>, ~ . + <predictors you want to add>). Use the
+    command and store the output in anx_model.
+  CorrectAnswer: anx_model  <- update(baseline_model, ~ .+ scale(anx_score_1, scale = FALSE))
+  AnswerTests: match_call('anx_model  <- update(baseline_model, ~ .+ scale(anx_score_1,
+    scale = FALSE))')
+  Hint: That's anx_model  <- update(baseline_model, ~ .+ scale(anx_score_1, scale = FALSE)).
+    Mind the . after the ~.
+
+- Class: text
+  Output: "Now you can compare your models using the anova() function. The function takes
+    objects of class lm (all your models) or glm (don't worry about those now) and compares
+    them. However, you need to make sure the models are built using the same data. Even
+    though you specified df as your data frame, R will have omitted any cases with NAs.
+    Including different variables in your models thus may result in different sample sizes.
+    If you try to compare such uneven models, you get an error message telling you that the
+    \"models were not all fitted to the same size of dataset\"."
+  
+- Class: cmd_question
+  Output: So before you compare models it's good to make sure they are based on the same
+    data. Use nrow(model.frame(<name of your model>)) to get the sample size of the data
+    frame used for a model. Do it now for baseline_model.
+  CorrectAnswer: nrow(model.frame(baseline_model))
+  AnswerTests: match_call('nrow(model.frame(baseline_model))')
+  Hint: Type nrow(model.frame(baseline_model)).
+  
+- Class: cmd_question
+  Output: Okay and now look at the sample size of anx_model.
+  CorrectAnswer: nrow(model.frame(anx_model))
+  AnswerTests: match_call('nrow(model.frame(anx_model))')
+  Hint:
+  
+- Class: cmd_question
+  Output: Right, so there's a discrepancy. Do mult_reg_2 too.
+  CorrectAnswer: nrow(model.frame(mult_reg_2))
+  AnswerTests: match_call('nrow(model.frame(mult_reg_2))')
+  Hint:
+  
+- Class: mult_question
+  Output: Based on these numbers, including which variable in the model causes the unequal
+    sample sizes?
+  AnswerChoices: rt; anx_score_1; gender; age; group
+  CorrectAnswer: anx_score_1
+  AnswerTests: omnitest(correctVal= 'anx_score_1')
+  Hint:
+  
+- Class: text
+  Output: So what you need to know is create a new data frame, df2, that excludes all the
+    cases of df that have missing values in the anx_score_1 variable. And if that sounds like
+    you're about to do some indexing, well, you're right on the money...
+      
+- Class: cmd_question
+  Output: Create df2 from df now. Use ! (negation of) is.na() to index [ , ] only the cases of
+    interest.
+  CorrectAnswer: df2 <- df[!is.na(df$anx_score_1), ]
+  AnswerTests: match_call('df2 <- df[!is.na(df$anx_score_1), ]')
+  Hint: Learning these things makes all work in R so much easier so it's really worth the effort.
+    The command you're after is df2 <- df[!is.na(df$anx_score_1), ].
+    
+- Class: cmd_question
+  Output: Since baseline_model is the only one with differing sample size, you only need to
+    rerun that one. Do it now using df2 as the source data frame.
+  CorrectAnswer: baseline_model  <- lm(rt ~ gender + scale(age, scale = FALSE), df2)
+  AnswerTests: match_call('baseline_model  <- lm(rt ~ gender + scale(age, scale = FALSE), df2)')
+  Hint: You can use the up arrow to toggle previous commands.
+  
+- Class: cmd_question
+  Output: As a sanity check, look at the size of the model.frame for baseline_model.
+  CorrectAnswer: nrow(model.frame(baseline_model))
+  AnswerTests: match_call('nrow(model.frame(baseline_model))')
+  Hint:
+  
+- Class: cmd_question
+  Output: That's the number we wanted. Now, compare baseline_model, anx_model, and mult_reg_2
+    by putting them (in this order) into an anova() function.
+  CorrectAnswer: anova(baseline_model, anx_model, mult_reg_2)
+  AnswerTests: match_call('anova(baseline_model, anx_model, mult_reg_2)')
+  Hint:
+  
+- Class: text
+  Output: "Let's look at the output now. First, there's a list of the models you are comparing,
+    just so that you don't have to remember. Below that is the ANOVA table of model comparisons.
+    The models are compared in a hierarchical fashion: model 2 to model 1 and model 3 to model
+    2. The columns represent [1] the residual degrees of freedom, [2] residual sum of squares,
+    the difference in these two between the models [3 and 4], the F ratio of these differences
+    [5] and the p value for the F test [6]."
+    
+- Class: text
+  Output: By looking at the p-values, you can see that model 2 is significantly better than
+    model 1 (p = .047) and that model 3 is significantly better than model 2 (p = .039). That
+    means, you should probably go with mult_reg_2 as your final model.
+    
+- Class: text
+  Output: There are also other ways of comparing models. Two rather popular ones come from the
+    family of so-called comparative fit indices. They are the Akaike Information Criterion -
+    or AIC - and the Bayesian Information Criterion - or BIC. The corresponding R functions for
+    these are AIC() and BIC() and are used in the same way as anova().
+    
+- Class: cmd_question
+  Output: To see how the commands work, try using BIC() on the 3 models
+  CorrectAnswer: BIC(baseline_model, anx_model, mult_reg_2)
+  AnswerTests: match_call('BIC(baseline_model, anx_model, mult_reg_2)')
+  Hint:
+  
+- Class: text
+  Output: "Similarly to anova() you get a comparison table for the models with their model
+    degrees of freedom and the BIC index. Now, the explaining the logic and maths behind BIC
+    is not within the scope of this lesson so go forth and explore you study materials (or the
+    internet) for yourself. Understanding the indices you use is important. I would hate if
+    you just operated on some rule of thumb such as \"always look for the smallest value of
+    BIC\"... Oh... Damn! Anyway, you can see that mult_reg_2 is the best fitting model which
+    agrees with what you learned from anova()."
+
+- Class: cmd_question
+  Output: I have one more rather neat thing to show you. In order to do that, you need
+    the leaps package. Go ahead and install it now.
+  CorrectAnswer: install.packages("leaps")
+  AnswerTests: match_call('install.packages("leaps")')
+  Hint: Don't forget to put leaps into double quotes.
+  
+- Class: cmd_question
+  Output: Now load leaps.
+  CorrectAnswer: library(leaps)
+  AnswerTests: match_call('library(leaps)')
+  Hint: library(leaps)
+  
+- Class: text
+  Output: This package contains the regsubsets() function. It takes in a formula (such as the
+    one you put in the lm() function) and builds all the possible regression models based on
+    all the combinations of the predictor variables in the formula. Then it assesses the
+    BIC of every one of them and lets you decide on the best one.
+    
+- Class: cmd_question
+  Output: First, pull up the documentation for regsubsets().
+  CorrectAnswer: ?regsubsets
+  AnswerTests: match_call('?regsubsets')
+  Hint:
+  
+- Class: cmd_question
+  Output: Okay, now run regsubsets on the formula you used for mult_reg_2 and store it in an
+    object subsets. Use the nbest = 10 argument to get the 10 best fitting models.
+  CorrectAnswer: subsets <- regsubsets(rt ~ scale(anx_score_1, scale = FALSE) + gender +
+    scale(age, scale = FALSE) + group, df, nbest = 10)
+  AnswerTests: match_call('subsets <- regsubsets(rt ~ scale(anx_score_1, scale = FALSE) +
+    gender + scale(age, scale = FALSE) + group, df, nbest = 10)')
+  Hint: The formula is rt ~ scale(anx_score_1, scale = FALSE) + gender + scale(age,
+    scale = FALSE) + group.
+
+- Class: cmd_question
+  Output: Now use plot() to look at subsets. You may have to click on zoom in order to see
+    plot better.
+  CorrectAnswer: plot(subsets)
+  AnswerTests: match_call('plot(subsets)')
+  Hint:
+  
+- Class: text
+  Output: On the y axis is the difference in BIC between the models. The worst fitting models
+    are at the bottom and the best fitting ones are at the top. The different shades are
+    there only better visualisation. Every row on the plot represents a model. The shaded
+    bits tell you what variables are included in the model corresponding to a given row.
+
+- Class: text
+  Output: "So, for instance, you can see that in the top row, there are 3 shaded columns:
+    one for intercept, one for anx_score_1, and one for group. That means, that the best
+    fitting model from among all possible ones with the variables included in the formula
+    is rt ~ scale(age, scale = FALSE) + group. On the other end (i.e., the 10th best
+    fitting model) is rt ~ scale(anx_score_1, scale = FALSE) + gender + scale(age, scale
+    = FALSE) + group."
+    
+- Class: text
+  Output: Now, the model comparison and variable selection functions I ust show you can't
+    tell you which model you should choose. They can, however, give you valuable
+    information you should consider when making an analytic decision.
+    
+- Class: text
+  Output: In this lesson, you learned how to do multiple regression, compare multiple models
+    and pick the best fitting model from all possible subsets regression. I think that's
+    plenty for one lesson, don't you think? Why don't you take a break and I'll see you next
+    time. Ciao!
+    

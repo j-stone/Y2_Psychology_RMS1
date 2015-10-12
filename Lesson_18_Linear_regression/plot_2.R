@@ -1,0 +1,1 @@
+abline(lm(df$rt ~ 1), lw = 1, col = "Red")

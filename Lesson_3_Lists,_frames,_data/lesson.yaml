@@ -1,0 +1,382 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 3 Lists and data frames
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: You came back for more, excellent! In the previous lessons you learnt how
+    you can store ordered groups of values in vectors, how you can access any given
+    value in a vector using indexing. We also covered doing basic arithmetic and logical
+    operations with vectors and values.
+    
+- Class: text
+  Output: Now, vectors are certainly very useful but it's not enough just to have them
+    float around in your programming environment. Sooner or later you will want to
+    organise them in some higher order structure. In this lesson, I will show you how
+    to do exactly that. Then I will teach you how to input and output data in R. There
+    will also be some new functions along the way. Fasten your seatbelt!
+    
+- Class: text
+  Output: There are several higher order structures in R, such as arrays, matrices,
+    lists, and data frames but you don't need to worry about all of them at this stage.
+    Today, we will only cover the latter two.
+    
+- Class: text
+  Output: Let's talk about lists first. Lists have a few interesting properties. Firstly,
+    unlike vector, a single list can contain different modes of values (numeric, character,
+    boolean). Secondly, elements of lists (the individual vectors) can be named. Thirdly,
+    lists, just like vectors, can be indexed.
+    
+- Class: text
+  Output: OK, let's create a few vectors first. While we're at it, I will show you a few
+    handy functions.
+    
+- Class: cmd_question
+  Output: "Say, you want to create a vector of all integers from 1 to 15. you could type
+    it all by hand but that is sort of cumbersome. What you can do instead is use the
+    \":\" operator and type 1:15. Go for it, create a variable my_seq and use it to store
+    the 1:15 vector"
+  CorrectAnswer: my_seq <- 1:15
+  AnswerTests: omnitest(correctExpr='my_seq <- 1:15')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now have R print my_seq.
+  CorrectAnswer: my_seq
+  AnswerTests: omnitest(correctExpr='my_seq')
+  Hint:
+  
+- Class: cmd_question
+  Output: "The \":\" is good for basic sequences but for more specific ones, there's the
+    seq() function. In its simplest form, it takes two arguments and does the same thing
+    as the \":\" operator. Try it out by typing seq(from = 1, to = 15)."
+  CorrectAnswer: seq(from = 1, to = 15)
+  AnswerTests: omnitest(correctExpr='seq(from = 1, to = 15)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "However, the seq() function can take additional arguments. Let's say that you
+    want a vector of numbers ranging from 0 to 10, incremented by 0.5. In order to achieve
+    this, you need the \"by =\" argument. It should come after the first to = argument.
+    Arguments in a function must be separated with a comma. To save time, if you define the
+    \"from\" and \"to\" arguments first and in that order, you can drop the names of the
+    arguments and the \"=\"s. Do keep the \"by =\", though. Try it out."
+  CorrectAnswer: seq(0, 10, by = 0.5)
+  AnswerTests: omnitest(correctExpr='seq(0, 10, by = 0.5)')
+  Hint: You are still using the seq() function here, but this time with an extra argument
+    that tells R you want to increment your sequence by 0.5.
+    
+- Class: cmd_question
+  Output: Or maybe you don't care what the increment is and you just want a sequence
+    of 30 numbers between 10 and 5. The \"length =\" argument does the trick. Give it
+    a shot now and store the result in a new variable called my_num.
+  CorrectAnswer: my_num <- seq(10, 5, length = 30)
+  AnswerTests: omnitest(correctExpr='my_num <- seq(10, 5, length = 30)')
+  Hint: 'You''re using the same function here, but changing its arguments for different
+    results. Be sure to store the result in a new variable called my_num.'
+    
+- Class: cmd_question
+  Output: To confirm that my_num has length 30, you can use the length() function.
+    Try it now.
+  CorrectAnswer: length(my_num)
+  AnswerTests: omnitest(correctExpr='length(my_num)')
+  Hint: Use length(my_num) to view the length of the my_num variable.
+  
+- Class: text
+  Output: "Let's pretend you don't know the length of my_num, but you want to generate
+    a sequence of integers from 1 to N, where N represents the length of the my_num
+    vector. In other words, you want a new vector (1, 2, 3, ...) that is the same length
+    as my_num."
+    
+- Class: cmd_question
+  Output: "There are several ways you could do this. One possibility is to combine
+    the \":\" operator and the length() function like this: 1:length(my_num). Give that
+    a try."
+  CorrectAnswer: 1:length(my_num)
+  AnswerTests: omnitest(correctExpr='1:length(my_num)')
+  Hint: Try 1:length(my_num), without assigning the result to a new variable.
+  
+- Class: cmd_question
+  Output: Another option is to use seq(along.with = my_num). Give that a try.
+  CorrectAnswer: seq(along.with = my_num)
+  AnswerTests: omnitest(correctExpr='seq(along.with = my_num)')
+  Hint: Type seq(along.with = my_num). Notice we're using the same seq() function, but
+    with a different argument called `along.with`. This tells R that you want a sequence
+    'along with' the sequence my_num. Remember you can type ?seq if you have questions
+    about the seq() function.
+    
+- Class: text
+  Output: One more function related to creating sequences of numbers is rep(), which
+    stands for 'replicate'. Let's look at a few uses.
+    
+- Class: cmd_question
+  Output: If you're interested in creating a vector that contains 40 zeros, you can
+    use rep(0, times = 40). Try it out.
+  CorrectAnswer: rep(0, times = 40)
+  AnswerTests: omnitest(correctExpr='rep(0, times = 40)')
+  Hint: Type rep(0, times = 40) to make a vector containing 40 zeros.
+  
+- Class: cmd_question
+  Output: "If instead we want our vector to contain 10 repetitions of the vector (\"yes\",
+    \"no\", \"maybe\"), we can do rep(c(\"yes\", \"no\", \"maybe\"), times = 10). Create
+    this sequence and store it in a variable called \"my_string\"."
+  CorrectAnswer: my_string <- rep(c("yes", "no", "maybe"), times = 10)
+  AnswerTests: omnitest(correctExpr='my_string <- rep(c("yes", "no", "maybe"), times = 10)')
+  Hint: "Try my_string <- rep(c(\"yes\", \"no\", \"maybe\"), times = 10) for a different
+    variation on the same theme.  Be sure to use the c() function to tell R that the
+    strings \"yes\", \"no\", and \"maybe\" make up a vector."
+    
+- Class: cmd_question
+  Output: "Finally, let's say that rather than repeating a vector over and over again,
+    you want our vector to contain 10 \"TRUE\"s and 10 \"FALSE\"s. You can do this with
+    the \"each\" argument. Create such a vector and store it in a new variable called
+    my_logic."
+  CorrectAnswer: my_logic <- rep(c(TRUE, FALSE), each = 10)
+  AnswerTests: omnitest(correctExpr='my_logic <- rep(c(TRUE, FALSE), each = 10)')
+  Hint:
+
+- Class: cmd_question
+  Output: Now, just to practice indexing a little, I would like you to get rid of all
+    values greater or equal to 10 in my_num. In other words, keep only those values that
+    are less than 10.
+  CorrectAnswer: my_num <- my_num[my_num < 10]
+  AnswerTests: omnitest(correctExpr='my_num <- my_num[my_num < 10]')
+  Hint: You want to reassign values to my_num. These values are basically the same as
+    my_num itself, you just need to index the ones you want. Which ones do you want?
+    Well, you want all my_num values that are less than 10 (the expression my_num will
+    indeed appear in the command three times).
+
+- Class: cmd_question
+  Output: "Next, I would like you to get rid of the 5th and 16th element of my_logic.
+    This is done through using \"-c()\" and indexing. Give it a go now!"
+  CorrectAnswer: my_logic <- my_logic[-c(5, 16)]
+  AnswerTests: omnitest(correctExpr='my_logic <- my_logic[-c(5, 16)]')
+  Hint: Again, reassign the my_logic variable using indexing from the old my_logic
+    variable.
+
+- Class: cmd_question
+  Output: OK, so after this intermission, we can go back to lists. The function that
+    creates a list is, rather conveniently, called list(). Try using it to combine
+    my_seq, my_string, my_logic, and my_num into a list named my_list. list() works a
+    bit like c() so you won't be using c() this time.
+  CorrectAnswer: my_list <- list(my_seq, my_string, my_logic, my_num)
+  AnswerTests: omnitest(correctExpr='my_list <- list(my_seq, my_string, my_logic, my_num)')
+  Hint: Just type my_list <- list(my_seq, my_string, my_logic, my_num).
+  
+- Class: cmd_question
+  Output: Now print my_list.
+  CorrectAnswer: my_list
+  AnswerTests: omnitest(correctExpr='my_list')
+  Hint:
+  
+- Class: text
+  Output: As you can see, your 4 variables have been combined but are still kept
+    separate within the list. How do you index a list? Well, think of the list as
+    a two-level structure. On the higher level, there are 4 values, one for each of
+    the original vectors (while unnamed, they are represented by the [[]]s). The lower
+    level is where the content of the original vectors hides. So in order to access
+    it, you need to first tell R which top-level value to look into and only then
+    can you index the individual elements.
+    
+- Class: cmd_question
+  Output: To see I'm not making things up, try typing my_list[2].
+  CorrectAnswer: my_list[2]
+  AnswerTests: omnitest(correctExpr='my_list[2]')
+  Hint:
+
+- Class: text
+  Output: Thus far it looks like you managed to access the 2nd top-level element, i.e.,
+    the former my_string variable. So you should be able get to, say, the 5th Element
+    of this vector by simply typing my_list[2][5], right? 
+
+- Class: cmd_question
+  Output: Go on then, give it a try!
+  CorrectAnswer: my_list[2][5]
+  AnswerTests: omnitest(correctExpr='my_list[2][5]')
+  Hint:
+  
+- Class: text
+  Output: The reason why this doesn't work is that by typing my_list[2] you only get
+    to the top level of the list, where there is nothing more to index. In order to get
+    into the 2nd list element where the lower-level stuff is, you need to use [[2]].
+  
+- Class: cmd_question
+  Output: Try getting the 5th element of the 2nd vector using [[2]][5] now.
+  CorrectAnswer: my_list[[2]][5]
+  AnswerTests: omnitest(correctExpr='my_list[[2]][5]')
+  Hint: "Did you perhaps forget the \"my_list\" bit?."
+  
+- Class: text
+  Output: So that's how you index lists. You can, of course, use all the expressions
+    you used with vectors to index lists at both levels (such as c(), logical expression,
+    all(), which()...).
+    
+- Class: text
+  Output: I mentioned earlier that lists can be named. Let's look into that now.
+  
+- Class: cmd_question
+  Output: You can ask for names of lists and data frames using the aptly named names()
+    command. Use it now on my_list.
+  CorrectAnswer: names(my_list)
+  AnswerTests: omnitest(correctExpr='names(my_list)')
+  Hint:
+  
+- Class: text
+  Output: As you can see, there are no names yet. In order to name the list, you need to
+    assign a character vector to names(my_list).
+    
+- Class: cmd_question
+  Output: "Name your list now. Use \"sequence\", \"strings\", \"booleans\", and \"numbers\"
+    as the names."
+  CorrectAnswer: names(my_list) <- c("sequence", "strings", "booleans", "numbers")
+  AnswerTests: omnitest(correctExpr='names(my_list) <- c("sequence", "strings", "booleans",
+    "numbers")')
+  Hint: Remember how character vectors are constructed and how you indicate strings.
+  
+- Class: cmd_question
+  Output: Now look at names() again.
+  CorrectAnswer: names(my_list)
+  AnswerTests: omnitest(correctExpr='names(my_list)')
+  Hint: 
+  
+- Class: cmd_question
+  Output: And now have R print the entire list for you.
+  CorrectAnswer: my_list
+  AnswerTests: omnitest(correctExpr='my_list')
+  Hint:
+  
+- Class: text
+  Output: "The vectors have now been named. now you can use the names to refer to them
+    for indexing purposes. There are several ways to index a named vector. Let's say
+    you want to get elements 3 to 7 of \"numbers\". You can type..."
+    
+- Class: text
+  Output: my_list[[4]][3:7]...
+  
+- Class: text
+  Output: my_list[["numbers"]][3:7]...
+  
+- Class: cmd_question
+  Output: but you can also use the dollar sign like this my_list$numbers[3:7] (notice
+    there are no double quotes). Give it a try now. 
+  CorrectAnswer: my_list$numbers[3:7]
+  AnswerTests: omnitest(correctExpr='my_list$numbers[3:7]')
+  Hint:
+  
+- Class: figure
+  Output: In order to create a list, you do not need to create the individual vectors
+    first, then put them in a list and only then name them. You can do it all in one
+    go. Look at the script I wrote for you that creates a list very similar to your
+    my_list.
+  Figure: my_list2.R
+  FigureType: new
+  
+- Class: cmd_question
+  Output: There's one more really handy command I'd like to show you before we move on.
+    Type str(my_list) now. 
+  CorrectAnswer: str(my_list)
+  AnswerTests: omnitest(correctExpr='str(my_list)')
+  Hint:
+
+- Class: text
+  Output: Using str() makes R list the content of whatever you put inside the brackets.
+    In our case, it gives you the names of the 4 vectors, their types (integer, character,
+    logical, and numeric), their lengths, and a preview of the values.
+    
+- Class: text
+  Output: Right, so lists are obviously very helpful and it's important that you know how
+    to navigate them. This knowledge will come in handy later on, when you are be running
+    statistical analyses. Some of the functions you will be using give you output in form
+    of lists, so it's good that you now know how to deal with them.
+
+- Class: text
+  Output: However, when it comes to data, lists aren't the best way of storing them.
+    For that you might want something more akin to an Excel or SPSS spreadsheet. In R,
+    the spreadsheet format is called a data frame.
+    
+- Class: text
+  Output: A data frame (df) is basically a special type of a list. Unlike a list, a df
+    can only include vectors of the same length but just like a list, these vectors
+    don't have to be of the same type. On the one hand, this is a limitation of a df
+    but on the other hand it allows for df to have a two-dimensional rectangular shape.
+    
+- Class: text
+  Output: This feature makes it possible to index and work with both dimensions - columns
+    and rows.
+    
+- Class: cmd_question
+  Output: "Okay, let's get going. First create a variable called id with values from
+    1 to 5."
+  CorrectAnswer: id <- 1:5
+  AnswerTests: omnitest(correctExpr='id <- 1:5')
+  Hint: "Use the \":\" operator."
+  
+- Class: cmd_question
+  Output: "Next, create a variable called name with values \"Eddie\", \"Mike\",
+    \"Stone\", \"Jeff\", and \"Matt\" (Bonus points if you knew these are the members
+    of Pearl Jam. Massive negative points if you just went \"who?!\")."
+  CorrectAnswer: name <- c("Eddie", "Mike", "Stone", "Jeff", "Matt")
+  AnswerTests: omnitest(correctExpr='name <- c("Eddie", "Mike", "Stone", "Jeff", "Matt")')
+  Hint: "Don't forget the c() and the \"s."
+  
+- Class: cmd_question
+  Output: "Now we want an age variable with values of 50, 49, 48, 52, and 52 (yep,
+    that's how old they were as of Jun 15)."
+  CorrectAnswer: age <- c(50, 49, 48, 52, 52)
+  AnswerTests: omnitest(correctExpr='age <- c(50, 49, 48, 52, 52)')
+  Hint: "This time it's just age <- c(50, 49, 48, 52, 52)."
+  
+- Class: cmd_question
+  Output: "And finally, create a variable children (because even rock stars settle
+    down eventually) with values of 2, 3, 3, 0, and 2."
+  CorrectAnswer: children <- c(2, 3, 3, 0, 2)
+  AnswerTests: omnitest(correctExpr='children <- c(2, 3, 3, 0, 2)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "OK, now we want to combine these variables into a df. This is done using the
+    data.frame() function in the same way you used the list() function. Try it out now,
+    create a df called pearl_jam that includes the id, name, age, and children variables."
+  CorrectAnswer: pearl_jam <- data.frame(id, name, age, children)
+  AnswerTests: omnitest(correctExpr='pearl_jam <- data.frame(id, name, age, children)')
+  Hint: "Same rules apply as with list(): no c() and no double quotes around variables."
+  
+- Class: cmd_question
+  Output: Now look at your first ever data frame by typing its name in the console.
+  CorrectAnswer: pearl_jam
+  AnswerTests: omnitest(correctExpr='pearl_jam')
+  Hint:
+  
+- Class: text
+  Output: Ya beauty! Right, so since data frames are basically lists, everything I told
+    you about lists also applies to df's.
+    
+- Class: cmd_question
+  Output: That means that if you want R to print the name of the 3rd member of Pearl Jam,
+    you can just type pearl_jam$name[3]. Go ahead and see for yourself!
+  CorrectAnswer: pearl_jam$name[3]
+  AnswerTests: omnitest(correctExpr='pearl_jam$name[3]')
+  Hint:
+  
+- Class: cmd_question
+  Output: Since df's are 2-dimensional, you can use the coordinates of an element to
+    index it. This is done by first putting the row number and then the column number
+    in the square brackets, like this df[row, col]. How about you print the element on
+    line 4, column 2 of pearl_jam now? Don't forget the comma!
+  CorrectAnswer: pearl_jam[4, 2]
+  AnswerTests: omnitest(correctExpr='pearl_jam[4, 2]')
+  Hint:
+  
+- Class: cmd_question
+  Output: You can also leave either of the coordinates blank. That will tell R that you
+    want all the element in that row/column. The comma, however, still needs to be there.
+    Try this out by printing the 4th column of our pearl_jam data frame.
+  CorrectAnswer: pearl_jam[ , 4]
+  AnswerTests: omnitest(correctExpr='pearl_jam[ , 4]')
+  Hint:
+
+- Class: text
+  Output: In this lesson you learned how to create, edit, and navigate data frames. Well done! I'll see you later.

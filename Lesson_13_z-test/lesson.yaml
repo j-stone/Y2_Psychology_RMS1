@@ -1,0 +1,314 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 13 z-test
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Howdy stranger! Today, I will tell you about the z-test and show you how to run
+    it in R. Let us begin...
+    
+- Class: text
+  Output: Last time we talked about the binomial test which is appropriate for testing the
+    outcome of a sequence of Bernoulli trials. If you are interested in testing the
+    significance of other parameters (i.e., mean), you need a more general test.
+    
+- Class: text
+  Output: The z-test is the simplest of such tests and provides a good stepping stone to
+    more advanced statistical testing.
+    
+- Class: text
+  Output: The z-test is used in a situation where population parameters are known. That means
+    that on top of, let's say, your sample's mean reaction time, you also know how reaction
+    time is distributed in the entire population from which you sampled your data.
+  
+- Class: text
+  Output: Before we delve any deeper into the logic behind the z-test, it is important to
+    understand the Central Limit Theorem. A fun fact for kick-off, it is not the theorem of
+    some central limit. It is a limit theorem that is so important that much of stats
+    revolves around it. That's why it's called central.
+    
+- Class: text
+  Output: Right so the CLT says that as sample sizes get larger, the distribution of a given
+    estimated parameter will approach the normal distribution.
+    
+- Class: text
+  Output: In other words, let's say you want to know the mean reaction time (RT) on some task
+    in the population of interest. You take a representative sample of the population (since,
+    y'know, it's usually impossible to test the entire population), give them the task and
+    look at their mean RT.
+    
+- Class: text
+  Output: Because of sampling error, the sample mean will most likely not be precisely equal
+    to the population mean. If you took another sample of the same size and again took the
+    mean RT, you would get a similar, yet not the same, value.
+    
+- Class: text
+  Output: If you carried on taking more and more samples and their mean RTs, you would end up
+    with many different values. If you plotted these values, you would see their distribution.
+    This distribution is called a 'sampling distribution' (it's a distribution of given
+    parameter estimates - such as the mean RT - from all the possible samples of a certain
+    size.)
+    
+- Class: text
+  Output: Now the CLT says that the bigger the size of the samples, the more normal the
+    sampling distribution will be. This is one of the main reasons why sample size matters
+    in statistics.
+
+- Class: text
+  Output: Let's illustrate this point. Let's say the variable rt_pop I loaded for you contains
+    the population RT data.
+    
+- Class: cmd_question
+  Output: Look at the distribution of the RTs by plotting the variable using hist(rt_pop,
+    breaks = 100).
+  CorrectAnswer: hist(rt_pop, breaks = 100)
+  AnswerTests: omnitest(correctExpr='hist(rt_pop, breaks = 100)')
+  Hint:
+  
+- Class: text
+  Output: As you can see RT is not distributed normally. That is because RTs can only be so
+    short (probably not shorter than 100 ms) but can be rather long in some people - hence the
+    long right tail.
+    
+- Class: cmd_question
+  Output: Now look at the mean population RT.
+  CorrectAnswer: mean(rt_pop)
+  AnswerTests: omnitest(correctExpr='mean(rt_pop)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Okay, now let's sample 5 'people' from the population. Create a variable called
+    rt_sample and store in it sample(rt_pop, 5).
+  CorrectAnswer: rt_sample <- sample(rt_pop, 5)
+  AnswerTests: omnitest(correctExpr='rt_sample <- sample(rt_pop, 5)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now look at the mean RT of the sample.
+  CorrectAnswer: mean(rt_sample)
+  AnswerTests: omnitest(correctExpr='mean(rt_sample)')
+  Hint:
+  
+- Class: text
+  Output: As you can see the mean is relatively close to 350 (population mean) but it's not
+    quite there.
+    
+- Class: cmd_question
+  Output: Let's now look at a mean RT of another sample of 5 people. This time, don't
+    create any variables; just put the entire sample(...) command inside of a mean()
+    function.
+  CorrectAnswer: mean(sample(rt_pop, 5))
+  AnswerTests: omnitest(correctExpr='mean(sample(rt_pop, 5))')
+  Hint:
+
+- Class: text
+  Output: See? It's close again but it's different from the first sample mean.
+  
+- Class: cmd_question
+  Output: To simulate a sampling distribution on mean RTs, we need to replicate() this
+    procedure many times. Create a variable called  sampling_dist and in it store the
+    above command inside of a replicate() function. 10,000 replication (without the comma)
+    should be enough. Go for it!
+  CorrectAnswer: sampling_dist <- replicate(10000, mean(sample(rt_pop, 5)))
+  AnswerTests: omnitest(correctExpr='sampling_dist <- replicate(10000,
+    mean(sample(rt_pop, 5)))')
+  Hint: That is sampling_dist <- replicate(10000, mean(sample(rt_pop, 5))).
+
+- Class: cmd_question
+  Output: Plot the variable on a histogram to see what the distribution looks like. This time,
+    use breaks = 50.
+  CorrectAnswer: hist(sampling_dist, breaks = 50)
+  AnswerTests: omnitest(correctExpr='hist(sampling_dist, breaks = 50)')
+  Hint:
+  
+- Class: cmd_question
+  Output: And finally, look at the mean of the sampling distribution.
+  CorrectAnswer: mean(sampling_dist)
+  AnswerTests: omnitest(correctExpr='mean(sampling_dist)')
+  Hint:
+
+- Class: text
+  Output: "This exercise demonstrates two important points: firstly, even though the
+    distribution from which we sampled (rt_pop) was not normal, the sampling distribution
+    of a parameter (in our case, the mean) will be sort of normal."
+
+- Class: text
+  Output: Secondly, the mean of the sampling distribution of a parameter will be pretty
+    close to the actual population parameter. mean(sampling_dist) was very close to
+    mean(rt_pop).
+    
+- Class: text
+  Output: But as the CLT tells us, if we took larger samples, the resulting sampling
+    distribution would be even closer to normal. Its mean would also approximate the true
+    population parameter even more closely.
+    
+- Class: cmd_question
+  Output: To show you this, I wrote a function called clt(). It takes a long numeric vector
+    (at least 1000 numbers) and a string argument FUN, which can be \"mean\", \"meadian\",
+    \"sd\" (for standard deviation), or \"var\" (for variance). Type in clt(rt_pop,
+    \"mean\") and see what happens. The function takes a moment to run so relax...
+  CorrectAnswer: clt(rt_pop, "mean")
+  AnswerTests: omnitest(correctExpr='clt(rt_pop, "mean")')
+  Hint:
+  
+- Class: text
+  Output: So, as you can see, as sample size gets larger, the resulting sampling distribution
+    gets closer to normal and its mean gets closer to the population parameter in question,
+    in our case mean(rt_pop) = 350.
+    
+- Class: text
+  Output: You can find the source code for the function in a file called clt_function,
+    which should be in the same ...swirl/Courses/Y2_Psychology_SRM/Data as the function I
+    showed you the other day. Feel free to play around with it using different 'population'
+    distributions variables and different parameters.
+    
+- Class: text
+  Output: Back to the z-test. Let's say you want to know whether the mean RT of your sample
+    is different from the population mean RT of 350 ms. Like I said, the z-test assumes that
+    population parameters (such as the mean and standard deviation) are known. Based on these,
+    we can find out the properties of the sampling distribution of the mean RT for any given
+    sample size, such as its mean and its standard deviation.
+    
+- Class: text
+  Output: If you remember your stats lectures, you will recall that based on the properties
+    of the normal distribution, we can find out the probability of any range of values in
+    the distribution. For example, we know that about 68% of the entire distribution falls
+    within mean +- 1 standard deviation and that about 95% fall within mean +- 1.96 * SD.
+    
+- Class: text
+  Output: This means that if a value is greater than mean + 1.96 * SD or smaller than mean
+    - 1.96 * SD, the probability of getting this or a more extreme value will be less than
+    .05. In other words, it will be statistically significantly different from the mean.
+    
+- Class: text
+  Output: These properties can be applied to significance testing. In our RT example, the
+    null hypothesis assumes that the mean sample RT is *not* different from the population
+    mean. That means that it should not be unlikely that we should get a sample with this
+    value of mean if we sample from the population.
+    
+- Class: text
+  Output: So to test this, we take out sample mean and compare it to the known sampling
+    distribution for the mean based on our population. If we find that our value is further
+    from the mean of the sampling distribution than +- 1.96 *SD, we conclude that it is
+    unlikely that this sample mean comes from the population sampling distribution and
+    therefore it is significantly different from population mean.
+    
+- Class: text
+  Output: Of course, this logic is the same for any parameter, not just the mean. So
+    this is how a z-test is done. Feel free to read through the above a few times to make
+    sure you really grasp the concept. Like I said, the z-test is the simplest form of
+    significance testing so it's crucial you understand how it works before we can talk
+    about the other stuff.
+    
+- Class: cmd_question
+  Output: Okay, let's do a z-test of our own. First, you will need to install a package
+    called \"BSDA\". Do it now.
+  CorrectAnswer: install.packages("BSDA")
+  AnswerTests: omnitest(correctExpr='install.packages("BSDA")')
+  Hint: Use install.packages("BSDA").
+  
+- Class: cmd_question
+  Output: Now load the package.
+  CorrectAnswer: library(BSDA)
+  AnswerTests: omnitest(correctExpr='library(BSDA)')
+  Hint: Use library(BSDA).
+  
+- Class: cmd_question
+  Output: The function we want is called z.test(). Pull up its documentation and familiarise
+    yourself with it.
+  CorrectAnswer: ?z.test
+  AnswerTests: omnitest(correctExpr='?z.test')
+  Hint:
+  
+- Class: text
+  Output: Excellent! Let's test our hypothesis. We'll be using our familiar df data frame,
+    where there's a df$rt variable.
+    
+- Class: cmd_question
+  Output: First, find the mean of df$rt
+  CorrectAnswer: mean(df$rt)
+  AnswerTests: omnitest(correctExpr='mean(df$rt)')
+  Hint:
+  
+- Class: text
+  Output: So we're testing the hypothesis that this value is significantly different from
+    the population mean (mean(rt_pop)) of 350. Based on population mean and population SD,
+    we can estimate the standard deviation of the sampling distribution for the mean. This
+    \"meta-SD\" is called the standard error and the formula for it is sd(population) /
+    sqrt(length(x)).
+    
+- Class: cmd_question
+  Output: Find the standard error of the mean by substituting rt_pop for population and
+    df$rt for x. Store the outcome of the command into a variable called std_error.
+  CorrectAnswer: std_error <- sd(rt_pop) / sqrt(length(df$rt))
+  AnswerTests: omnitest(correctExpr='std_error <- sd(rt_pop) / sqrt(length(df$rt))')
+  Hint: Just type std_error <- sd(rt_pop) / sqrt(length(df$rt)).
+
+- Class: cmd_question
+  Output: To reiterate, std_error is basically the standard deviation of the distribution
+    of the mean RTs we would get if we sampled all the possible samples of size =
+    length(df$rt). Look at the value of std_error.
+  CorrectAnswer: std_error
+  AnswerTests: omnitest(correctExpr='std_error')
+  Hint:
+  
+- Class: mult_question
+  Output: "So, mean(df$rt) is significantly different from mean(rt_pop) if it is:"
+  AnswerChoices: less than mean(rt_pop) - (1.96 * std_error) or greater than mean(rt_pop)
+    + (1.96 * std_error); less than mean(rt_pop) - (1.96 * std_error);  greater than
+    mean(rt_pop) + (1.96 * std_error); less than mean(rt_pop) - std_error or greater than
+    mean(rt_pop) + std_error; less than mean(rt_pop) - std_error; greater than mean(rt_pop)
+    + std_error;
+  CorrectAnswer: less than mean(rt_pop) - (1.96 * std_error) or greater than mean(rt_pop)
+    + (1.96 * std_error)
+  AnswerTests: omnitest(correctVal= 'less than mean(rt_pop) - (1.96 * std_error) or greater
+    than mean(rt_pop) + (1.96 * std_error)')
+  Hint:
+  
+- Class: cmd_question
+  Output: So let's look at the difference between population and sample means by subtracting
+    the former from the latter. Store the value in an object called difference.
+  CorrectAnswer: difference <- mean(df$rt) - mean(rt_pop)
+  AnswerTests: omnitest(correctExpr='difference <- mean(df$rt) - mean(rt_pop)')
+  Hint: That would be difference <- mean(df$rt) - mean(rt_pop).
+  
+- Class: text
+  Output: Now all you need to do to find out how many standard errors from the mean this is,
+    is to simply divide difference by std_error. This value is known as the z statistic.
+    
+- Class: text
+  Output: Our z statistic is larger than |1.96| (that's the absolute value, or abs() in R)
+    and therefore it is statistically significant. We thus reject the null hypothesis of
+    equal means in favour of the alternative that states that the mean RT of our sample is
+    different from the mean RT of the population.
+    
+- Class: cmd_question
+  Output: What about the z.test() I hear you ask? Well, this function does the maths for you.
+    See for yourself. Give the function df$rt as the x argument, \"two.sided\" as the
+    alternative argument, mean(rt_pop) as the mu argument and sd(rt$pop) as the sigma.x
+    argument.
+  CorrectAnswer: z.test(df$rt, alternative = "two.sided", mu = mean(rt_pop), sigma.x =
+    sd(rt_pop))
+  AnswerTests: match_call('z.test(df$rt, alternative = "two.sided", mu = mean(rt_pop),
+    sigma.x = sd(rt_pop))')
+  Hint: z.test(df$rt, alternative = "two.sided", mu = mean(rt_pop), sigma.x = sd(rt_pop))
+  
+- Class: text
+  Output: As you can see, the z statistic is the same as the one we calculated. On top of
+    that, the function gives you the precise p-value, the mean of df$rt and a 95% confidence
+    interval for mean(df$rt). If you don't know what a confidence interval is, well, that's
+    a topic for another day.
+    
+- Class: text
+  Output: "As I mentioned earlier, the z-test is used when the population parameters are
+    known. Alternatively, it can be used with large enough sample sizes. However, since
+    the first scenario occurs in practice... well, basically never and since it is rather
+    tricky to know what a \"large enough sample size\" is, z-tests are not used all that
+    much (not in psychology, anyway)."
+    
+- Class: text
+  Output: Instead, we use alternative tests, such as the t-tests. It is this test that will
+    be the subject of a future lesson. For now, though, that's all I have in store for you.

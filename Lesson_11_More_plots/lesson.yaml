@@ -1,0 +1,722 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 11 More plots
+  Author: your name goes here
+  Type: Standard
+  Organization: your organization's name goes here
+  Version: 2.3.1
+
+- Class: text
+  Output: "Welcome back. Today, I will show you how to do some advanced plotting. Let's
+    get started."
+    
+- Class: cmd_question
+  Output: "I loaded the data frame you created last time in the RStudio environment for you.
+    It's always a good idea to check the structure of the data frame you're working with.
+    Do it now using str(df)."
+  CorrectAnswer: str(df)
+  AnswerTests: omnitest(correctExpr='str(df)')
+  Hint:
+  
+- Class: text
+  Output: "As you can see, gender and group are still factors with their respective levels
+    and labels. That is good. However the item variables are not marked as ordinal."
+    
+- Class: cmd_question
+  Output: "Change the type of df$item_1 to ordered factor now."
+  CorrectAnswer: df$item_1 <- ordered(df$item_1)
+  AnswerTests: omnitest(correctExpr='df$item_1 <- ordered(df$item_1)')
+  Hint: Remember you need to reassign the variable using <- and the ordered() function.
+  
+- Class: cmd_question
+  Output: "Now do the same for item_2."
+  CorrectAnswer: df$item_2 <- ordered(df$item_2)
+  AnswerTests: omnitest(correctExpr='df$item_2 <- ordered(df$item_2)')
+  Hint:
+
+- Class: text
+  Output: "You already know how to get descriptive statistics for your variables. Let's now
+    look at how you can visualise your data with plots."
+
+- Class: text
+  Output: "Let's start with univariate plots - plots displaying single variable. We've covered
+    one type of univariate plots previously - histograms. These are good for visualising
+    frequency distributions of continuous variables."
+
+- Class: cmd_question
+  Output: "If you want to see the frequency distribution of a discrete variable, a bar chart
+    does the trick. It looks actually rather similar to a histogram but is more appropriate
+    for discrete variables. See for yourself by plotting item_2 using the plot() function."
+  CorrectAnswer: plot(df$item_2)
+  AnswerTests: omnitest(correctExpr='plot(df$item_2)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "This also works with categorical variables. Plot the gender variable to see this."
+  CorrectAnswer: plot(df$gender)
+  AnswerTests: omnitest(correctExpr='plot(df$gender)')
+  Hint:
+  
+- Class: text
+  Output: "Okay, so the automatic settings of a plot() functions can be helpful for some things.
+    However, if you want to move beyond simple frequency distribution with continuous
+    variables, it is not enough to just rely on plot()."
+    
+- Class: cmd_question
+  Output: "Try plotting df$rt and see what happens."
+  CorrectAnswer: plot(df$rt)
+  AnswerTests: omnitest(correctExpr='plot(df$rt)')
+  Hint:
+  
+- Class: text
+  Output: "This is not very helpful, is it? A good way of visualising descriptive stats is
+    a box plot (AKA box-and-whiskers plot). You can create it in R using a function
+    conveniently named boxplot()."
+    
+- Class: cmd_question
+  Output: "Use it with the df$rt variable, saving the output of the function in an object
+    called box."
+  CorrectAnswer: box <- boxplot(df$rt)
+  AnswerTests: omnitest(correctExpr='box <- boxplot(df$rt)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "So there's your boxplot of df$rt printed. On top of thet, the object box contains
+    some further information. Look at the object now."
+  CorrectAnswer: box
+  AnswerTests: omnitest(correctExpr='box')
+  Hint:
+  
+- Class: cmd_question
+  Output: "To see what these values mean, you can look at the Values section of the
+    documentation for the boxplot function. Go for it!"
+  CorrectAnswer: ?boxplot
+  AnswerTests: omnitest(correctExpr='?boxplot')
+  Hint: "Just type ?boxplot"
+  
+- Class: text
+  Output: "Actually, why don't you take a moment to read through the entire file and
+    familiarise yourself with the function?"
+    
+- Class: text
+  Output: "So the box plot shows you the median (box[[1]][3]), the 1st (box[[1]][2]) and
+    the 3rd (box[[1]][4]) quartiles, and the 95% confidence interval  (box[[1]][c(1,5)])
+    for df$rt (if you don't know what these concepts are, there's always the internet... ;)).
+    Any data points lying outside of the confidence interval are labelled outliers and
+    displayed as circles in the plot. Handy, don't you think?"
+    
+- Class: text
+  Output: "Another handy feature of the function is that you can plot a variable by factor.
+    For that you need the formula argument. Also, if you specify the data argument, you won't
+    have to include the df$ before every variable."
+    
+- Class: cmd_question
+  Output: "Let's say we want to look at separate boxplots of rt for control and experimental
+    groups respectively. Use the rt ~ group formula and the data argument to create this
+    kind of plot."
+  CorrectAnswer: boxplot(rt ~ group, data = df)
+  AnswerTests: match_call('boxplot(rt ~ group, data = df)')
+  Hint: "That would be boxplot(rt ~ group, data = df). Due to a somewhat difficult to explain
+    glitch, in this case, you need to type data = df even though in R, simply typing df would
+    be enough. We apologise for any inconvenience and will gladly refund you. We appreciate
+    your continuing use of our service... ;)"
+
+- Class: text
+  Output: "As you can observe, there is a slight difference between the two distributions.
+    To see if it's potentially meaningful, you can use the notch argument. From the
+    documentation: \"if notch is TRUE, a notch is drawn in each side of the boxes. If the
+    notches of two plots do not overlap this is 'strong evidence' that the two medians
+    differ\"."
+    
+- Class: cmd_question
+  Output: "Rerun the last command, but this time, add the notch = TRUE argument."
+  CorrectAnswer: boxplot(rt ~ group, data = df, notch = TRUE)
+  AnswerTests: match_call('boxplot(rt ~ group, data = df, notch = TRUE)')
+  Hint:
+  
+- Class: text
+  Output: "It looks like there might just be something going on in your data. Obviously, this
+    kind of plotting is no substitute for actual statistical analysis but it's nice for
+    getting an initial feel for your data."
+  
+- Class: cmd_question
+  Output: "You can also get a boxplot for every combination of two factors. See what happens
+    if you rerun the last command, but add \" * gender\" to the formula."
+  CorrectAnswer: boxplot(rt ~ group * gender, data = df, notch = TRUE)
+  AnswerTests: match_call('boxplot(rt ~ group * gender, data = df, notch = TRUE)')
+  Hint: "Simply type boxplot(rt ~ group * gender, data = df, notch = TRUE)."
+  
+- Class: text
+  Output: "Okay, this is getting slightly difficult to read, so let's do something about it.
+    (also, a minor point, as you can see and as R warns you, the notches lie outside the
+    boxes. This is caused by the distributions of rt by groups and you don't need to worry
+    about it now)"
+  
+- Class: cmd_question
+  Output: "First, add a little colour to the plot to distinguish the two groups using the col
+    argument. add it to the previous command and give it the value of, say,
+    c(\"darkorchid\", \"forestgreen\"). Yes, those are actual colours."
+  CorrectAnswer: boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c("darkorchid", "forestgreen"))
+  AnswerTests: match_call('boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c("darkorchid", "forestgreen"))')
+  Hint: "Simply type boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c(\"darkorchid\", \"forestgreen\"))."
+    
+- Class: cmd_question
+  Output: "It'd be nice if the y axis had a proper label, wouldn't it? Add ylab=\"Reaction
+    time (ms)\" to the command."
+  CorrectAnswer: boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c("darkorchid", "forestgreen"), ylab="Reaction time (ms)")
+  AnswerTests: match_call('boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c("darkorchid", "forestgreen"), ylab="Reaction time (ms)")')
+  Hint: "That's boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c(\"darkorchid\", \"forestgreen\"), ylab=\"Reaction time (ms)\")."
+
+- Class: text
+  Output: "Hmmm.. D'you know what I'm thinking? I don't really like the x axis labels that
+    much. Let's replace them with something better. In order to do this, we first want to
+    get rid of them and then add better ones on top of the plot."
+  
+- Class: cmd_question
+  Output: "You can delete x axis labels and the tick marks on the axis using the xaxt=\"n\"
+    argument. Add it to the plot command now."
+  CorrectAnswer: boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c("darkorchid", "forestgreen"), ylab="Reaction time (ms)", xaxt="n")
+  AnswerTests: match_call('boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c("darkorchid", "forestgreen"), ylab="Reaction time (ms)", xaxt="n")')
+  Hint: "Just type boxplot(rt ~ group * gender, data = df, notch = TRUE,
+    col=c(\"darkorchid\", \"forestgreen\"), ylab=\"Reaction time (ms)\", xaxt=\"n\")."
+    
+- Class: text
+  Output: "Okay, not that's done, we can create new axis labels using the axis() function.
+    This is a function in its own right and not an argument of boxplot and so you won't
+    be adding it to the command. Think of it as putting a transparent foil on top of the
+    picture with the plot that has the axis labels written on it."
+    
+- Class: cmd_question
+  Output: "First of all, pull up the documentation for the axis() function and spare a
+    minute exploring the arguments."
+  CorrectAnswer: ?axis
+  AnswerTests: omnitest(correctExpr='?axis')
+  Hint: "Just type ?axis"
+  
+- Class: mult_question
+  Output: "Okay, a few test questions... We want to add the x axis and thus we want
+    to draw something below the plot. Which argument specifies this?"
+  AnswerChoices: side; at; lty; hadj
+  CorrectAnswer: side
+  AnswerTests: omnitest(correctVal= 'side')
+  Hint: "There are several ways of doing this but only one of the above is correct. See
+    the documentation."
+    
+- Class: mult_question
+  Output: "Now, what value of the side argument tells R to draw the axis below the plot?"
+  AnswerChoices: 1; 2; 3; 4
+  CorrectAnswer: 1
+  AnswerTests: omnitest(correctVal= '1')
+  Hint: "See the documentation."
+
+- Class: mult_question
+  Output: "Which argument controls the length of the tick marks?"
+  AnswerChoices: tick; at; pos; col.ticks
+  CorrectAnswer: tick
+  AnswerTests: omnitest(correctVal= 'tick')
+  Hint: 
+  
+- Class: cmd_question
+  Output: "And finally, say we want to get rid of the tick marks altogether (because, in this
+    case, we do). What value would you provide to the tick argument? This time no options."
+  CorrectAnswer: FALSE
+  AnswerTests: omnitest(correctVal= 'FALSE')
+  Hint: "See the documentation."
+  
+- Class: text
+  Output: "Suave! Now, let me tell you what the plan is. We want to put the values of gender
+    c(\"Female\", \"Male\", \"Non-binary\"), each one below the corresponding pair of boxes
+    Since the x-coordinate of first box plot is 1 and for the second it is 2, we want the
+    first label to appear beneath the plot *at* the coordinate 1.5 (between the boxes). The
+    2nd label would be at 3.5 (between 3 and 4) and so on... We don't want any tick marks on
+    the axis."
+    
+- Class: text
+  Output: "So, you already know the value of the side, at, labels and tick arguments. That is
+    all you need to know."
+    
+- Class: cmd_question
+  Output: Try feeding all of these into the axis function no.
+  CorrectAnswer: axis(side = 1, at=c(1.5,3.5,5.5), labels=c("Female","Male", "Non-binary"),
+    tick = FALSE)
+  AnswerTests: match_call('axis(side = 1, at=c(1.5,3.5,5.5), labels=c("Female","Male",
+    "Non-binary"), tick = FALSE)')
+  Hint: "at=c(1.5,3.5,5.5). You know what side, labels, and tick equal..."
+
+- Class: text
+  Output: "Instantly much better! Do you know what would be even better? A legend explaining
+    the colour scheme somewhere within the region of the plot."
+    
+- Class: cmd_question
+  Output: "Pull up the documentation for the legend() function to learn how this is done."
+  CorrectAnswer: ?legend
+  AnswerTests: omnitest(correctExpr='?legend')
+  Hint:
+  
+- Class: text
+  Output: "From the sheer number of arguments, it is clear that you can do many things with
+    function. Let's keep things relatively simple though."
+    
+- Class: text
+  Output: "Firstly, we need to specify the coordinates of the legend box. the x argument tells
+    r where to draw left edge of the box and the y argument tells it where to draw the top
+    of the box. Let's say we want these margins to be at x = 4.5 and y = 700."
+    
+- Class: text
+  Output: "Secondly, the legend argument is there for you to provide the labels for the two
+    groups. In our case, it's c(\"Control\", \"Experimental\"). Mind the order!"
+
+- Class: text
+  Output: "Thirdly, fill defines the patterns or colours you wish to explain in the legend.
+    Here, it's c(\"darkorchid\", \"forestgreen\")."
+    
+- Class: text
+  Output: "It is also a good idea to give the legend box a title. Make it simply \"Group\"."
+  
+- Class: text
+  Output: "And finally, by default, the legend box has a black edge. I personally don't think
+    this looks all that great so use the bty = \"n\" argument to get rid of it."
+    
+- Class: cmd_question
+  Output: "Okay, now for the big finale! Put all the above together using the legend()
+    function."
+  CorrectAnswer: legend(x = 4.5, y = 700, legend = c("Control", "Experimental"),
+       fill = c("darkorchid","forestgreen"), title = "Group", bty = "n")
+  AnswerTests: match_call('legend(x = 4.5, y = 700, legend = c("Control", "Experimental"),
+       fill = c("darkorchid","forestgreen"), title = "Group", bty = "n")')
+  Hint: "Just put the arguments above inside legend() in the order in which we discussed them."
+  
+- Class: text
+  Output: "That, my friend, is a decent grouped box plot! Well done!"
+  
+- Class: text
+  Output: "So boxplots are really good for visualising descriptive statistics of a single
+    variable. But what if we want to look at a relationship between two variables?"
+    
+- Class: text
+  Output: "When it comes to continuous variables, the best choice is probably a scatter plot.
+    This is also the default plot() type for two continuous (numeric) variables."
+    
+- Class: text
+  Output: "In our data frame, there's - apart from other variables - reaction time (with which
+    we've already worked) and two anxiety measures taken at two different types (anx_score_1
+    and ..._2). Let's say we hypothesised that anxiety in time 1 affects reaction time."
+    
+- Class: cmd_question
+  Output: "To visualise this relationship, you can use the plot() function. By convention, you
+    would plot the independent variable (df$anx_score_1) on the x axis and the dependent
+    variable (df$rt) on the y axis. Plot it now."
+  CorrectAnswer: plot(df$anx_score_1, df$rt)
+  AnswerTests: match_call('plot(df$anx_score_1, df$rt)')
+  Hint:
+
+- Class: cmd_question
+  Output: "Let's tweak the plot a little. Say, we don't like the circles but want to replace
+    them with some other characters. That's what the pch (point character) argument is for.
+    Add pch = 18 to the plot() function."
+  CorrectAnswer: plot(df$anx_score_1, df$rt, pch = 18)
+  AnswerTests: match_call('plot(df$anx_score_1, df$rt, pch = 18)')
+  Hint: "That would be plot(df$anx_score_1, df$rt, pch = 18)."
+  
+- Class: cmd_question
+  Output: "Now let's add a title to the plot. Use the main = \"Basic scatter plot\" argument
+    to do this."
+  CorrectAnswer: plot(df$anx_score_1, df$rt, pch = 18, main = "Basic scatter plot")
+  AnswerTests: match_call('plot(df$anx_score_1, df$rt, pch = 18, main="Basic scatter plot")')
+  Hint: "Just add the argument to the previous command."
+  
+- Class: cmd_question
+  Output: "Finally use the xlab and ylab arguments to give the plot proper x and y axis
+    labels. Lets call them Anxiety score 1 and Reaction time (ms), respectively."
+  CorrectAnswer: plot(df$anx_score_1, df$rt, pch = 18, main = "Basic scatter plot",
+    xlab="Anxiety score 1", ylab="Reaction time (ms)")
+  AnswerTests: match_call('plot(df$anx_score_1, df$rt, pch = 18, main="Basic scatter plot",
+    xlab="Anxiety score 1", ylab="Reaction time (ms)")')
+  Hint: "Just add the xlab and ylab arguments to the previous command. Don't forget the names
+    must be in quotes."
+  
+- Class: text
+  Output: "From the scatter plot, as good looking as it may now be, it is kind of difficult to
+    tell if there's any relationship there. To see the relationship better we can have R draw
+    a line across the plot that describes the relationship."
+    
+- Class: text
+  Output: "To do this, there's the abline() function. As the name suggests, the function draws
+    a line based on two values, a (the value of y at x=0, where the line crosses the y
+    axis AKA the intercept) and b (the slope of the line)."
+    
+- Class: text
+  Output: "Now, you *could* provide these manually but the whole point is that we don't know
+    what the intercept and slopes that describe the relationship between out two variables
+    are. We need R to find them for us."
+    
+- Class: text
+  Output: "To do this, we need to build a so-called linear model using the lm() function
+    predicting reaction time by anxiety at time 1. The command looks like this:
+    lm(df$rt ~ df$anx_score_1)."
+    
+- Class: cmd_question
+  Output: "OK, have R draw the line of best fit over the plot using abline(). Put the entire
+    lm(...) expression in as the first argument. Also, using the lw = 2 (line weight)
+    argument,  make the line slightly thicker, and using col make it \"blue\". You've used
+    both arguments in Lesson 5 when you were drawing the normal curve over the histogram."
+  CorrectAnswer: abline(lm(df$rt ~ df$anx_score_1), lw=2, col="blue")
+  AnswerTests: match_call('abline(lm(df$rt ~ df$anx_score_1), lw=2, col="blue")')
+  Hint: "Just add the xlab and ylab arguments to the previous command. Don't forget the names
+    must be in quotes."
+    
+- Class: text
+  Output: "Nice, so it looks like there is a slight negative relationship between the
+    variables: the more anxious people are, the shorter their reaction times get."
+    
+- Class: text
+  Output: "By using abline() we told R that any relationship it comes up with must be linear
+    (described by a straight line). Sometimes, it's worth looking at what line R draws
+    if we relax this constraint. This is easily done with the line(lowess(df$var1, df$var2)
+    ...) function."
+    
+- Class: text
+  Output: "However, the lowess() function doesn't know how to deal with missing data (NA)
+    so to get around this as well as to practice the vastly important indexing, let's create
+    a subset of df."
+    
+- Class: cmd_question
+  Output: "Create df2 that includes our two variables of interest (their index numbers are
+    5 and 10, respectively) and excludes all the rows with missing values for anx_score_1
+    (there are no missing values in rt)."
+  CorrectAnswer: df2 <- df[!is.na(df$anx_score_1),c(5,10)]
+  AnswerTests: match_call('df2 <- df[!is.na(df$anx_score_1),c(5,10)]')
+  Hint: "Remember, you are assigning the object df2 a subset of df where, in the first
+    indexing dimension, you only include rows for which !is.na(df$anx_score_1) and,
+    in the second dimension, you include columns 5 and 10 bound together in a vector."
+    
+- Class: cmd_question
+  Output: "Great, with the data frame ready, use lowess(df2$anx_score_1, df2$rt) in the
+    lines() function. Also, just like before, change lw to 2, and to make the line easily
+    distinguished from the first one, change its type to lty = 4 and make it green."  
+  CorrectAnswer: lines(lowess(df2$anx_score_1,df2$rt), lw=2, lty=4, col="green")
+  AnswerTests: match_call('lines(lowess(df2$anx_score_1,df2$rt), lw=2, lty=4, col="green")')
+  Hint: "Just ype lines(lowess(df2$anx_score_1,df2$rt), lw=2, lty=4, col=\"green\").
+    indexing dimension, you only include rows for which !is.na(df$anx_score_1) and,
+    in the second dimension, you include columns 5 and 10 bound together in a vector."
+
+- Class: text
+  Output: "And all of a sudden, the relationship doesn't look so straight forward any more..."
+  
+- Class: text
+  Output: "Okay, let's move on to the final type of plot. Let's say you had your participants
+    classify objects into groups. You measured the number of hesitations and the number
+    of errors they made. These are the n_hesitations and n_errors variables in df."
+    
+- Class: text
+  Output: "Now suppose, you want to show whether your experimental group
+    differed from your control group on the mean number for either of these variables, all
+    in a single plot."
+
+- Class: text
+  Output: "A grouped bar chart is the ideal type of plot to use in this situation. Let's make
+    one then!"
+    
+- Class: text
+  Output: "The way you specify a bar chart is a bit different from the way you created the
+    two previous graphs. Here, you want to give R the values of y so that it knows how tall
+    the individual bars should be."
+    
+- Class: cmd_question
+  Output: "Let's start by plotting mean(df$n_errors) using barplot()."    
+  CorrectAnswer: barplot(mean(df$n_hesitations))
+  AnswerTests: match_call('barplot(mean(df$n_hesitations))')
+  Hint: "Just type barplot(mean(df$n_hesitations))."
+  
+- Class: cmd_question
+  Output: "So, you can see the mean is something above 5 but other than that, the plot is
+    almost spectacularly unimpressive. Let's plot the means of both n_hesitations and
+    n_errors using c(mean(df$n_hesitations), mean(df$n_errors))"
+  CorrectAnswer: barplot(c(mean(df$n_hesitations), mean(df$n_errors)))
+  AnswerTests: match_call('barplot(c(mean(df$n_hesitations), mean(df$n_errors)))')
+  Hint: "Put the thing above all inside a barplot() function"
+  
+- Class: mult_question
+  Output: "Right, something obviously went wrong. Can you guess what?"
+  AnswerChoices: There are missing values in df$n_errors; Nope, no idea...; About 11, sir!
+  CorrectAnswer: There are missing values in df$n_errors
+  AnswerTests: omnitest(correctVal= 'There are missing values in df$n_errors')
+  Hint: "You just won't take a hint, will you?!"
+  
+- Class: cmd_question
+  Output: "Marvelous! Okay, you can deal with this issue by adding na.rm = TRUE to the
+    latter of the two mean() functions in the previous command. Do it now please."
+  CorrectAnswer: barplot(c(mean(df$n_hesitations), mean(df$n_errors, na.rm = TRUE)))
+  AnswerTests: match_call('barplot(c(mean(df$n_hesitations), mean(df$n_errors, na.rm = TRUE)))')
+  Hint: "Remember, you can use the up arrow to toggle through previously entered commands and
+    edit the one you want to use next."
+    
+- Class: text
+  Output: "Okay, so these are basic bar charts. To take things a step further, let's have
+    the bars displayed by df$group. To do this, we need ti guve R the mean of the control
+    group's n_hesitation, the mean of the experimental group's n_hesitations and likewise
+    for n_errors."
+    
+- Class: text
+  Output: "Ideally, we want two columns of means, one for each variable with control
+    group in the first row and experimental group in the second, so that R recognises that
+    these are means by groups. Doing this needs a little prepping."
+    
+- Class: cmd_question
+  Output: "Since we'll be using the summaryBy() function from the doBy package, you first
+    need to install it. Do it now using the install.packages() function."
+  CorrectAnswer: install.packages("doBy")
+  AnswerTests: omnitest(correctVal= 'install.packages("doBy")')
+  Hint: "The name of the package needs to be in (double) quotes."
+  
+- Class: cmd_question
+  Output: "Now load the package using the library() function."
+  CorrectAnswer: library(doBy)
+  AnswerTests: omnitest(correctExpr = 'library(doBy)')
+  Hint: "No quotes this time."
+  
+- Class: cmd_question
+  Output: "Now pull up the documentation for summaryBy() and take a moment to read through it."
+  CorrectAnswer: ?summaryBy
+  AnswerTests: omnitest(correctExpr= '?summaryBy')
+  Hint:
+
+- Class: text
+  Output: "Since we want to have a separate mean for each group and each variable, the first
+    argument of the function will be a formula \"predicting\" n_hesitations + n_errors by
+    group (the two sides of the formula will be joined by ~). Use data = df so that you don't
+    have to put df$ before every variable. The function (FUN) you want is mean."
+
+- Class: text
+  Output: "Also, it is handy to tell R to keep the original names by adding keep.names = TRUE.
+    And finally, don't forget to add na.rm = TRUE to deal with missing values."
+    
+- Class: cmd_question
+  Output: "Now put all of this into a summaryBy() function and store the output in an object
+    called means."
+  CorrectAnswer: means <- summaryBy(n_hesitations + n_errors ~ group, df, FUN = mean,
+    keep.names = TRUE, na.rm = TRUE)
+  AnswerTests: match_call('means <- summaryBy(n_hesitations + n_errors ~ group, df,
+    FUN = mean, keep.names = TRUE, na.rm = TRUE)')
+  Hint: "That's means <- summaryBy(n_hesitations + n_errors ~ group, df, FUN = mean,
+    keep.names = TRUE, na.rm = TRUE)"
+    
+- Class: cmd_question
+  Output: "OK, print means now."
+  CorrectAnswer: means
+  AnswerTests: omnitest(correctVal= 'means')
+  Hint:
+  
+- Class: text
+  Output: "Right now, means is a data.frame. However, barplot() doesn't accept this type
+    of object. We thus need to convert it to a matrix which barplot() can handle."
+    
+- Class: text
+  Output: "Further, we don't need the group column, we only want the numbers so we will
+    have to... that's right, use indexing again. Ain't life grand?!"
+    
+- Class: cmd_question
+  Output: "To do this, use as.matrix(means[ , - 1]) and store it in means again."
+  CorrectAnswer: means <- as.matrix(means[ , - 1])
+  AnswerTests: omnitest(correctVal= 'means <- as.matrix(means[ , - 1])')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Print means again."
+  CorrectAnswer: means
+  AnswerTests: omnitest(correctVal= 'means')
+  Hint:
+
+- Class: text
+  Output: "Nearly there. All that remains is to add row names to identify the groups. This
+    might seem odd, given that I just told you to get rid of the group column but there is
+    a difference between a column in a data.frame and row names of a matrix. A matrix can
+    only take one type of data so if you kept the first column, R would force all the values
+    into character strings and you wouldn't be able to plot those."
+    
+- Class: cmd_question
+  Output: "To give the rows appropriate names, type row.names(means) <- c(\"Control\",
+    \"Experimental\")."
+  CorrectAnswer: row.names(means) <- c("Control", "Experimental")
+  AnswerTests: omnitest(correctExpr= 'row.names(means) <- c("Control", "Experimental")')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Now, print means once more and admire its beauty."
+  CorrectAnswer: means
+  AnswerTests: omnitest(correctVal= 'means')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Okay, with the matrix ready, you can plot it using barplot()."
+  CorrectAnswer: barplot(means)
+  AnswerTests: omnitest(correctVal= 'barplot(means)')
+  Hint:
+  
+- Class: text
+  Output: "That's our basic stacked bar chart. Let's tweak it now."
+  
+- Class: cmd_question
+  Output: "Some colour would be nice, what say you? Go for c(\"gold\", \"dodgerblue\").
+    Add it to the plot now."
+  CorrectAnswer: barplot(means, col = c("gold", "dodgerblue"))
+  AnswerTests: match_call('barplot(means, col = c("gold", "dodgerblue"))')
+  Hint: "To add colour, use the col argument."
+  
+- Class: cmd_question
+  Output: "Now let's add a legend with the group names using the, well, legend argument.
+    The names of the groups are stored in row.names(means) so use that expression with the
+    argument."
+  CorrectAnswer: barplot(means, col = c("gold", "dodgerblue"), legend = row.names(means))
+  AnswerTests: match_call('barplot(means, col = c("gold", "dodgerblue"),
+    legend = row.names(means))')
+  Hint: "Just keep adding arguments..."
+  
+- Class: cmd_question
+  Output: "In this situation, a stacked bar chart isn't the best option. You can unstack it
+    by adding the beside = TRUE argument."
+  CorrectAnswer: barplot(means, col = c("gold", "dodgerblue"), legend = row.names(means),
+    beside = TRUE)
+  AnswerTests: match_call('barplot(means, col = c("gold", "dodgerblue"),
+    legend = row.names(means), beside = TRUE)')
+  Hint:
+
+- Class: cmd_question
+  Output: "Much better! It's just a bit of a shame that the left blue bar is a bit longer
+    than the y axis. You can remedy this by changing the limits of the y axis. Let's say
+    we want the axis to go from 0 to 7. To achieve this, add ylim = c(0, 7) to the plot
+    command."
+  CorrectAnswer: barplot(means, col = c("gold", "dodgerblue"), legend = row.names(means),
+    beside = TRUE, ylim = c(0,7))
+  AnswerTests: match_call('barplot(means, col = c("gold", "dodgerblue"),
+    legend = row.names(means), beside = TRUE, ylim = c(0,7))')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Finally, let's have some proper x labels. Change them to
+    c(\"No. of hesitations\", \"No. of errors\") using the names.arg argument."
+  CorrectAnswer: barplot(means, col = c("gold", "dodgerblue"), legend = row.names(means),
+    beside = TRUE, ylim = c(0,7), names.arg=c("No. of hesitations","No. of errors"))
+  AnswerTests: match_call('barplot(means, col = c("gold", "dodgerblue"),
+    legend = row.names(means), beside = TRUE, ylim = c(0,7), names.arg=c("No. of hesitations",
+    "No. of errors"))')
+  Hint:
+  
+- Class: text
+  Output: "This is another very pretty graph but, as it is, it doesn't tell you whether the
+    differences between the groups are meaningful. To visualise them better, some error
+    bars showing +- 2 standard errors from the mean would be nice. So let's add those
+    before we finish this lesson."
+    
+- Class: text
+  Output: "You could calculate the standard errors \"by hand\" as sd(x)/sqrt(length(x)) but
+    there's a readymade std.error() funtion available in the plotrix package."
+    
+- Class: cmd_question
+  Output: "Go ahead now and install it."
+  CorrectAnswer: install.packages("plotrix")
+  AnswerTests: omnitest(correctExpr= 'install.packages("plotrix")')
+  Hint: "The name of the package needs to be in (double) quotes."
+  
+- Class: cmd_question
+  Output: "Now load the package using the library() function."
+  CorrectAnswer: library(plotrix)
+  AnswerTests: omnitest(correctExpr= 'library(plotrix)')
+  Hint: "No quotes this time."
+  
+- Class: cmd_question
+  Output: "You can use this function in the FUN argument of summaryBy() just like you
+    did with the mean() function. Do it and save the values in an object called std_errors.
+    You can use the up arrow to get to the previous summaryBy() function."
+  CorrectAnswer: std_errors <- summaryBy(n_hesitations + n_errors ~ group, df, FUN = std.error,
+    keep.names = TRUE, na.rm = TRUE)
+  AnswerTests: match_call('std_errors <- summaryBy(n_hesitations + n_errors ~ group, df,
+    FUN = std.error, keep.names = TRUE, na.rm = TRUE)')
+  Hint: "That's std_errors <- summaryBy(n_hesitations + n_errors ~ group, df, FUN = std.error,
+    keep.names = TRUE, na.rm = TRUE)"
+    
+- Class: cmd_question
+  Output: "But now we have the same data frame/matrix issue as before so you need to reassign
+    std_errors with as.matrix(std_errors[ , - 1]) again."
+  CorrectAnswer: std_errors <- as.matrix(std_errors[ , - 1])
+  AnswerTests: omnitest(correctVal= 'std_errors <- as.matrix(std_errors[ , - 1])')
+  Hint:
+  
+
+- Class: cmd_question
+  Output: "And again, give the rows appropriate names, type row.names(std_errors) <-
+    c(\"Control\", \"Experimental\")"
+  CorrectAnswer: row.names(std_errors) <- c("Control", "Experimental")
+  AnswerTests: omnitest(correctExpr= 'row.names(std_errors) <- c("Control", "Experimental")')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Print std_errors to check the last few steps."
+  CorrectAnswer: std_errors
+  AnswerTests: omnitest(correctVal= 'std_errors')
+  Hint:
+  
+- Class: text
+  Output: "Now to add the error bars, we need the errbar() function from the Hmisc package"
+    
+- Class: cmd_question
+  Output: "You know the drill... Install it now (we installed it in lesson 7 but just to
+    be on the safe side, do it again)."
+  CorrectAnswer: install.packages("Hmisc")
+  AnswerTests: omnitest(correctExpr= 'install.packages("Hmisc")')
+  Hint: "Double quotes?"
+  
+- Class: cmd_question
+  Output: "And now load the package."
+  CorrectAnswer: library(Hmisc)
+  AnswerTests: omnitest(correctExpr= 'library(Hmisc)')
+  Hint: "No quotes."
+  
+- Class: cmd_question
+  Output: "Now pull up the documentation for the errbar() function and read through it."
+  CorrectAnswer: ?errbar
+  AnswerTests: omnitest(correctExpr='?errbar')
+  Hint: "Just type ?errbar."
+  
+- Class: text
+  Output: "To construct the error bars, you need to tell the function a few things: the x
+    and y coordinates of the mid-points of the bars, how far upwards (yplus) and downwards
+    (yminus) they should stretch, and that you want to add them to the existing plot
+    (add = TRUE)."
+    
+- Class: text
+  Output: "The left edges of the bars start at x = 1, 2, 4, and 5 so you want the error bars
+    to start at c(1.5,2.5,4.5,5.5) so that they're in the middle of the bars. That's the
+    x argument."
+    
+- Class: text
+  Output: "The y coordinates are the means of the 4 groups, stored in our means variable."
+  
+- Class: text
+  Output: "Now, I said that it'd be good if the error bars displayed +- 2 std. errors from the
+    mean. That means that yplus will be means + (2 * std_errors) and yminus will be the same
+    just with a - instead of the +."
+    
+- Class: cmd_question
+  Output: "Now for the final stretch. Put the x, y, yplus, yminus, and add arguments along
+    with the values we discussed above inside the errbar function. I'm holding my breath!"
+  CorrectAnswer: errbar(x = c(1.5,2.5,4.5,5.5), y = means, yplus = means + (2 * std_errors),
+    yminus = means - (2 * std_errors), add = TRUE)
+  AnswerTests: match_call('errbar(x = c(1.5,2.5,4.5,5.5), y = means, yplus = means + (2 *
+    std_errors), yminus = means - (2 * std_errors), add = TRUE)')
+  Hint: "Take it slow and add the arguments to the errbar() function in the right order and
+    with the correct values. Don't forget the add = TRUE in the end. You can do it! I know
+    you can!"
+    
+- Class: text
+  Output: "Amazing! Isn't that just a fabulous plot? I know, right?! Well done you, this was
+    a very long lesson but I think you learnt some pretty impressive stuff. Have a
+    well-deserved rest and I will see you next time. It will be a much shorter lesson, promise!"

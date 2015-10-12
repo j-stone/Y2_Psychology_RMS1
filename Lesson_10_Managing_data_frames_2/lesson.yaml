@@ -1,0 +1,428 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 10 Managing data frames 2
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+
+- Class: text
+  Output: Welcome back! Let's pick up where we left off last time and talk about cleaning
+    data and managing data frames.
+    
+- Class: cmd_question
+  Output: "I've loaded the df you made last time into the environment. To refresh your memory,
+    have R print it."
+  CorrectAnswer: df
+  AnswerTests: omnitest(correctExpr='df')
+  Hint: That's okay, you're still warming up. Simply type df.
+  
+- Class: cmd_question
+  Output: "How about we sort the cases so that id goes from 1 to 100 and is not all jumbled up?
+    Pull up the documentation for order() and read through it."
+  CorrectAnswer: ?order
+  AnswerTests: omnitest(correctExpr='?order')
+  Hint:
+  
+- Class: cmd_question
+  Output: "As you can see in \"Examples: Sorting data frames\", one way of doing what we want
+    is to use the order() function in the 1st indexing dimension. Go ahead and try sorting df
+    by id. Since you want to sort the data within the object df, you have to reassign it."
+  CorrectAnswer: df <- df[order(df$id), ]
+  AnswerTests: omnitest(correctExpr='df <- df[order(df$id), ]')
+  Hint: That's df <- df[order(df$id), ], right?
+  
+- Class: cmd_question
+  Output: "To see that it worked, look at df again."
+  CorrectAnswer: df
+  AnswerTests: omnitest(correctExpr='df')
+  Hint: 
+  
+- Class: text
+  Output: Now, if you remember, there are a few participants who are less than 18 years of age.
+    since these virtual folks are not legally adult, let's not use their data.
+
+- Class: cmd_question
+  Output: "But just to be on the safe side, let's save their data into a new data frame called
+    df_minors using indexing."
+  CorrectAnswer: df_minors <- df[df$age < 18, ]
+  AnswerTests: omnitest(correctExpr='df_minors <- df[df$age < 18, ]')
+  Hint: You want to put something in the first indexing dimention. Something like an inequality
+   statement...
+
+- Class: mult_question
+  Output: "Okay, with the data safely stored in the new df, let's delete the younglings from df.
+    This is done by reassigning df and indexing only those cases that do not meet the above
+    criterion (!df$age < 18) or those who meet a complementary criterion."
+  AnswerChoices: df$age >= 18; df$age =< 18; df$age <= 18; df$age => 18; !df$age == 18;
+    df$age != 18; df$age == 18; !df$age <= 18; !df$age >= 18
+  CorrectAnswer: df$age >= 18
+  AnswerTests: omnitest(correctVal= 'df$age >= 18')
+  Hint:  
+
+- Class: cmd_question
+  Output: Okay, use this expression to remove the unwanted data.
+  CorrectAnswer: df <- df[df$age >= 18, ]
+  AnswerTests: any_of_exprs('df <- df[df$age >= 18, ]', 'df <- df[!df$age < 18, ]')
+  Hint:
+  
+- Class: text
+  Output: What you just did is commonly referred to as \"subsetting\" - taking a subset of
+    your data set and doing something with it. You can subset rows, columns or both.
+    
+- Class: cmd_question
+  Output: To practice subsetting, let R print a subset of df consisting of rows where rt < 100
+    and item_1 and item_2 columns. Do not store this subset in an object.
+  CorrectAnswer: df[df$rt < 100, c("item_1", "item_2")]
+  AnswerTests: any_of_exprs('df[df$rt < 100, c(6,7)]', 'df[df$rt < 100, c("item_1", "item_2")]',
+    'df[df[ ,5] < 100, c(6, 7)]', 'df[df[ ,5] < 100, c("item_1", "item_2")]')
+  Hint: In the second dimension, you need to put either the names of the columns you want to
+    index (as character strings) or their index numbers. Both have to be bound together with a
+    c().
+    
+- Class: mult_question
+  Output: "I can think of at least 4 different but equivalent ways of doing this. Picking one
+    of them boils down to personal taste. Which one do you find the most appealing?"
+  AnswerChoices: df[df$rt < 100, c(6,7)]; df[df$rt < 100, c("item_1", "item_2")];
+    df[df[ ,5] < 100, c(6, 7)]; df[df[ ,5] < 100, c("item_1", "item_2")]
+  CorrectAnswer:
+  AnswerTests: omnitest()
+  Hint:
+  
+- Class: cmd_question
+  Output: Hmmm, interesting choice... Anyway, in order to use the numbers you have to be sort
+    of familiar with the order of your variables in your data set. You can always remind yourself
+    by typing names(df). Try it.
+  CorrectAnswer: names(df)
+  AnswerTests: omnitest(correctExpr= 'names(df)')
+  Hint: 
+  
+- Class: cmd_question
+  Output: While we're dealing with rts of less than 100 ms, let's see how many cases there are
+    of such unusually short reaction times. You will need the length() and which() functions.
+  CorrectAnswer: length(which(df$rt < 100))
+  AnswerTests: omnitest(correctExpr= 'length(which(df$rt < 100))')
+  Hint: That would be length(which(df$rt < 100)).
+  
+- Class: cmd_question
+  Output: Oh but there are also some missing values, right? How many cases have rt <100 or NA?
+  CorrectAnswer: length(which(df$rt < 100|is.na(df$rt)))
+  AnswerTests: omnitest(correctExpr= 'length(which(df$rt < 100|is.na(df$rt)))')
+  Hint: This time, the which() function will have 2 expression in it joint by the or operator.
+
+- Class: text
+  Output: If you were analysing actual data, you'd want to take note of these numbers so that
+    you can report them in your paper/assignment.
+
+- Class: cmd_question
+  Output: Back to subsetting. There's also a readymade function called subset(). Pull up its
+    documentation and look into it for a moment.
+  CorrectAnswer: ?subset
+  AnswerTests: omnitest(correctExpr= '?subset')
+  Hint:
+
+- Class: cmd_question
+  Output: Now use the function to print a subset of df consisting of id, age, and group for
+    males only.
+  CorrectAnswer: "subset(df, gender == \"male\", select = c(id, age, group))"
+  AnswerTests: match_call('subset(df, gender == "male", select = c(id, age, group))')
+  Hint: "Replace the subset argument with gender == \"male\" and select c(id, age, group)."
+
+- Class: text
+  Output: I think learning two ways of subsetting data frames is plenty so let's move on.
+  
+- Class: cmd_question
+  Output: OK, let's say the data from participants with rt < 100 are of no use to us. Let's
+    delete them. You can do this by taking the entire (which....) bracket, putting and
+    indexing it out by putting a minus sign in front of it in the first dimension of the
+    []. Store this cleaned data set in an object called df_clean.
+  CorrectAnswer: df_clean <- df[- which(df$rt < 100 | is.na(df$rt)), ]
+  AnswerTests: omnitest(correctExpr= 'df_clean <- df[- which(df$rt < 100 | is.na(df$rt)), ]')
+  Hint: Just type df_clean <- df[- which(df$rt < 100 | is.na(df$rt)), ].
+  
+- Class: text
+  Output: Now that the data are cleaned, we can score our 2-item questionnaire. We've already
+    reverse-scored item_2 so all we have to do now is to take the average response on the
+    two items and store it into a variable within the df_clean called total.
+    
+- Class: text
+  Output: The easiest way of doing this is to add the variables and divide them by 2.
+
+- Class: cmd_question
+  Output: However, you may recall that we turned the variables into ordered factors and R
+    doesn't let us to perform arithmetic operations on these. To get around this issue, put
+    each variable into as.numeric().
+  CorrectAnswer: df_clean$total <- (as.numeric(df_clean$item_1) +
+    as.numeric(df_clean$item_2)) / 2
+  AnswerTests: omnitest(correctExpr= 'df_clean$total <- (as.numeric(df_clean$item_1) +
+    as.numeric(df_clean$item_2)) / 2')
+  Hint: Don't forget you're now dealing with df_clean$ variables and that you need to use ()s
+    to tell R to first add the variables and only then divide them by 2.
+    
+- Class: text
+  Output: "An alternative way to get the same thing is: rowMeans(cbind(as.numeric(
+    df_clean$item_1), as.numeric(df_clean$item_2)))."
+
+- Class: cmd_question
+  Output: cbind() is basically like c() for columns. It takes multiple vectors of the same
+    length and puts them side by side into two columns. Try it out by typing the cbind(...)
+    past of the command above.
+  CorrectAnswer: cbind(as.numeric(df_clean$item_1), as.numeric(df_clean$item_2))
+  AnswerTests: omnitest(correctExpr= 'cbind(as.numeric(df_clean$item_1),
+    as.numeric(df_clean$item_2))')
+  Hint:
+  
+- Class: cmd_question
+  Output: "rowMeans() takes a two-dimensional object, such as a data frame, and calculates
+    the mean value for each row. See for yourself. Put the cbind(...) expression into a
+    rowMeans() function."
+  CorrectAnswer: rowMeans(cbind(as.numeric(df_clean$item_1), as.numeric(df_clean$item_2)))
+  AnswerTests: omnitest(correctExpr= 'rowMeans(cbind(as.numeric(df_clean$item_1),
+    as.numeric(df_clean$item_2)))')
+  Hint:
+  
+- Class: cmd_question
+  Output: "To see that these are equivalent ask R it for all elements, total is equal to
+    the command above. Use all() and == to ask this."
+  CorrectAnswer: all(df_clean$total == rowMeans(cbind(as.numeric(df_clean$item_1),
+    as.numeric(df_clean$item_2))))
+  AnswerTests: omnitest(correctExpr= 'all(df_clean$total ==
+    rowMeans(cbind(as.numeric(df_clean$item_1), as.numeric(df_clean$item_2))))')
+  Hint: all(df_clean$total == rowMeans(cbind(as.numeric(df_clean$item_1),
+    as.numeric(df_clean$item_2))))
+    
+- Class: text
+  Output: "Sometimes you may find yourself in a situation where you need to combine -
+    or merge - two data frames. Maybe you get more participants or maybe you have data
+    from two sessions. In the former case, you will want to add rows to a data frame,
+    in the latter, columns. Let's look at adding rows first."
+    
+- Class: cmd_question
+  Output: "I've already shown you how to add columns to a data frame using cbind(). Now,
+    there's also a rbind() function that adds rows. Look at the documentation for the
+    function."
+  CorrectAnswer: ?rbind
+  AnswerTests: omnitest(correctExpr= '?rbind')
+  Hint:
+  
+- Class: text
+  Output: "There's three caveats to using rbind(). Firstly, you need to make sure the two
+    data frames you want to merge by row have the same number of columns. Secondly,
+    you need to make sure the columns of the two df's match (same variables, same order).
+    And finally, you need to make sure the class() of the data within variable (across
+    both df's) is the same. So, if df1$var_1 is an ordered factor of 5 levels, df2$var_1
+    has to be as well."
+    
+- Class: text
+  Output: "If you don't make sure all of the above is fine, R will nevertheless try to
+    accommodate you but the result will probably not be desirable."
+    
+- Class: cmd_question
+  Output: "To illustrate this point, create a data frame called df_x that combines df and
+    a row of 10 x's by typing df_x <- rbind(df, rep(\"x\", 10))."
+  CorrectAnswer: df_x <- rbind(df, rep("x", 10))
+  AnswerTests: omnitest(correctExpr= 'df_x <- rbind(df, rep("x", 10))')
+  Hint:
+  
+- Class: cmd_question
+  Output: "A you can see, the warnings tell you that 4 of the x's have been replaced by
+    NA because they are not a valid factor level when it comes to gender, group, and items.
+    Look at df_x now."
+  CorrectAnswer: df_x
+  AnswerTests: omnitest(correctExpr= 'df_x')
+  Hint:
+
+- Class: text
+  Output: "Notice that the last row only has 7 elements, even though you told R to put 10.
+    However, since df only has 7 columns, this was not possible so R - ever the helpful chap
+    - gave you at least the 7."
+    
+- Class: text
+  Output: "It also looks like R managed to fit numbers and an x into the same variable,
+    say rt. That's weird, isn't it? One vector cannot be at the same time numeric and
+    character..."
+    
+- Class: cmd_question
+  Output: "To find out what's going on here, check class() of the rt wariable"
+  CorrectAnswer: class(df_x$rt)
+  AnswerTests: omnitest(correctExpr= 'class(df_x$rt)')
+  Hint:
+
+- Class: cmd_question
+  Output: "Right, so it looks like the entire column has been turned (or coerced) into a
+    character vector. Print the variable now."
+  CorrectAnswer: df_x$rt
+  AnswerTests: omnitest(correctExpr= 'df_x$rt')
+  Hint:
+  
+- Class: text
+  Output: "The values are now all in double quotes which means, they're no longer numbers but
+    character strings. This is not good because now you can't do any maths or stats with the
+    variable."
+  
+- Class: cmd_question
+  Output: "Let's delete this monster of a data frame from the environment using rm()"
+  CorrectAnswer: rm(df_x)
+  AnswerTests: omnitest(correctExpr= 'rm(df_x)')
+  Hint:
+  
+  
+- Class: cmd_question
+  Output: "Okay, to try out the rbind() function, merge df and df_minors back together into
+    df (in this order)."
+  CorrectAnswer: df <- rbind(df, df_minors)
+  AnswerTests: omnitest(correctExpr= 'df <- rbind(df, df_minors)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Look at the resulting df now."
+  CorrectAnswer: df
+  AnswerTests: omnitest(correctExpr= 'df')
+  Hint:
+
+- Class: cmd_question
+  Output: "And if your df's columns aren't aligned, you can simply rearrange one of them using
+    indexing. For instance, lets put the rt column at the end of df. You need to - guess what?
+    - reassign the df object using df[], where the second dimension will give the column
+    indices in the desired order. In our case that's c(1:4,6,7,5). Try it now."
+  CorrectAnswer: df <- df[ , c(1:4,6,7,5)]
+  AnswerTests: omnitest(correctExpr= 'df <- df[ , c(1:4,6,7,5)]')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Look at df to see how it looks now."
+  CorrectAnswer: df
+  AnswerTests: omnitest(correctExpr= 'df')
+  Hint:
+
+- Class: text
+  Output: Cool, you managed to put the rt variable at the end of the data frame.
+  
+- Class: text
+  Output: "So that's merging data frames row-wise covered. Let's move on to merging df's
+    side by side."
+    
+- Class: text
+  Output: "Now, your intuition here might be to use cbind() but the thing is that your
+    cases might not be in the same order or the number of cases might differ. Sure,
+    it is *possible* to first deal with these issues and then use cbind() but it'd be great
+    if there was a handy function available that could deal with such problems, wouldn't it?"
+
+- Class: cmd_question
+  Output: "Well, isn't it your lucky day? Pull up the documentation for merge() and take a
+    few minutes to learn how to use it."
+  CorrectAnswer: ?merge
+  AnswerTests: omnitest(correctExpr= '?merge')
+  Hint:
+
+- Class: cmd_question
+  Output: "Use the first 3 arguments of merge() to combine df_clean and df2 (I made that one
+    just for you) by id into a new data frame called df_merged."
+  CorrectAnswer: df_merged <- merge(df_clean, df2, by ="id")
+  AnswerTests: match_call('df_merged <- merge(df_clean, df2, by ="id")')
+  Hint: 
+
+- Class: cmd_question
+  Output: "Take a look at df_merged."
+  CorrectAnswer: df_merged
+  AnswerTests: omnitest(correctExpr= 'df_merged')
+  Hint:
+
+- Class: text
+  Output: "As you can see, the command took the cases with id's equal to those in df_clean
+    from df2 and put those two together."
+
+- Class: cmd_question
+  Output: "However, df2 has more cases than df_clean. See for yourself using the nrow()
+    function on df2"
+  CorrectAnswer: nrow(df2)
+  AnswerTests: omnitest(correctExpr= 'nrow(df2)')
+  Hint:
+
+- Class: cmd_question
+  Output: "And now ask for the number of rows of df_clean."
+  CorrectAnswer: nrow(df_clean)
+  AnswerTests: omnitest(correctExpr= 'nrow(df_clean)')
+  Hint:
+  
+- Class: text
+  Output: "So what if you wanted to put all the cases from both data frames together even
+    despite a difference in row numbers?"
+  
+- Class: cmd_question
+  Output: "Well, that's what the \"all\" argument is for. As you can see in the documentation
+    it takes a logical value. Use the merge() function with the all argument to print
+    a merged df consisting of df_clean and df2. Don't store it in an object."
+  CorrectAnswer: merge(df_clean, df2, by="id", all = TRUE)
+  AnswerTests: match_call('merge(df_clean, df2, by="id", all = TRUE)')
+  Hint:
+
+- Class: text
+  Output: "There's two more arguments worth knowing about and those are all.x and all.y.
+    you'd use them if you wanted merge 2 data frames that have each their unique cases.
+    If, for some reason, you wanted your resulting df to include the unique cases of the 1st
+    df but not the second, you would use all.x = TRUE (and vice versa for all.y)."
+    
+- Class: text
+  Output: "Okay, before I leave you alone, I'd like to tell you about aggregating over
+    a data frame and getting descriptives by groups."
+    
+- Class: cmd_question
+  Output: "Read through the documentation for the aggregate() function."
+  CorrectAnswer: ?aggregate
+  AnswerTests: omnitest(correctExpr= '?aggregate')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Okay, let's have R aggregate df_clean by gender and group and give you the mean
+    of each of the variable in the df (FUN = mean). Also, include the na.rm = TRUE argument
+    to remove missing values prior to calculating the means."
+  CorrectAnswer: aggregate(df_merged, by = list(df_merged$gender, df_merged$group),
+    FUN = mean, na.rm=TRUE)
+  AnswerTests: match_call('aggregate(df_merged, by = list(df_merged$gender, df_merged$group),
+    FUN = mean, na.rm=TRUE)')
+  Hint: Remember to put df_merged$ before the grouping variables and put them both in a list().
+  
+- Class: text
+  Output: "There you go. Now, R gave you some warnings that have to do with some of the
+    variables being factors and therefore not amenable to the mean() function."
+    
+- Class: cmd_question
+  Output: "To aggregate only over the variables that can be averaged, you can use indexing.
+    In this case it would be [ , c(3,5,8:13)]. Put all that behind the df_clean in the
+    first argument."
+  CorrectAnswer: "aggregate(df_merged[ , c(3,5,8:13)], by = list(df_merged$gender,
+    df_merged$group), FUN = mean, na.rm=TRUE)"
+  AnswerTests: match_call('aggregate(df_merged[ , c(3,5,8:13)], by =
+    list(df_merged$gender, df_merged$group), FUN = mean, na.rm=TRUE)')
+  Hint: "It's the same command as before only this time it goes
+    aggregate(df_merged[ , c(3,5,8:13)]..."
+    
+- Class: text
+  Output: "Good. Now if you want a more complex set of descriptive statistics, there's a
+    rather neat function  in the psych package."
+    
+- Class: cmd_question
+  Output: "Go ahead and load the package."
+  CorrectAnswer: library(psych)
+  AnswerTests: omnitest(correctExpr= 'library(psych)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "And pull up the documentation for describeBy()."
+  CorrectAnswer: ?describeBy
+  AnswerTests: omnitest(correctExpr= '?describeBy')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Let's look at the descriptives for df_clean using describeBy. You only need
+    the first two arguments. In this case, make them the same as with the aggregate
+    function before."
+  CorrectAnswer: "describeBy(df_merged, group = list(df_merged$gender, df_merged$group))"
+  AnswerTests: match_call('describeBy(df_merged, group = list(df_merged$gender,
+    df_merged$group))')
+  Hint:
+  
+- Class: text
+  Output: "Right, I think you've learnt just about enough for one lesson. You did well!
+    Enjoy the rest of the day and I shall see you another day."

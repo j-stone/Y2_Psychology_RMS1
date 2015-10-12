@@ -1,0 +1,504 @@
+- Class: meta
+  Course: Y2 Psychology RMS1
+  Lesson: Lesson 17 Correlation
+  Author: Milan Valasek
+  Type: Standard
+  Organization: The University of Edinburgh
+  Version: 0.9
+  
+- Class: text
+  Output: Hi there. Over the past few lessons, we have covered statistical tests that can be
+    used to test the outcome of a binomial experiment, a distribution of a categorical
+    variable as well as a relationship between two such variables, and the differences in
+    means of a continuous variable between two groups.
+    
+- Class: text
+  Output: In this lesson, we will begin to explore the ways of testing the relationship
+    between continuous and/or ordinal variables. Namely, we will talk about correlation and
+    some of the coefficients used to measure it.
+    
+- Class: text
+  Output: I am sure you know from the lectures that correlation is a measure of the strength
+    of a relationship between two variables, that can range from -1 (a perfect inverse
+    relationship) through 0 (no relationship) to 1 (a perfect positive relationship).
+    
+- Class: text
+  Output: "There are several ways of measuring correlation, appropriate for different types
+    of variables whose relationship you want to explore. I will tell you about 3 of them:
+    the Pearson's product-moment correlation coefficient, the Spearman's rank correlation
+    coefficient, and polychoric correlation. Let's start with Pearson's."
+    
+- Class: text
+  Output: Pearson's product-moment correlation coefficient (or simply Pearson's correlation)
+    is used with two continuous, reasonably normally distributed variables, cleaned of
+    outliers. Let's look at the logic behind the coefficient.
+    
+- Class: cmd_question
+  Output: You know that the spread of a variable can be expressed using variance which is
+    the sum of squared deviations from the mean divided by N - 1 degrees of freedom. How
+    about you try typing the formula for variance of df$age (I loaded our df for you)?
+  CorrectAnswer: sum((df$age - mean(df$age))^2) / (length(df$age) - 1)
+  AnswerTests: omnitest(correctExpr='sum((df$age - mean(df$age))^2) / (length(df$age) - 1)')
+  Hint: You need the sum() and mean() functions. Squaring is done by ^2. Since there are no
+    missing values in df$age, you can use length() to find N. Make sure you use brackets
+    correctly to separate stuff to the left of  the / from the stuff to the right of it.
+    
+- Class: text
+  Output: Now, this formula can be tweaked in such a way that instead of indicating spread
+    of a single variable, it indicates the relationship between two variables - their
+    covariance. The way this is done is that, instead of squaring the deviations, you
+    multiply the deviation of var_1 from its mean by the deviation of var_2 from its mean
+    (for each case/line/participant).
+    
+- Class: cmd_question
+  Output: Apply this formula to df$age and df$rt to find their covariance.
+  CorrectAnswer: sum((df$age - mean(df$age))*(df$rt - mean(df$rt))) / (length(df$age) - 1)
+  AnswerTests: omnitest(correctExpr='sum((df$age - mean(df$age))*(df$rt - mean(df$rt))) /
+    (length(df$age) - 1)')
+  Hint: You need to find the sum of df$age - mean(df$age))*(df$rt - mean(df$rt)) and divide
+    it by degrees of freedom just like with variance.
+    
+- Class: cmd_question
+  Output: Of course you don't have to do this by hand (but it's good to be able to do it).
+    use the cov() function with df$age as the first argument and df$rt as the second one
+    and store the output in an object called cov_age_rt.
+  CorrectAnswer: cov_age_rt <- cov(df$age, df$rt)
+  AnswerTests: match_call('cov_age_rt <- cov(df$age, df$rt)')
+  Hint: That's cov_age_rt <- cov(df$age, df$rt).
+  
+- Class: cmd_question
+  Output: Look at cov_age_rt to see that the value is indeed the same as the one you
+    calculated.
+  CorrectAnswer: cov_age_rt
+  AnswerTests: omnitest(correctExpr='cov_age_rt')
+  Hint:
+  
+- Class: text
+  Output: Right so a positive covariance means that as one of the variable gets bigger,
+    so does the other one. A negative covariance means that as age goes up, rt goes down.
+    However, beyond the direction, covariance is hard to interpret. We don't know if 47.5
+    is a lot or a little. In order to be able to tell that, we need a standardised measure.
+    
+- Class: cmd_question
+  Output: You can standardise cov_age_rt by dividing it by the product of the standard
+    deviations of the two variables (age and rt, respectively) and the degrees of freedom.
+    Go for it!
+  CorrectAnswer: cov_age_rt / (sd(df$age) * sd(df$rt) * (length(df$age) - 1))
+  AnswerTests: omnitest(correctExpr='cov_age_rt / (sd(df$age) * sd(df$rt) *
+    (length(df$age) - 1))')
+  Hint: The denominator will be sd(df$age) * sd(df$rt) * (length(df$age) - 1). Mind the
+    brackets!
+    
+- Class: text
+  Output: "And this, my friend, is the Pearson's product-moment correlation coefficient:
+    a standardised measure of the covariance of two variables that goes from -1 to 1."
+    
+- Class: cmd_question
+  Output: To save yourself a lot of hassle with computing this coefficient, there's the
+    cor() function. Use it in the same way you used the cov() function and store the
+    output in an object called r.
+  CorrectAnswer: r <- cor(df$age, df$rt)
+  AnswerTests: match_call('r <- cor(df$age, df$rt)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Print r to check it's the same value.
+  CorrectAnswer: r
+  AnswerTests: omnitest(correctExpr='r')
+  Hint:
+
+- Class: text
+  Output: OK, we have the value of our coefficient. However, we still don't know if it's
+    statistically significant. In order to find out, we need to compare our coef to a
+    distribution of the coefs from all the possible samples of size N from the null
+    hypothesis population (in which the correlation is exactly 0).
+    
+- Class: text
+  Output: However, we don't have access to this distribution. As luck would have it though,
+    turns out that if you multiply the coef r by sqrt((N - 2) / (1 - r^2)), the resulting
+    value follows a t distribution with n - 2 DF's. Ain't that just a blast?!
+    
+- Class: cmd_question
+  Output: Calculate the value and store it in r_t. Use length(df$age) in place of N
+  CorrectAnswer: r_t <- r * sqrt((length(df$age)-2) / (1 - r^2))
+  AnswerTests: omnitest(correctExpr='r_t <- r * sqrt((length(df$age)-2) / (1 - r^2))')
+  Hint: Just type r_t <- r * sqrt((length(df$age)-2) / (1 - r^2)).
+
+- Class: cmd_question
+  Output: And now, find the p-value associated with r_t using pt() just like you did last
+    lesson for t-test statistic. To refresh your memory, pull up the documentation for the
+    function first.
+  CorrectAnswer: ?pt
+  AnswerTests: omnitest(correctExpr='?pt')
+  Hint:
+  
+- Class: cmd_question
+  Output: Since the value of the correlation is negative you need to look at the lower tail
+    of the t-distribution. Also, say we want a 2-tailed p-value so you need to multiply the
+    command by 2.
+  CorrectAnswer: pt(r_t, length(df$age) - 2, lower.tail = FALSE) * 2
+  AnswerTests: match_call('pt(r_t, length(df$age) - 2, lower.tail = TRUE) * 2')
+  Hint: You need, r_t, length(df$age) - 2, and the lower.tail argument.
+  
+- Class: text
+  Output: The p-value is greater than .05 so the correlation is not significantly different
+    from 0. It would be, however, under a one-sided hypothesis that older participants have
+    shorter RTs. Finding support for hypothesis in the literature would be quite a challenge,
+    though...
+    
+- Class: cmd_question
+  Output: There's naturally a readymade R function that tests the correlation coefficient
+    for you. It's called cor.test() and it's used in the same way as cor(). Use it now to see
+    if the p-value it returns matches the one we just arrived at.
+  CorrectAnswer: cor.test(df$age, df$rt)
+  AnswerTests: match_call('cor.test(df$age, df$rt)')
+  Hint:
+  
+- Class: text
+  Output: As you can see, the values reported are the same as the ones we calculated.
+  
+- Class: text
+  Output: To hammer the point home, tests of correlation, just like most null-hypothesis
+    significance testing based around p-values consists of getting some parameter of
+    interest (be it the mean, the median, standardised covariance, or, later on, the ratio
+    of explained versus unexplained variance in the data or the slope and the intersect of
+    a regression line) and comparing it to the appropriate sampling distribution that
+    represents a world where the null hypothesis is true.
+
+- Class: text
+  Output: If the probability of getting the value of the parameter that we got (yes, yes -
+    or a more extreme one) is low, we assume that it is because this is a world where the
+    null hypothesis is in fact not true. There are some philosophical caveats to this
+    approach but that's a topic for another day.
+    
+- Class: text
+  Output: A correlation coef that is significantly different from zero thus simply means
+    that the data we correlated are probably not sampled from a population where the tested
+    variables are not correlated.
+    
+- Class: text
+  Output: Okay, so that's how you test the correlation of two continuous, reasonably
+    normally distributed variables. How about not-so-normally distributed variables
+    or ordinal variables?
+    
+- Class: text
+  Output: There's a selection of correlation coefficients to choose from in these cases.
+    One of them is Spearman's rank correlation coefficient (AKA Spearman's correlation,
+    AKA Spearman's rho). It's basically a Pearson's r with a twist.
+    
+- Class: text
+  Output: The twist is that, with Spearman's rho, before calculating the coef, you order
+    the values of each variable from the smallest to the largest and instead of keeping
+    the original values, you only keep this rank order. Then you just apply a slightly
+    tweaked Pearson's r formula to these ranked data.
+    
+- Class: cmd_question
+  Output: To see what I mean by ranking, first look at the first 20 values of df$rt.
+  CorrectAnswer: df$rt[1:20]
+  AnswerTests: omnitest(correctExpr='df$rt[1:20]')
+  Hint: Use indexing... [1:20].
+  
+- Class: cmd_question
+  Output: And now put it all in a rank() function.
+  CorrectAnswer: rank(df$rt[1:20])
+  AnswerTests: omnitest(correctExpr='rank(df$rt[1:20])')
+  Hint:
+  
+- Class: text
+  Output: So there, the data have been ordered and the lowest value got a rank of 1 and
+    the highest got a rank of 20. Now, things can be slightly less straight-forward (
+    things can *always* be slightly less straight-forward and often *a lot less*
+    straight-forward) when some of the elements have the same value.
+    
+- Class: cmd_question
+  Output: Look at the first 6 values of df$anx_score_1.
+  CorrectAnswer: df$anx_score_1[1:6]
+  AnswerTests: omnitest(correctExpr='df$anx_score_1[1:6]')
+  Hint:
+  
+- Class: cmd_question
+  Output: You can see that there are two 13's there. See what happens when you rank the
+    data.
+  CorrectAnswer: rank(df$anx_score_1[1:6])
+  AnswerTests: omnitest(correctExpr='rank(df$anx_score_1[1:6])')
+  Hint:
+  
+- Class: text
+  Output: This situation of so-called tied ranks is resolved by taking the would be ranks
+    of the equal values (in our case 3 and 4) and replacing them with their average (3.5).
+    
+- Class: cmd_question
+  Output: Right, back to Spearman's rho. Let's say we want to see how well our two measures
+    of anxiety correlate (presumably very highly and positively). Let's see.. You might
+    have noticed that, unlike most times that I've shown you a new function, I did not ask
+    you to pull up the documentation for cor(). Do it now and have a wee read.
+  CorrectAnswer: ?cor
+  AnswerTests: omnitest(correctExpr='?cor')
+  Hint:
+  
+- Class: cmd_question
+  Output: Use the method argument to get the Spearman's rho for df$anx_score_1 and
+    df$anx_score_2.
+  CorrectAnswer: cor(df$anx_score_1, df$anx_score_2, method="spearman")
+  AnswerTests: match_call('cor(df$anx_score_1, df$anx_score_2, method="spearman")')
+  Hint: Simply type cor(df$anx_score_1, df$anx_score_2, method="spearman").
+  
+- Class: text
+  Output: Oops.. Looks like something went wrong...
+  
+- Class: cmd_question
+  Output: "I'm sure that, at this stage, your intuition is telling you that the reason
+    the command didn't perform the way you wanted is the presence of NA's in your data.
+    Do a quick test: ask R if any values of these two vectors are NA's using a single
+    command."
+  CorrectAnswer: any(is.na(c(df$anx_score_1, df$anx_score_2)))
+  AnswerTests: omnitest(correctExpr='any(is.na(c(df$anx_score_1, df$anx_score_2)))')
+  Hint: You need any(), is.na(), and c() and that's all I'm saying.
+  
+  
+- Class: cmd_question
+  Output: To get around the missing data issue, you can ask R to only use cases with
+    complete observations. Do it by adding the use argument with the appropriate value
+    (see documentation) to the cor() command you wrote earlier.
+  CorrectAnswer: cor(df$anx_score_1, df$anx_score_2, method="spearman",
+    use="complete.obs")
+  AnswerTests: match_call('cor(df$anx_score_1, df$anx_score_2, method="spearman",
+    use="complete.obs")')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now, that's a pretty huge correlation. This is probably the last time
+    you've seen one like this unless you do something wrong so savour the moment. :)
+    A coef this big is most likely significant but let's test it anyway. But first,
+    pull up the documentation for cor.test().
+  CorrectAnswer: ?cor.test
+  AnswerTests: omnitest(correctExpr='?cor.test')
+  Hint:
+  
+- Class: cmd_question
+  Output: Jolly good, now test the hypothesis that Spearman's rho of the two variables
+    different from 0.
+  CorrectAnswer: cor.test(df$anx_score_1, df$anx_score_2, method = "spearman")
+  AnswerTests: match_call('cor.test(df$anx_score_1, df$anx_score_2,
+    method = "spearman")')
+  Hint: You only need the two variables and the method argument.
+  
+- Class: text
+  Output: There is a way how to calculate the exact probability associated with a given
+    value of rho, meaning that you don't need to rely on the t distribution but instead
+    generate the actual distribution of the rho's. However, this cannot be done when
+    there are tied ranks in your data. And since this is the case, the p-value R just
+    gave you is approximated via the t distribution, which is that the warning message
+    is telling you. It's nothing to worry about though.
+
+- Class: cmd_question
+  Output: If you studied the documentation for the cor() function closely enough, you
+    will know that it can also take a matrix or a data frame as the x argument. That
+    means that you can look at the correlation of more than one pair of variables. Have
+    R correlate all the pairs of anx_score_1, anx_score_2, n_hesitations, and n_errors
+    by passing df[, 10:13] to the first argument. Use just cases with complete
+    observations.
+  CorrectAnswer: cor(df[, 10:13], use = "complete.obs")
+  AnswerTests: match_call('cor(df[, 10:13], use = "complete.obs")')
+  Hint:
+  
+- Class: text
+  Output: This is known as a correlation matrix. You can find the correlation of any pair
+    of the variables by looking at the intersection of the appropriate column and row.
+    
+- Class: cmd_question
+  Output: Now, to see that whether you use Pearson's or Spearman's coef can really matter,
+    add the method="Spearman" argument to the above command.
+  CorrectAnswer: cor(df[, 10:13], use = "complete.obs", method = "spearman")
+  AnswerTests: match_call('cor(df[, 10:13], use = "complete.obs", method = "spearman")')
+  Hint:
+  
+- Class: text
+  Output: Sometimes the difference can be rather minuscule but sometimes it can be quite
+    substantial. If you wanted to test these coefficients, you'd have to take each pair
+    and feed it to the cor.test() function as, unfortunately, it doesn't accept matrices
+    and df's. Alternatively, you could write a function that does it for you but more on
+    that later.
+    
+- Class: text
+  Output: "Now, let's look at the 3rd type of correlation I wanted to tell you about
+    today: polychoric correlations. They are used in situations where you have ordinal
+    variables whose distributions may be rather skewed."
+    
+- Class: text
+  Output: "The maths behind polychorics is quite complicated but the idea is essentially
+    that behind each of these \"manifest\" ordinal variables, there is an underlying -
+    or \"latent\"  - variable that distributed normally in the population. Polychoric
+    correlations estimate the distributions of these assumed latent variables from the
+    data and give you the correlation coefficient for the latent variables."
+    
+- Class: cmd_question
+  Output: "To run polychoric correlations (say those words quickly 10 times in a row!)
+    you need the \"polycor\" package. Install it now."
+  CorrectAnswer: install.packages("polycor")
+  AnswerTests: omnitest(correctExpr='install.packages("polycor")')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now, load the package.
+  CorrectAnswer: library(polycor)
+  AnswerTests: omnitest(correctExpr='library(polycor)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Good. Now pull up the documentation for the hetcor() function.
+  CorrectAnswer: ?hetcor
+  AnswerTests: omnitest(correctExpr='?hetcor')
+  Hint:
+  
+- Class: text
+  Output: You can read in the description section that the function gives you a
+    correlation matrix that picks the most appropriate type of correlation for the
+    given pair of variables based on their type.
+    
+- Class: cmd_question
+  Output: Let's throw our entire df at the function. But first, look at the structure of
+    df.
+  CorrectAnswer: str(df)
+  AnswerTests: omnitest(correctExpr='str(df)')
+  Hint: That's str(df).
+  
+- Class: cmd_question
+  Output: Item_1 and _2 are set as integer vectors. Suppose these are answers on 5-point
+    Likert scale items. Turn item_1 into an ordered factor.
+  CorrectAnswer: df$item_1 <- ordered(df$item_1)
+  AnswerTests: omnitest(correctExpr='df$item_1 <- ordered(df$item_1)')
+  Hint: Remember? df$item_1 <- ordered(df$item_1)
+  
+- Class: cmd_question
+  Output: Now do the same for item_2.
+  CorrectAnswer: df$item_2 <- ordered(df$item_2)
+  AnswerTests: omnitest(correctExpr='df$item_2 <- ordered(df$item_2)')
+  Hint:
+  
+- Class: cmd_question
+  Output: "Also, turn df$hit into a factor with two labels: \"miss\" and \"hit\"."
+  CorrectAnswer: df$hit <- factor(df$hit, labels = c("miss", "hit"))
+  AnswerTests: omnitest(correctExpr='df$hit <- factor(df$hit, labels = c("miss", "hit"))')
+  Hint: That would be df$hit <- factor(df$hit, labels = c("miss", "hit")).
+  
+- Class: cmd_question
+  Output: And now, for the grand finale, put df into the hetcor() function.
+  CorrectAnswer: hetcor(df)
+  AnswerTests: omnitest(correctExpr='hetcor(df)')
+  Hint:
+
+- Class: cmd_question
+  Output: Okay, this is a big one. If you scroll up, you'll see that there are 3 matrices
+    of ncol(df) rows and the same number of columns. To make looking at the output easier,
+    store it in an object called cor_mat.
+  CorrectAnswer: cor_mat <- hetcor(df)
+  AnswerTests: omnitest(correctExpr='cor_mat <- hetcor(df)')
+  Hint:
+  
+- Class: cmd_question
+  Output: Now look at the structure of cor_mat.
+  CorrectAnswer: str(cor_mat)
+  AnswerTests: omnitest(correctExpr='str(cor_mat)')
+  Hint:
+  
+- Class: text
+  Output: As you can see, the output of hetcor() is a list containing 4 matrices
+    ($ correlations, $ type, $ std.errors, and $ tests) plus some additional information.
+    
+- Class: cmd_question
+  Output: cor_mat$correlations gives you the values of the actual correlation matrix with
+    tha values of the individual correlation coefs. Look at it now.
+  CorrectAnswer: cor_mat$correlations
+  AnswerTests: omnitest(correctExpr='cor_mat$correlations')
+  Hint:
+
+- Class: cmd_question
+  Output: "cor_mat$type gives you the type of the coefficient used: Pearson, polyserial
+    (for one continuous and one ordinal variable) and polychoric. Look at it now."
+  CorrectAnswer: cor_mat$type
+  AnswerTests: omnitest(correctExpr='cor_mat$type')
+  Hint:
+  
+- Class: cmd_question
+  Output: cor_mat$std.errors gives you the standard errors of the estimated coefs. This
+    is useful for getting p-values for the individual coefficiants. Have a look.
+  CorrectAnswer: cor_mat$std.errors
+  AnswerTests: omnitest(correctExpr='cor_mat$std.errors')
+  Hint:
+  
+- Class: text
+  Output: Now, you know (I hope!) that the standard error is basically the standard
+    deviation of the sampling distribution. In this case it would be the distribution
+    of the correlation coefs from all possible samples of size N taken from the
+    null hypothesis population.
+    
+- Class: text
+  Output: And you should also know that we can ascribe a probability to any portion
+    of this distribution. For, example, under the null, there's a 50% chance that any
+    correlation coef we get will be exactly 0 or more standard errors from the mean of
+    the sampling distribution (in other words, equal to 0).
+    
+- Class: text
+  Output: And there's a 5% chance that it will be |1.96| or more std. errors away from
+   0. So, it would be handy if we could express the values of cor_mat$correlations in
+   terms of how many std.errors they are from 0. In other words, turn them into z-scores
+   just like the one you used in z-tests.
+   
+- Class: cmd_question
+  Output: Well, ain't this just your lucky day! You can divide cor_mat$correlations by
+    cor_mat$std.errors to get the z-scores. Store them in an object called cor_z
+  CorrectAnswer: cor_z <- cor_mat$correlations / cor_mat$std.errors
+  AnswerTests: omnitest(correctExpr='cor_z <- cor_mat$correlations / cor_mat$std.errors')
+  Hint:
+  
+- Class: text
+  Output: Now, just like with t statistics, you can get the associated p-values for
+    these z-scores. This is done by feeding them into a pnorm() function along with mean
+    = 0 (because that's the mean of the sampling distribution i.e., the actual correlation
+    in the population under the null hypothesis), sd = cor_mat$std.errors.
+  
+- Class: text
+  Output: However, the function can, just like the pt() function only look at one tail of
+    the distribution. That's not in itself a problem but it means that we need to look at
+    the lower (left) tail for negative z_scores and the higher (right) tail for the positive
+    z-scores.
+  
+- Class: cmd_question
+  Output: "We can get around the issue by giving the function the absolute value of the
+    z-scores, thus turning them all into positive and only looking at the right tail
+    probabilities. Give it a go now: abs(cor_z), the right mean, the right sd and
+    lower.tail = FALSE."
+  CorrectAnswer: pnorm(abs(cor_z), mean = 0, sd = cor_mat$std.errors, lower.tail=FALSE)
+  AnswerTests: match_call('pnorm(abs(cor_z), mean = 0, sd = cor_mat$std.errors,
+    lower.tail=FALSE)')
+  Hint: That's pnorm(abs(cor_z), mean = 0, sd = cor_mat$std.errors, lower.tail=FALSE).
+  
+- Class: cmd_question
+  Output: These p-values are, however, only 1-tailed. In order to get 2-tailed p-values
+    we need to multiply the matrix by... you guessed it, 2. Do it now and store the result
+    in an object called cor_p.
+  CorrectAnswer: cor_p <- pnorm(abs(cor_z), mean = 0, sd = cor_mat$std.errors,
+    lower.tail=FALSE) * 2
+  AnswerTests: match_call('cor_p <-  pnorm(abs(cor_z), mean = 0, sd = cor_mat$std.errors,
+    lower.tail=FALSE) * 2')
+  Hint:
+  
+- Class: cmd_question
+  Output: Look at your p-values now.
+  CorrectAnswer: cor_p
+  AnswerTests: omnitest(correctExpr='cor_p')
+  Hint:
+  
+- Class: cmd_question
+  Output: Okay, there are a bit difficult to read, since their all in the x * 10^n format.
+    You can make them more legible by rounding cor_p to 3 decimal places. Do it now.
+  CorrectAnswer: round(cor_p, 3)
+  AnswerTests: omnitest(correctExpr='round(cor_p, 3)')
+  Hint: Use the round(<what>, <no_of_places>) function.
+  
+- Class: text
+  Output: Cool, seems like you have quite a few significant correlations there. This seems
+    like a good place to end. I'll let you bask in your delightful results, armed to the
+    teeth with an arsenal of correlation coefficients you can use in most cases you're
+    likely to encounter. Well done! I shall see you next time.
