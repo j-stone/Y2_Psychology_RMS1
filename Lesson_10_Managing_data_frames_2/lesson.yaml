@@ -389,7 +389,7 @@
     
 - Class: cmd_question
   Output: "To aggregate only over the variables that can be averaged, you can use indexing.
-    In this case it would be [ , c(3,5,8:13)]. Put all that behind the df_clean in the
+    In this case it would be [ , c(3,5,8:13)]. Put all that after df_merged in the
     first argument."
   CorrectAnswer: "aggregate(df_merged[ , c(3,5,8:13)], by = list(df_merged$gender,
     df_merged$group), FUN = mean, na.rm=TRUE)"
