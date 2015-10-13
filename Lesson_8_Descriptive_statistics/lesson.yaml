@@ -528,8 +528,8 @@
     can do this by creating subsets of mtcars and using describe() on each one but there is
     a more convenient way of doing this. Look up the describeBy() function documentation and
     read about it.
-  CorrectAnswer: ?describeBy() 
-  AnswerTests: omnitest(correctExpr= '?describeBy()')
+  CorrectAnswer: ?describeBy 
+  AnswerTests: any_of_exprs('?describeBy()', '?describeBy')
   Hint:
   
 - Class: cmd_question

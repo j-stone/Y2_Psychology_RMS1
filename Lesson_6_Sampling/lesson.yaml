@@ -29,14 +29,14 @@
     simulate rolling four six-sided dice. That basically means that you want to sample, with
     replacement four numbers between 1 and 6. Give it a try now."
   CorrectAnswer: sample(1:6, 4, replace = TRUE)
-  AnswerTests: match_call('sample(1:6, 4, replace = TRUE)')
+  AnswerTests: any_of_exprs('sample(1:6, 4, replace = TRUE)', 'sample(1:6, 4, replace = T)')
   Hint: Type sample(1:6, 4, replace = TRUE) to simulate rolling four six-sided dice.
 
 - Class: cmd_question
   Output: Now repeat the command to see how your result differs. (The probability of rolling
     the exact same result is (1/6)^4 = 0.00077, which is pretty small!)
   CorrectAnswer: sample(1:6, 4, replace = TRUE)
-  AnswerTests: match_call('sample(1:6, 4, replace = TRUE)')
+  AnswerTests: any_of_exprs('sample(1:6, 4, replace = TRUE)', 'sample(1:6, 4, replace = T)')
   Hint: Type sample(1:6, 4, replace = TRUE) to simulate rolling four six-sided dice again.
 
 - Class: text
@@ -45,6 +45,9 @@
     after it is selected, so that the same number can show up more than once. This is what
     we want here, since what you roll on one die shouldn't affect what you roll on any of
     the others."
+
+- Class: text
+  Output: "Just so you know, R defines T and F as TRUE and FALSE, so you could also type \"replace = T\". Swirls are a bit restrictive inasmuch as sometimes it requires you to exactly match the answer I have here, even if there are several possible answers. If TRUE or FALSE doesn't work for an answer, I might have used T or F instead! Sorry!"
 
 - Class: cmd_question
   Output: Now sample 10 numbers between 1 and 20, WITHOUT replacement. To sample without
@@ -87,7 +90,7 @@
     unfair, we must attach specific probabilities to the values 0 (tails) and 1 (heads) with
     a fourth argument, prob = c(0.3, 0.7). Assign the result to a new variable called flips.
   CorrectAnswer: flips <- sample(c(0,1), 100, replace = TRUE, prob = c(0.3, 0.7))
-  AnswerTests: match_call('flips <- sample(c(0,1), 100, replace = TRUE, prob = c(0.3, 0.7))')
+  AnswerTests: any_of_exprs('flips <- sample(c(0,1), 100, replace = TRUE, prob = c(0.3, 0.7))', 'flips <- sample(c(0,1), 100, replace = T, prob = c(0.3, 0.7))')
   Hint: 'The following command will produce 100 flips of an unfair coin and assign the result:
     flips <- sample(c(0,1), 100, replace = TRUE, prob = c(0.3, 0.7))'
 
@@ -284,8 +287,8 @@
   Output: As you can see it is slightly more than 50%. Now, if you want to know the p-value
     associated with the other end of the distribution (51 or more heads), you can include the
     lower.tail = FALSE argument in the command. Go ahead!
-  CorrectAnswer: pbinom(50, 100, prob = 0.5, lower.tail = F)
-  AnswerTests: match_call('pbinom(50, 100, prob = 0.5, lower.tail = F)')
+  CorrectAnswer: pbinom(50, 100, prob = 0.5, lower.tail = FALSE)
+  AnswerTests: any_of_exprs('pbinom(50, 100, prob = 0.5, lower.tail = FALSE)', 'pbinom(50, 100, prob = 0.5, lower.tail = F)')
   Hint:
   
 - Class: text
@@ -419,7 +422,7 @@
      by the width of the individual bars of the histogram h like this:
      yfit*diff(h$mids[1:2])*length(cm). Reassign these values to the yfit vector now."
   CorrectAnswer: yfit <- yfit*diff(h$mids[1:2])*length(cm) 
-  AnswerTests: match_call('yfit <- yfit*diff(hist(cm)$mids[1:2])*length(cm)')
+  AnswerTests: any_of_exprs('yfit <- yfit*diff(h$mids[1:2])*length(cm)', 'yfit <- yfit*diff(hist(cm)$mids[1:2])*length(cm)')
   Hint: "Type yfit <- yfit*diff(h$mids[1:2])*length(cm)."
   
 - Class: text
@@ -478,8 +481,8 @@
 - Class: cmd_question
   Output: Now, find the p-value associated with t(df=29) = 1.8 or more. Don't worry about
     the non-centrality parameter (ncp) argument.
-  CorrectAnswer: pt(1.8, 29, lower.tail = F)
-  AnswerTests: match_call('pt(1.8, 29, lower.tail = F)')
+  CorrectAnswer: pt(1.8, 29, lower.tail = FALSE)
+  AnswerTests: any_of_exprs('pt(1.8, 29, lower.tail = FALSE)', 'pt(1.8, 29, lower.tail = F)')
   Hint: Don't forget the lower.tail argument.
   
 - Class: text

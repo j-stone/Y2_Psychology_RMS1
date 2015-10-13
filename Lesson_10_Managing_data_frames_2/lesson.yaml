@@ -182,7 +182,7 @@
   Hint:
   
 - Class: cmd_question
-  Output: "To see that these are equivalent ask R it for all elements, total is equal to
+  Output: "To see that these are equivalent ask R if for all elements, total is equal to
     the command above. Use all() and == to ask this."
   CorrectAnswer: all(df_clean$total == rowMeans(cbind(as.numeric(df_clean$item_1),
     as.numeric(df_clean$item_2))))

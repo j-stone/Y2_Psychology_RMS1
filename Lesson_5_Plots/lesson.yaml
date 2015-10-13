@@ -15,6 +15,13 @@
     how it's done? Good. No? Well, you'll have to look it up, I suppose. Pause swirl by typing
     play() and set your WD somewhere convenient. Once you're done, type nxt() and we can
     resume...
+
+- Class: cmd_question
+  Output: "Make sure that you don't have any objects in your environment (top right window) leftover from previous lessons. If you do, you can delete all of them at once in either of two ways - either by clicking the little brush in the environment window, or by typing rm(list=ls()) in the console. Type rm(list=ls()) to clear your environment"
+  CorrectAnswer: rm(list=ls())
+  AnswerTests: omnitest(correctExpr='rm(list=ls())')
+  Hint:
+
     
 - Class: text
   Output: In the previous lesson, you created a histogram of the random binomial variable you
@@ -263,6 +270,15 @@
 - Class: text
   Output: "To demonstrate this, we need a data set. As luck would have it, R comes with a few
     of them. One of the most basic ones is the cars data set."
+
+- Class: cmd_question
+  Output: "The cars dataset should just be two variables, speed and stopping distance. Type cars to look at the dataset"
+  CorrectAnswer: cars
+  AnswerTests: omnitest(correctExpr='cars')
+  Hint: Just type cars.
+
+- Class: text
+  Output: "If there are more than just two variables (speed, stopping distance) in your version of cars, this is because you have the openintro package loaded. Disable ('detach') it, by ticking the box next to 'openintro' in the packages tab in the bottom right window."
     
 - Class: cmd_question
   Output: "It comes with its own help file. Pull it up now and take a minute to familiarise
