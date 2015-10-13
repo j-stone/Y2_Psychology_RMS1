@@ -214,8 +214,7 @@
     them."
 
 - Class: cmd_question
-  Output: "Use the png() function to set the graphical output to a file named \"my_histogram.
-    png\"." 
+  Output: "Use the png() function to set the graphical output to a file named \"my_histogram.png\"." 
   CorrectAnswer: png("my_histogram.png")
   AnswerTests: any_of_exprs('png("my_histogram.png")', 'png(filename = "my_histogram.png")')
   Hint: Just type png("my_histogram.png").
