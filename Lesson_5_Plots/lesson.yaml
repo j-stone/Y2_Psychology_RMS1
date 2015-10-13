@@ -236,11 +236,11 @@
     overwriting anything that's currently stored there. Obviously, that is not what we want."
     
 - Class: cmd_question
-  Output: "what we do want is to return the graphic output back to our little window. This
-    is done using the dev.off() command. Go ahead, type it in."
-  CorrectAnswer: dev.off()
-  AnswerTests: omnitest(correctExpr='dev.off()')
-  Hint: Just type dev.off().
+  Output: "what we do want is to return the graphic output back to our little window. Normally, This
+    is done using either of the dev.off() or graphics.off() commands. Within a swirl though, we need to use graphics.off(). Go ahead, type it in."
+  CorrectAnswer: graphics.off()
+  AnswerTests: omnitest(correctExpr='graphics.off()')
+  Hint: Just type graphics.off().
 
 - Class: text
   Output: "Good stuff! Your plot is saved and everything is back to normal."
@@ -262,7 +262,7 @@
     
 - Class: text
   Output: "To demonstrate this, we need a data set. As luck would have it, R comes with a few
-    of them. One of the most basic ones is the car data set."
+    of them. One of the most basic ones is the cars data set."
     
 - Class: cmd_question
   Output: "It comes with its own help file. Pull it up now and take a minute to familiarise
