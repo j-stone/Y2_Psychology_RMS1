@@ -15,6 +15,13 @@
     how it's done? Good. No? Well, you'll have to look it up, I suppose. Pause swirl by typing
     play() and set your WD somewhere convenient. Once you're done, type nxt() and we can
     resume...
+
+- Class: cmd_question
+  Output: "Make sure that you don't have any objects in your environment (top right window) leftover from previous lessons. If you do, you can delete all of them at once in either of two ways - either by clicking the little brush in the environment window, or by typing rm(list=ls()) in the console. Type rm(list=ls()) to clear your environment"
+  CorrectAnswer: rm(list=ls())
+  AnswerTests: omnitest(correctExpr='rm(list=ls())')
+  Hint:
+
     
 - Class: text
   Output: In the previous lesson, you created a histogram of the random binomial variable you
@@ -207,8 +214,7 @@
     them."
 
 - Class: cmd_question
-  Output: "Use the png() function to set the graphical output to a file named \"my_histogram.
-    png\"." 
+  Output: "Use the png() function to set the graphical output to a file named \"my_histogram.png\"." 
   CorrectAnswer: png("my_histogram.png")
   AnswerTests: any_of_exprs('png("my_histogram.png")', 'png(filename = "my_histogram.png")')
   Hint: Just type png("my_histogram.png").
@@ -236,11 +242,11 @@
     overwriting anything that's currently stored there. Obviously, that is not what we want."
     
 - Class: cmd_question
-  Output: "what we do want is to return the graphic output back to our little window. This
-    is done using the dev.off() command. Go ahead, type it in."
-  CorrectAnswer: dev.off()
-  AnswerTests: omnitest(correctExpr='dev.off()')
-  Hint: Just type dev.off().
+  Output: "what we do want is to return the graphic output back to our little window. Normally, This
+    is done using either of the dev.off() or graphics.off() commands. Within a swirl though, we need to use graphics.off(). Go ahead, type it in."
+  CorrectAnswer: graphics.off()
+  AnswerTests: omnitest(correctExpr='graphics.off()')
+  Hint: Just type graphics.off().
 
 - Class: text
   Output: "Good stuff! Your plot is saved and everything is back to normal."
@@ -262,7 +268,16 @@
     
 - Class: text
   Output: "To demonstrate this, we need a data set. As luck would have it, R comes with a few
-    of them. One of the most basic ones is the car data set."
+    of them. One of the most basic ones is the cars data set."
+
+- Class: cmd_question
+  Output: "The cars dataset should just be two variables, speed and stopping distance. Type cars to look at the dataset"
+  CorrectAnswer: cars
+  AnswerTests: omnitest(correctExpr='cars')
+  Hint: Just type cars.
+
+- Class: text
+  Output: "If there are more than just two variables (speed, stopping distance) in your version of cars, this is because you have the openintro package loaded. Disable ('detach') it, by ticking the box next to 'openintro' in the packages tab in the bottom right window."
     
 - Class: cmd_question
   Output: "It comes with its own help file. Pull it up now and take a minute to familiarise

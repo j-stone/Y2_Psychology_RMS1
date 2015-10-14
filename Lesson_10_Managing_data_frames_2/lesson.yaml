@@ -21,7 +21,7 @@
   Output: "How about we sort the cases so that id goes from 1 to 100 and is not all jumbled up?
     Pull up the documentation for order() and read through it."
   CorrectAnswer: ?order
-  AnswerTests: omnitest(correctExpr='?order')
+  AnswerTests: any_of_exprs('?order', '?order()')
   Hint:
   
 - Class: cmd_question
@@ -118,7 +118,7 @@
   Output: Back to subsetting. There's also a readymade function called subset(). Pull up its
     documentation and look into it for a moment.
   CorrectAnswer: ?subset
-  AnswerTests: omnitest(correctExpr= '?subset')
+  AnswerTests: any_of_exprs('?subset', '?subset()')
   Hint:
 
 - Class: cmd_question
@@ -132,7 +132,7 @@
   Output: I think learning two ways of subsetting data frames is plenty so let's move on.
   
 - Class: cmd_question
-  Output: OK, let's say the data from participants with rt < 100 are of no use to us. Let's
+  Output: OK, let's say the data from participants with rt < 100 or NA are of no use to us. Let's
     delete them. You can do this by taking the entire (which....) bracket, putting and
     indexing it out by putting a minus sign in front of it in the first dimension of the
     []. Store this cleaned data set in an object called df_clean.
@@ -182,7 +182,7 @@
   Hint:
   
 - Class: cmd_question
-  Output: "To see that these are equivalent ask R it for all elements, total is equal to
+  Output: "To see that these are equivalent ask R if for all elements, total is equal to
     the command above. Use all() and == to ask this."
   CorrectAnswer: all(df_clean$total == rowMeans(cbind(as.numeric(df_clean$item_1),
     as.numeric(df_clean$item_2))))
@@ -202,7 +202,7 @@
     there's also a rbind() function that adds rows. Look at the documentation for the
     function."
   CorrectAnswer: ?rbind
-  AnswerTests: omnitest(correctExpr= '?rbind')
+  AnswerTests: any_of_exprs('?rbind', '?rbind()')
   Hint:
   
 - Class: text
@@ -312,7 +312,7 @@
   Output: "Well, isn't it your lucky day? Pull up the documentation for merge() and take a
     few minutes to learn how to use it."
   CorrectAnswer: ?merge
-  AnswerTests: omnitest(correctExpr= '?merge')
+  AnswerTests: any_of_exprs('?merge', '?merge()')
   Hint:
 
 - Class: cmd_question
@@ -370,7 +370,7 @@
 - Class: cmd_question
   Output: "Read through the documentation for the aggregate() function."
   CorrectAnswer: ?aggregate
-  AnswerTests: omnitest(correctExpr= '?aggregate')
+  AnswerTests: any_of_exprs('?aggregate', '?aggregate()')
   Hint:
   
 - Class: cmd_question
@@ -389,7 +389,7 @@
     
 - Class: cmd_question
   Output: "To aggregate only over the variables that can be averaged, you can use indexing.
-    In this case it would be [ , c(3,5,8:13)]. Put all that behind the df_clean in the
+    In this case it would be [ , c(3,5,8:13)]. Put all that after df_merged in the
     first argument."
   CorrectAnswer: "aggregate(df_merged[ , c(3,5,8:13)], by = list(df_merged$gender,
     df_merged$group), FUN = mean, na.rm=TRUE)"
@@ -411,11 +411,11 @@
 - Class: cmd_question
   Output: "And pull up the documentation for describeBy()."
   CorrectAnswer: ?describeBy
-  AnswerTests: omnitest(correctExpr= '?describeBy')
+  AnswerTests: any_of_exprs('?describeBy', '?describeBy()')
   Hint:
   
 - Class: cmd_question
-  Output: "Let's look at the descriptives for df_clean using describeBy. You only need
+  Output: "Let's look at the descriptives for df_merged using describeBy. You only need
     the first two arguments. In this case, make them the same as with the aggregate
     function before."
   CorrectAnswer: "describeBy(df_merged, group = list(df_merged$gender, df_merged$group))"
