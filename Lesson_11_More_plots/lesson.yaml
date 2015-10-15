@@ -198,7 +198,7 @@
   Output: "First of all, pull up the documentation for the axis() function and spare a
     minute exploring the arguments."
   CorrectAnswer: ?axis
-  AnswerTests: omnitest(correctExpr='?axis')
+  AnswerTests: any_of_exprs('?axis', '?axis()')
   Hint: "Just type ?axis"
   
 - Class: mult_question
@@ -258,7 +258,7 @@
 - Class: cmd_question
   Output: "Pull up the documentation for the legend() function to learn how this is done."
   CorrectAnswer: ?legend
-  AnswerTests: omnitest(correctExpr='?legend')
+  AnswerTests: any_of_exprs('?legend', '?legend()')
   Hint:
   
 - Class: text
@@ -683,7 +683,7 @@
 - Class: cmd_question
   Output: "Now pull up the documentation for the errbar() function and read through it."
   CorrectAnswer: ?errbar
-  AnswerTests: omnitest(correctExpr='?errbar')
+  AnswerTests: any_of_exprs('?errbar', '?errbar()')
   Hint: "Just type ?errbar."
   
 - Class: text

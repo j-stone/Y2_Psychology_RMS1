@@ -66,7 +66,7 @@
     in favour of the alternative.
     
 - Class: cmd_question
-  Output: "Where do we conventionally draw the line separating likely form unlikely in this
+  Output: "Where do we conventionally draw the line separating likely from unlikely in this
     sense? This time give me an answer in percentage the form (just the number)."
   CorrectAnswer: 5
   AnswerTests: omnitest(correctVal='5')
@@ -141,7 +141,7 @@
   Output: Now, the blue bar indicated the median of the distribution (but since the
     distribution is symmetrical, it is also the mean and the mode). This is the outcome you
     would expect to occur most often. Clearly, most often is a relative term since the height
-    of the bar is only just under .8 (precisely dbinom(50, 100, .5), i.e., .07958924). That
+    of the bar is only just under .08 (precisely dbinom(50, 100, .5), i.e., .07958924). That
     means that you would get a 50-50 split only about 8% of the time you flip a coin 100 times.
     
 - Class: text
@@ -168,7 +168,7 @@
   Output: The yellow bit of the graph (less than 41 heads) marks the exact opposite. If our
     alternative hypothesis was 'the coin is biased towards tails', any result in this range
     (out of 100 coin flips) would produce a significant p-value. Since the binomial
-    distribution is symmetrical, sum(dbinom(0:29, 100, .5)) = sum(dbinom(59:100, 100, .5)))
+    distribution is symmetrical, sum(dbinom(0:41, 100, .5)) = sum(dbinom(59:100, 100, .5)))
     
 - Class: text
   Output: Finally the red bit takes just under 5% of the distribution and divides it equally
@@ -188,10 +188,10 @@
     data. Lots of data... The Matrix anyone?
   
 - Class: cmd_question
-  Output: Just like last time, I loaded the data frame for you. Check its structure using.
+  Output: Just like last time, I loaded the data frame for you. Check its structure using str().
   CorrectAnswer: str(df)
   AnswerTests: omnitest(correctExpr='str(df)')
-  Hint: Maybe str()?
+  Hint: Maybe str(df)?
   
 - Class: cmd_question
   Output: We need a variable of binomial data for the test. Which one would that be?
@@ -242,7 +242,7 @@
   Output: In order to find out, we can use the binom.test() function. Pull up the function's
     documentation and read through it.
   CorrectAnswer: ?binom.test
-  AnswerTests: omnitest(correctExpr='?binom.test')
+  AnswerTests: any_of_exprs('?binom.test', '?binom.test()')
   Hint:
   
 - Class: cmd_question
@@ -250,7 +250,7 @@
     missing data, we need to subset our df. Create df2 that contains the gender [ , 2], group
     [ , 4], and hit [ , 9] variables but gets rid of all the cases that have a missing value
     for hit.
-  CorrectAnswer: ?binom.test
+  CorrectAnswer: df2 <- df[!is.na(df$hit), c(2, 4, 9)]
   AnswerTests: omnitest(correctExpr='df2 <- df[!is.na(df$hit), c(2, 4, 9)]')
   Hint: Use !is.na(df$hit) inside the indexing brackets.
 
@@ -271,11 +271,11 @@
 - Class: mult_question
   Output: "If you read the output, you will see that the p-value of the test is .1039. This
     means that the result is:"
-  AnswerChoices: significant so we accept the null.; significant so we reject the null.;
+  AnswerChoices: significant so we accept the null.; significant so we cannot accept the null.;
     significant so we reject the alternative.; non-significant so we reject the null.;
-    non-significant so we accept the null.; non-significant so we accept the alternative.;
-  CorrectAnswer: significant so we reject the null.
-  AnswerTests: omnitest(correctVal='significant so we reject the null.')
+    non-significant so we accept the null.; non-significant so we cannot reject the null.;
+  CorrectAnswer: non-significant so we cannot reject the null.
+  AnswerTests: omnitest(correctVal='non-significant so we cannot reject the null.')
   Hint:
 
 - Class: cmd_question

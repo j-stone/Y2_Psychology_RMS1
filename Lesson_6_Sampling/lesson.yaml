@@ -20,7 +20,7 @@
   Output: The first function we'll use to generate random numbers is sample(). Use ?sample
     to pull up the documentation.
   CorrectAnswer: ?sample
-  AnswerTests: omnitest(correctExpr='?sample')
+  AnswerTests: any_of_exprs('?sample', '?sample()')
   Hint: Use '?sample' to pull up the documentation for the sample() function.
 
 - Class: cmd_question
@@ -113,7 +113,7 @@
     trials (coin flips), so we can use use rbinom() to simulate a binomial random variable.
     Pull up the documentation for rbinom() using ?rbinom.
   CorrectAnswer: ?rbinom
-  AnswerTests: omnitest(correctExpr='?rbinom')
+  AnswerTests: any_of_exprs('?rbinom', '?rbinom()')
   Hint: Type ?rbinom to pull up the help file for rbinom().
 
 - Class: text
@@ -353,7 +353,7 @@
   Output: What you want to do is to draw a line over the plot. For that, we have the lines()
     function. Pull up its documentation now.
   CorrectAnswer: ?lines
-  AnswerTests: omnitest(correctExpr='?lines')
+  AnswerTests: any_of_exprs('?lines', '?lines()')
   Hint: Use '?lines' to pull up the documentation for the lines() function.
   
 - Class: text

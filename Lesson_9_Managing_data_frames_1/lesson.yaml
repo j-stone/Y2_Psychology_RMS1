@@ -142,7 +142,7 @@
     created. look up the documentation for the rm() function. Don't worry, this won't affect
     the data frame."
   CorrectAnswer: ?rm
-  AnswerTests: omnitest(correctExpr='?rm')
+  AnswerTests: any_of_exprs('?rm', '?rm()')
   Hint:
   
 - Class: cmd_question
@@ -200,7 +200,7 @@
   Output: The best way is to turn the variable into a factor. Pull up the documentation for
     factor() and take a minute to read through it.
   CorrectAnswer: ?factor
-  AnswerTests: omnitest(correctExpr='?factor')
+  AnswerTests: any_of_exprs('?factor', '?factor()')
   Hint:
   
 - Class: cmd_question
