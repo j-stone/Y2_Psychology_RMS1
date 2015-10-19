@@ -42,7 +42,7 @@
 - Class: cmd_question
   Output: "See for yourself by pulling up the documentation for the mean() function."
   CorrectAnswer: ?mean
-  AnswerTests: omnitest(correctExpr='?mean')
+  AnswerTests: any_of_exprs('?mean', '?mean()')
   Hint:
   
 - Class: text
@@ -86,7 +86,7 @@
   Output: "Pull up the documentation for the install.packages() function and take a minute to
     read through it."
   CorrectAnswer: ?install.packages
-  AnswerTests: omnitest(correctExpr='?install.packages')
+  AnswerTests: any_of_exprs('?install.packages', '?install.packages()')
   Hint:
   
 - Class: text

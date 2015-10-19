@@ -8,3 +8,7 @@ df <- read.csv(file.path(find.package("swirl"), "Courses", "Y2_Psychology_RMS1",
 
 source(file.path(find.package("swirl"), "Courses", "Y2_Psychology_RMS1",
                  "Data", "clt_function"))
+
+rt_pop <-(read.table(file.path(find.package("swirl"), "Courses", "Y2_Psychology_RMS1",
+                          "Data", "rt_pop.txt")))[,1]
+

@@ -91,7 +91,7 @@
   Output: "To see what these values mean, you can look at the Values section of the
     documentation for the boxplot function. Go for it!"
   CorrectAnswer: ?boxplot
-  AnswerTests: omnitest(correctExpr='?boxplot')
+  AnswerTests: any_of_exprs('?boxplot', '?boxplot()')
   Hint: "Just type ?boxplot"
   
 - Class: text
@@ -198,7 +198,7 @@
   Output: "First of all, pull up the documentation for the axis() function and spare a
     minute exploring the arguments."
   CorrectAnswer: ?axis
-  AnswerTests: omnitest(correctExpr='?axis')
+  AnswerTests: any_of_exprs('?axis', '?axis()')
   Hint: "Just type ?axis"
   
 - Class: mult_question
@@ -258,7 +258,7 @@
 - Class: cmd_question
   Output: "Pull up the documentation for the legend() function to learn how this is done."
   CorrectAnswer: ?legend
-  AnswerTests: omnitest(correctExpr='?legend')
+  AnswerTests: any_of_exprs('?legend', '?legend()')
   Hint:
   
 - Class: text
@@ -431,7 +431,7 @@
     the individual bars should be."
     
 - Class: cmd_question
-  Output: "Let's start by plotting mean(df$n_errors) using barplot()."    
+  Output: "Let's start by plotting mean(df$n_hesitations) using barplot()."    
   CorrectAnswer: barplot(mean(df$n_hesitations))
   AnswerTests: match_call('barplot(mean(df$n_hesitations))')
   Hint: "Just type barplot(mean(df$n_hesitations))."
@@ -461,7 +461,7 @@
     
 - Class: text
   Output: "Okay, so these are basic bar charts. To take things a step further, let's have
-    the bars displayed by df$group. To do this, we need ti guve R the mean of the control
+    the bars displayed by df$group. To do this, we need to give R the mean of the control
     group's n_hesitation, the mean of the experimental group's n_hesitations and likewise
     for n_errors."
     
@@ -683,7 +683,7 @@
 - Class: cmd_question
   Output: "Now pull up the documentation for the errbar() function and read through it."
   CorrectAnswer: ?errbar
-  AnswerTests: omnitest(correctExpr='?errbar')
+  AnswerTests: any_of_exprs('?errbar', '?errbar()')
   Hint: "Just type ?errbar."
   
 - Class: text
